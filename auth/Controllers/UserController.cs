@@ -1,0 +1,125 @@
+﻿using auth.ActionFilters;
+using auth.Dtos.User;
+using auth.Entities.Responses;
+using auth.Services.Contractss;
+using auth.Utility;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace auth.Controllers
+{
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
+
+        public UserController(IUserService userService, 
+            IConfiguration configuration)
+        {
+            _userService = userService;
+            _configuration = configuration;
+        }
+
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Login(
+            [FromBody] LoginUserDto dto)
+        {
+            // Get login response from service
+            var res = await _userService.Login(dto);
+            
+            // Set refresh token in cookie
+            setRefreshTokenCookie(res.Data.RefreshToken);
+
+            return Ok(res.Data);
+        }
+
+        [HttpPost("register")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Register(
+            [FromBody] RegisterUserDto dto)
+        {
+            await _userService.RegisterUser(dto);
+
+            return NoContent();
+        }
+
+        [HttpGet("send-verification-email")]
+        [ServiceFilter(typeof (ValidationFilterAttribute))]
+        public async Task<IActionResult> SendVerificationEmail(
+            [FromQuery] SendVerificationEmailDto dto)
+        {
+            await _userService.SendVerificationEmail(dto);
+            
+            return Ok();
+        }
+
+        [HttpGet("verify-email")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> VerifyEmail (
+            [FromQuery] VerifyEmailDto dto)
+        {
+            await _userService.VerifyEmail(dto);
+
+            return Ok();
+        }
+
+        [HttpGet("send-forgot-password-email")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> SendForgotPasswordEmail(
+            [FromQuery] SendForgotPasswordEmailDto dto)
+        {
+            await _userService.SendForgotPasswordEmail(dto);
+
+            return Ok();
+        }
+
+        [HttpPost("reset-forgotten-password")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> ResetForgottenPassword
+            ([FromBody] ResetForgottenPasswordDto dto)
+        {
+            await _userService.ResetForgottenPassword(dto);
+
+            return Ok();
+        }
+
+        [HttpPost("change-password")]
+        [Authorize(Roles = Common.AllRoles)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> ChangePassword (
+            [FromBody] ChangePasswordDto dto)
+        {
+            await _userService.ChangePassword(dto);
+
+            return Ok();
+        }
+
+        private void setRefreshTokenCookie(string? refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTimeOffset.UtcNow.AddDays(int.Parse(
+                    _configuration["JWT:RefreshTokenValidityInDays"])),
+                SameSite = SameSiteMode.None,
+                Secure = true
+            };
+
+            // Delete the refresh token cookie, if no token is passed
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                Response.Cookies.Delete("refreshToken");
+            }
+            else
+            {
+                // Set the refresh token cookie
+                Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+            }
+
+        }
+    }
+}
