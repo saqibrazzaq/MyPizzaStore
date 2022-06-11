@@ -37,6 +37,23 @@ namespace auth.Controllers
             return Ok(res.Data);
         }
 
+        [HttpPost("refresh-token")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [Authorize(Roles = Common.AllRoles)]
+        public async Task<IActionResult> RefreshToken(
+            [FromBody] TokenDto dto)
+        {
+            // Get refresh token from http only cookie
+            dto.RefreshToken = Request.Cookies[Common.RefreshTokenCookieName];
+
+            var res = await _userService.RefreshToken(dto);
+
+            // Set refresh token in cookie
+            setRefreshTokenCookie(res.Data.RefreshToken);
+
+            return Ok(res.Data);
+        }
+
         [HttpPost("register")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Register(
@@ -44,7 +61,29 @@ namespace auth.Controllers
         {
             await _userService.RegisterUser(dto);
 
-            return NoContent();
+            return Ok();
+        }
+
+        [HttpPost("register-admin")]
+        [Authorize(Roles = Common.AdminRole)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> RegisterAdmin(
+            [FromBody] RegisterUserDto dto)
+        {
+            await _userService.RegisterAdmin(dto);
+
+            return Ok();
+        }
+
+        [HttpPost("delete-user")]
+        [Authorize(Roles = Common.AdminRole)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> DeleteUser(
+            [FromBody] DeleteUserDto dto)
+        {
+            await _userService.DeleteUser(dto);
+
+            return Ok();
         }
 
         [HttpGet("send-verification-email")]
@@ -112,12 +151,13 @@ namespace auth.Controllers
             // Delete the refresh token cookie, if no token is passed
             if (string.IsNullOrEmpty(refreshToken))
             {
-                Response.Cookies.Delete("refreshToken");
+                Response.Cookies.Delete(Common.RefreshTokenCookieName);
             }
             else
             {
                 // Set the refresh token cookie
-                Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+                Response.Cookies.Append(Common.RefreshTokenCookieName, 
+                    refreshToken, cookieOptions);
             }
 
         }

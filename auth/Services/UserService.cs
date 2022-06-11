@@ -63,13 +63,63 @@ namespace auth.Services
             else throw new UnAuthorizedUserException("Incorrect username/password");
         }
 
+        public async Task<ApiOkResponse<TokenDto>> RefreshToken(TokenDto dto)
+        {
+            var principal = GetPrincipalFromExpiredToken(dto.AccessToken);
+            if (principal == null)
+                throw new BadRequestException("Invalid access token or refresh token");
+
+            string username = principal.Identity.Name;
+
+            var userEntity = await _userManager.FindByNameAsync(username);
+
+            if (userEntity == null || userEntity.RefreshToken != dto.RefreshToken 
+                || userEntity.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                throw new BadRequestException("Invalid access token or refresh token");
+            }
+
+            var newAccessToken = CreateToken(principal.Claims.ToList());
+            var newRefreshToken = GenerateRefreshToken();
+
+            // Update user repository
+            userEntity.RefreshToken = newRefreshToken;
+            userEntity.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(
+                   int.Parse(_configuration["JWT:RefreshTokenValidityInDays"]));
+            var userResult = await _userManager.UpdateAsync(userEntity);
+            if (userResult.Succeeded == false)
+                throw new BadRequestException("Invalid token");
+
+            return new ApiOkResponse<TokenDto>(new TokenDto
+            {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
+                RefreshToken = newRefreshToken,
+            });
+        }
+
+        private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+
+        }
+
         public async Task<ApiBaseResponse> RegisterUser(RegisterUserDto dto)
         {
-            // Email and username must not already exist
-            if ((await checkIfEmailAlreadyExists(dto.Email)) == true)
-                throw new BadRequestException($"Email {dto.Email} is already registered. Use Forgot password if you own this account.");
-            if ((await checkIfUsernameAlreadyTaken(dto.Username)) == true)
-                throw new BadRequestException($"Username {dto.Username} is already taken.");
+            await CheckExistingEmailAndUsername(dto);
 
             // Create the user
             var userEntity = new AppIdentityUser
@@ -87,10 +137,85 @@ namespace auth.Services
             if (roleResult.Succeeded == false)
                 throw new BadRequestException(result.Errors.FirstOrDefault().Description);
 
-            // Send email to the user
-            await _emailSender.SendEmailAsync(dto.Email, "User Registration", "You can login now.");
+            await SendVerificationEmail(new SendVerificationEmailDto
+            {
+                Email = dto.Email,
+                UrlVerifyEmail = dto.UrlVerifyEmail
+            });
 
             return new ApiBaseResponse(true);
+        }
+
+        public async Task<ApiBaseResponse> RegisterAdmin(RegisterUserDto dto)
+        {
+            await CheckExistingEmailAndUsername(dto);
+
+            // Create new user
+            var userEntity = new AppIdentityUser
+            {
+                UserName = dto.Username,
+                Email = dto.Email
+            };
+            var resultUser = await _userManager.CreateAsync(userEntity, dto.Password);
+            if (resultUser.Succeeded == false)
+                throw new BadRequestException(resultUser.Errors.FirstOrDefault().Description);
+
+            // Add default roles if do not exist
+            await AddDefaultRoles();
+
+            // Assign admin role
+            var roleResult = await _userManager.AddToRoleAsync(userEntity, Common.AdminRole);
+            if (roleResult.Succeeded == false)
+                throw new BadRequestException(roleResult.Errors.FirstOrDefault().Description);
+
+            await SendVerificationEmail(new SendVerificationEmailDto
+            {
+                Email = dto.Email,
+                UrlVerifyEmail = dto.UrlVerifyEmail
+            });
+
+            return new ApiBaseResponse(true);
+        }
+
+        public async Task<ApiBaseResponse> DeleteUser(DeleteUserDto dto)
+        {
+            var userEntity = await _userManager.FindByNameAsync(dto.Username);
+            if (userEntity == null)
+                throw new BadRequestException("User does not exist");
+            else
+            {
+                var resultUser = await _userManager.DeleteAsync(userEntity);
+                if (resultUser.Succeeded == false)
+                    throw new BadRequestException(resultUser.Errors.FirstOrDefault().Description);
+            }
+
+            return new ApiBaseResponse(true);
+        }
+
+        private async Task AddDefaultRoles()
+        {
+            // Get all roles
+            var allRoleNames = Common.AllRoles.Split(',');
+
+            foreach (var roleName in allRoleNames)
+            {
+                var role = await _roleManager.FindByNameAsync(roleName);
+                if (role == null)
+                {
+                    var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
+                    if (roleResult.Succeeded == false)
+                        throw new BadRequestException(roleResult.Errors.FirstOrDefault().Description);
+                }
+            }
+        }
+
+        private async Task CheckExistingEmailAndUsername(RegisterUserDto dto)
+        {
+            // Email and username must not already exist
+            if ((await checkIfEmailAlreadyExists(dto.Email)) == true)
+                throw new BadRequestException($"Email {dto.Email} is already registered. Use Forgot password if you own this account.");
+            if ((await checkIfUsernameAlreadyTaken(dto.Username)) == true)
+                throw new BadRequestException($"Username {dto.Username} is already taken.");
         }
 
         public async Task<ApiBaseResponse> SendVerificationEmail(
@@ -256,17 +381,24 @@ namespace auth.Services
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }
 
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _configuration["JWT:Secret"]));
+            var token = CreateToken(authClaims);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private JwtSecurityToken CreateToken(List<Claim> authClaims)
+        {
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            _ = int.TryParse(_configuration["JWT:TokenValidityInMinutes"], out int tokenValidityInMinutes);
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddMinutes(int.Parse(_configuration["JWT:TokenValidityInMinutes"])),
+                expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+
+            return token;
         }
 
         private async Task<AppIdentityUser?> AuthenticateUser(string username, string password)

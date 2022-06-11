@@ -7,6 +7,9 @@ namespace auth.Services.Contractss
     {
         Task<ApiOkResponse<AuthenticationResponseDto>> Login(LoginUserDto dto);
         Task<ApiBaseResponse> RegisterUser(RegisterUserDto dto);
+        Task<ApiBaseResponse> RegisterAdmin(RegisterUserDto dto);
+        Task<ApiBaseResponse> DeleteUser(DeleteUserDto dto);
+        Task<ApiOkResponse<TokenDto>> RefreshToken(TokenDto dto);
         Task<ApiBaseResponse> SendVerificationEmail (
             SendVerificationEmailDto dto);
         Task<ApiBaseResponse> VerifyEmail(VerifyEmailDto dto);

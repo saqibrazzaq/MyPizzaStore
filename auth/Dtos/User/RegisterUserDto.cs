@@ -18,5 +18,7 @@ namespace auth.Dtos.User
         [MinLength(6, ErrorMessage = "Minimum 6 characters for confirm password")]
         [Compare("Password", ErrorMessage = "Confirm password must match with password")]
         public string? ConfirmPassword { get; set; }
+        [Required]
+        public string? UrlVerifyEmail { get; set; }
     }
 }

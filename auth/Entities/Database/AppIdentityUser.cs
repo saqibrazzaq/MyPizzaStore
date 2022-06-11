@@ -8,7 +8,5 @@ namespace auth.Entities.Database
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public string? EmailVerificationToken { get; set; }
         public DateTime? EmailVerificationTokenExpiryTime { get; set; }
-        public string? ForgotPasswordToken { get; set; }
-        public DateTime? ForgotPasswordTokenExpiryTime { get; set; }
     }
 }

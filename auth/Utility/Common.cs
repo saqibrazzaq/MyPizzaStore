@@ -8,5 +8,7 @@
 
         // For controller attributes
         public const string AllRoles = AdminRole + "," + ManagerRole + "," + UserRole;
+
+        public const string RefreshTokenCookieName = "refreshToken";
     }
 }
