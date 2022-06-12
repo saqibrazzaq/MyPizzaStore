@@ -35,7 +35,7 @@ namespace auth.Services
             LoginUserDto dto)
         {
             // Authenticate user
-            var userEntity = await AuthenticateUser(dto.Username, dto.Password);
+            var userEntity = await AuthenticateUser(dto.Email, dto.Password);
 
             // If user/pwd are correct
             if (userEntity != null)
@@ -43,7 +43,6 @@ namespace auth.Services
                 // Create response with access token
                 var authRes = new AuthenticationResponseDto
                 {
-                    Username = dto.Username,
                     Email = userEntity.Email,
                     Roles = await _userManager.GetRolesAsync(userEntity),
                     EmailConfirmed = userEntity.EmailConfirmed
@@ -401,10 +400,10 @@ namespace auth.Services
             return token;
         }
 
-        private async Task<AppIdentityUser?> AuthenticateUser(string username, string password)
+        private async Task<AppIdentityUser?> AuthenticateUser(string email, string password)
         {
             // Find user
-            var userEntity = await _userManager.FindByNameAsync(username);
+            var userEntity = await _userManager.FindByEmailAsync(email);
             if (userEntity == null)
                 return null;
 

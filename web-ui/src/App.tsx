@@ -1,26 +1,14 @@
-import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import TopNavbar from "./components/header/top-navbar"
+import { Route, Routes } from "react-router-dom"
+import Layout from "./components/layout/Layout"
+import Login from "./pages/auth/Login"
+import SignUp from "./pages/auth/SignUp"
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <TopNavbar />
-        <VStack spacing={8}>
-          
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
+  <Routes>
+    <Route path="/" element={<Layout />}>
+      {/* Public routes */}
+      <Route path="login" element={<Login />} />
+      <Route path="signup" element={<SignUp />} />
+    </Route>
+  </Routes>
 )

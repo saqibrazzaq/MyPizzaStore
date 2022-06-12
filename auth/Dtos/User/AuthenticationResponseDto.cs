@@ -4,7 +4,6 @@ namespace auth.Dtos.User
 {
     public class AuthenticationResponseDto
     {
-        public string? Username { get; set; }
         public string? Email { get; set; }
         public IEnumerable<string>? Roles { get; set; }
         public string? AccessToken { get; set; }
