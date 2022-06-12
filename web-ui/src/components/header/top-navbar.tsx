@@ -121,7 +121,9 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <Link
                 p={2}
-                href={navItem.href ?? "#"}
+                as={RouteLink}
+                to={navItem.href ?? "#"}
+                // href={navItem.href ?? "#"}
                 fontSize={"sm"}
                 fontWeight={500}
                 color={linkColor}
@@ -270,7 +272,8 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: "Inspiration",
+    label: "Admin",
+    href: "/admin",
     children: [
       {
         label: "Explore Design Work",

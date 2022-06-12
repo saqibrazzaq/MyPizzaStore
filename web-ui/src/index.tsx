@@ -3,6 +3,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { App } from "./App";
+import { AuthProvider } from "./context/AuthProvider";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
 
@@ -14,9 +15,11 @@ root.render(
   <React.StrictMode>
     <ColorModeScript />
     <BrowserRouter>
-      <Routes>
-        <Route path="/*" element={<App />}></Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/*" element={<App />}></Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

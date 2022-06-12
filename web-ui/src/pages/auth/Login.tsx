@@ -9,36 +9,109 @@ import {
   Link,
   Stack,
   Image,
+  FormErrorMessage,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
+import { Field, Formik } from "formik";
+import { useState } from "react";
+import * as Yup from "yup";
+import YupPassword from "yup-password";
+import ErrorDetails from "../../Models/Error/ErrorDetails";
+import AuthenticationResponseDto from "../../Models/User/AuthenticationResponseDto";
+import UserLoginDto from "../../Models/User/UserLoginDto";
+import * as AuthService from "../../Services/AuthService";
+
+YupPassword(Yup); // extend yup
 
 export default function Login() {
+  const [error, setError] = useState("");
+
+  let loginData = new UserLoginDto("saqibrazzaq@gmail.coma", "Saqib123!");
+
+  const submitForm = (values: UserLoginDto) => {
+    setError("");
+    AuthService.login(values)
+      .then((res) => {
+        let authRes: AuthenticationResponseDto = res.data;
+        console.log(authRes);
+      })
+      .catch((err) => {
+        let errDetails: ErrorDetails = err?.response?.data;
+        setError(errDetails?.Message || "Login service failed.");
+        console.log("Error: " + err?.response?.data?.Message);
+      });
+  };
+
+  // Formik validation schema
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .required("Email is required")
+      .email("Invalid email address"),
+    password: Yup.string()
+      .required("Password is required.")
+      .min(6, "Minimum 6 characters required.")
+      .minUppercase(1, "At least one Upper Case letter required.")
+      .minLowercase(1, "At least one lower case letter required.")
+      .minNumbers(1, "At least one number required")
+      .minSymbols(1, "At least one symbol required"),
+  });
+
   return (
     <Stack minH={"50vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
-        <Stack spacing={4} w={"full"} maxW={"md"}>
-          <Heading fontSize={"2xl"}>Sign in to your account</Heading>
-          <FormControl id="email">
-            <FormLabel>Email address</FormLabel>
-            <Input type="email" />
-          </FormControl>
-          <FormControl id="password">
-            <FormLabel>Password</FormLabel>
-            <Input type="password" />
-          </FormControl>
-          <Stack spacing={6}>
-            <Stack
-              direction={{ base: "column", sm: "row" }}
-              align={"start"}
-              justify={"space-between"}
-            >
-              <Checkbox>Remember me</Checkbox>
-              <Link color={"blue.500"}>Forgot password?</Link>
-            </Stack>
-            <Button colorScheme={"blue"} variant={"solid"}>
-              Sign in
-            </Button>
-          </Stack>
-        </Stack>
+        <Formik
+          initialValues={loginData}
+          onSubmit={(values) => {
+            submitForm(values);
+          }}
+          validationSchema={validationSchema}
+        >
+          {({ handleSubmit, errors, touched }) => (
+            <form onSubmit={handleSubmit}>
+              <Stack spacing={4} w={"full"} maxW={"md"}>
+                <Heading fontSize={"2xl"}>Sign in to your account</Heading>
+                {error && (
+                  <Alert status="error">
+                    <AlertIcon />
+                    <AlertTitle>Login failed</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                <FormControl isInvalid={!!errors.email && touched.email}>
+                  <FormLabel htmlFor="email">Email address</FormLabel>
+                  <Field as={Input} id="email" name="email" type="email" />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={!!errors.password && touched.password}>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <Field
+                    as={Input}
+                    id="password"
+                    name="password"
+                    type="password"
+                  />
+                  <FormErrorMessage>{errors.password}</FormErrorMessage>
+                </FormControl>
+                <Stack spacing={6}>
+                  <Stack
+                    direction={{ base: "column", sm: "row" }}
+                    align={"start"}
+                    justify={"space-between"}
+                  >
+                    <Checkbox>Remember me</Checkbox>
+                    <Link color={"blue.500"}>Forgot password?</Link>
+                  </Stack>
+                  <Button type="submit" colorScheme={"blue"} variant={"solid"}>
+                    Sign in
+                  </Button>
+                </Stack>
+              </Stack>
+            </form>
+          )}
+        </Formik>
       </Flex>
       <Flex flex={1}>
         <Image
