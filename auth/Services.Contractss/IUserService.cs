@@ -1,4 +1,5 @@
-﻿using auth.Dtos.User;
+﻿using auth.Dtos;
+using auth.Dtos.User;
 using auth.Entities.Responses;
 
 namespace auth.Services.Contractss
@@ -17,5 +18,7 @@ namespace auth.Services.Contractss
             SendForgotPasswordEmailDto dto);
         Task<ApiBaseResponse> ResetForgottenPassword(ResetForgottenPasswordDto dto);
         Task<ApiBaseResponse> ChangePassword(ChangePasswordDto dto);
+        Task<ApiOkPagedResponse<IEnumerable<UserDto>, MetaData>>
+            SearchPersonsAsync(UserParameters personParameters, bool trackChanges);
     }
 }

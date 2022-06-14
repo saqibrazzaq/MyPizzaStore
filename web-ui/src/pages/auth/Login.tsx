@@ -23,11 +23,17 @@ import ErrorDetails from "../../Models/Error/ErrorDetails";
 import AuthenticationResponseDto from "../../Models/User/AuthenticationResponseDto";
 import UserLoginDto from "../../Models/User/UserLoginDto";
 import * as AuthService from "../../Services/AuthService";
+import useAuth from '../../hooks/useAuth';
+import { useNavigate } from "react-router-dom";
+import AuthModel from "../../Models/User/AuthModel";
 
 YupPassword(Yup); // extend yup
 
 export default function Login() {
   const [error, setError] = useState("");
+
+  const { auth, setAuth }: AuthModel = useAuth();
+  const navigate = useNavigate();
 
   let loginData = new UserLoginDto("saqibrazzaq@gmail.coma", "Saqib123!");
 
@@ -37,6 +43,7 @@ export default function Login() {
       .then((res) => {
         let authRes: AuthenticationResponseDto = res.data;
         console.log(authRes);
+        setAuth(authRes);
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;

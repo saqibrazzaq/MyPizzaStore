@@ -7,6 +7,9 @@ const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
+  console.log("Adding Authorization Bearer token in header");
+  console.log(auth);
+
   useEffect(() => {
     const requestIntercept = Api.interceptors.request.use(
       (config) => {
@@ -26,6 +29,7 @@ const useAxiosPrivate = () => {
           console.log('Token expired, getting new token');
           prevRequest.sent = true;
           const newAccessToken = await refresh();
+          console.log("got new token: " + newAccessToken);
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           return Api(prevRequest);
         }

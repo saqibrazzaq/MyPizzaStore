@@ -39,7 +39,6 @@ namespace auth.Controllers
 
         [HttpPost("refresh-token")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [Authorize(Roles = Common.AllRoles)]
         public async Task<IActionResult> RefreshToken(
             [FromBody] TokenDto dto)
         {
@@ -160,6 +159,18 @@ namespace auth.Controllers
                     refreshToken, cookieOptions);
             }
 
+        }
+
+        [HttpGet("search-users")]
+        [Authorize(Roles = Common.AdminRole)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> SearchUsers(
+            [FromQuery] UserParameters userparameters)
+        {
+            var res = await _userService.SearchPersonsAsync(
+                userparameters, trackChanges: false);
+
+            return Ok(res);
         }
     }
 }

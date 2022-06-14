@@ -21,9 +21,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
-import {
-  Link as RouteLink
-} from 'react-router-dom';
+import { Link as RouteLink } from "react-router-dom";
 
 export default function TopNavbar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -75,14 +73,8 @@ export default function TopNavbar() {
           direction={"row"}
           spacing={6}
         >
-          <Button
-            fontSize={"sm"}
-            fontWeight={400}
-            as={RouteLink}
-            to="/login"
-          >
+          <Button fontSize={"sm"} fontWeight={400} as={RouteLink} to="/login">
             Sign In
-            
           </Button>
           <Button
             display={{ base: "none", md: "inline-flex" }}
@@ -162,7 +154,9 @@ const DesktopNav = () => {
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
     <Link
-      href={href}
+      as={RouteLink}
+      to={href || "#"}
+      // href={href}
       role={"group"}
       display={"block"}
       p={2}
@@ -276,9 +270,9 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "/admin",
     children: [
       {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "#",
+        label: "Register Admin",
+        subLabel: "Create a new Admin user",
+        href: "/admin/register-admin",
       },
       {
         label: "New & Noteworthy",
@@ -288,12 +282,12 @@ const NAV_ITEMS: Array<NavItem> = [
     ],
   },
   {
-    label: "Find Work",
+    label: "Account",
+    href: "/account",
     children: [
       {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
+        label: "Change Password",
+        href: "/account/change-password",
       },
       {
         label: "Freelance Projects",

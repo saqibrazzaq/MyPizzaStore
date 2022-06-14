@@ -1,9 +1,12 @@
-﻿using auth.Dtos.User;
+﻿using auth.Dtos;
+using auth.Dtos.User;
 using auth.Entities.Database;
 using auth.Entities.Exceptions;
 using auth.Entities.Responses;
+using auth.Repository.Contracts;
 using auth.Services.Contractss;
 using auth.Utility;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,16 +22,22 @@ namespace auth.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
+        private readonly IRepositoryManager _repository;
+        private readonly IMapper _mapper;
 
         public UserService(UserManager<AppIdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration, 
-            IEmailSender emailSender)
+            IConfiguration configuration,
+            IEmailSender emailSender,
+            IRepositoryManager repository, 
+            IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _emailSender = emailSender;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<ApiOkResponse<AuthenticationResponseDto>> Login(
@@ -167,7 +176,7 @@ namespace auth.Services
             if (roleResult.Succeeded == false)
                 throw new BadRequestException(roleResult.Errors.FirstOrDefault().Description);
 
-            await SendVerificationEmail(new SendVerificationEmailDto
+            SendVerificationEmail(new SendVerificationEmailDto
             {
                 Email = dto.Email,
                 UrlVerifyEmail = dto.UrlVerifyEmail
@@ -421,6 +430,13 @@ namespace auth.Services
             return Convert.ToBase64String(randomNumber);
         }
 
-        
+        public async Task<ApiOkPagedResponse<IEnumerable<UserDto>, MetaData>> SearchPersonsAsync(UserParameters userParameters, bool trackChanges)
+        {
+            var usersWithMetadata = await _repository.UserRepository.SearchUsersAsync(
+                userParameters, trackChanges);
+            var usersDto = _mapper.Map<IEnumerable<UserDto>>(usersWithMetadata);
+            return new ApiOkPagedResponse<IEnumerable<UserDto>, MetaData>(
+                usersDto, usersWithMetadata.MetaData);
+        }
     }
 }

@@ -19,46 +19,49 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import AuthModel from "../../Models/User/AuthModel";
-import ChangePasswordRequestDto from "../../Models/User/ChangePasswordRequestDto";
 import { Field, Formik } from "formik";
+import AuthModel from "../../Models/User/AuthModel";
+import RegisterUserRequestDto from "../../Models/User/RegisterUserRequestDto";
+import useRefreshToken from "../../hooks/useRefreshToken";
+import Api from "../../Api/Api";
 
 YupPassword(Yup); // extend yup
 
-export default function ChangePassword(): JSX.Element {
+const RegisterAdmin = () => {
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { auth, setAuth }: AuthModel = useAuth();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
-  let pwdData = new ChangePasswordRequestDto();
-  pwdData.currentPassword = "";
-  pwdData.newPassword = "";
-  pwdData.confirmNewPassword = "";
-  pwdData.email = auth.email;
+  const refresh = useRefreshToken();
+
+  let host = window.location.protocol + "//" + window.location.host;
+  let data = new RegisterUserRequestDto();
+  data.username = "saqib1";
+  data.email = "saq.ibrazzaq@gmail.com";
+  data.password = "Saqib123!";
+  data.confirmPassword = "Saqib123!";
+  data.urlVerifyEmail = host + "/verify-email";
 
   // Formik validation schema
   const validationSchema = Yup.object({
     email: Yup.string()
       .required("Email is required")
       .email("Invalid email address"),
-    currentPassword: Yup.string()
-      .required("Current Password is required.")
+    username: Yup.string()
+      .required("Username is required.")
+      .max(50, "Maximum 50 characters."),
+    password: Yup.string()
+      .required("Password is required.")
       .min(6, "Minimum 6 characters required.")
       .minUppercase(1, "At least one Upper Case letter required.")
       .minLowercase(1, "At least one lower case letter required.")
       .minNumbers(1, "At least one number required")
       .minSymbols(1, "At least one symbol required"),
-    newPassword: Yup.string()
-      .required("New Password is required.")
-      .min(6, "Minimum 6 characters required.")
-      .minUppercase(1, "At least one Upper Case letter required.")
-      .minLowercase(1, "At least one lower case letter required.")
-      .minNumbers(1, "At least one number required")
-      .minSymbols(1, "At least one symbol required"),
-    confirmNewPassword: Yup.string()
-      .required("Confirm New Password is required.")
+    confirmPassword: Yup.string()
+      .required("Confirm Password is required.")
       .min(6, "Minimum 6 characters required.")
       .minUppercase(1, "At least one Upper Case letter required.")
       .minLowercase(1, "At least one lower case letter required.")
@@ -66,22 +69,30 @@ export default function ChangePassword(): JSX.Element {
       .minSymbols(1, "At least one symbol required"),
   });
 
-  const submitForm = (values: ChangePasswordRequestDto) => {
+  const submitForm = (values: RegisterUserRequestDto) => {
     setError("");
     setSuccess("");
-    console.log(auth);
-    axiosPrivate.post("User/change-password", values)
+    console.log(values);
+    axiosPrivate.post("User/register-admin", values)
       .then((res) => {
-        console.log("Password changed successfully.");
-        setSuccess("Your password has been changed successfully");
+        console.log("New Admin user created successfully.");
+        setSuccess("New Admin user created successfully.");
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;
         console.log("Error: " + err?.response?.data?.Message);
-        setError(errDetails?.Message || "Login service failed.");
+        setError(errDetails?.Message || "User service failed.");
       });
   };
 
+  const testAuth = () => {
+    axiosPrivate.get("WeatherForecast/test").then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+  
   return (
     <Flex
       minH={"100vh"}
@@ -89,7 +100,7 @@ export default function ChangePassword(): JSX.Element {
       justify={"center"}
     >
       <Formik
-        initialValues={pwdData}
+        initialValues={data}
         onSubmit={(values) => {
           submitForm(values);
         }}
@@ -98,67 +109,59 @@ export default function ChangePassword(): JSX.Element {
         {({ handleSubmit, errors, touched }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={4} w={"full"} minW={"md"} maxW={"lg"}>
-              <Heading fontSize={"2xl"}>Change Password</Heading>
+              <Heading fontSize={"2xl"}>Create New Admin User</Heading>
+              <Button onClick={testAuth}>Test Auth Method</Button>
               {error && (
                 <Alert status="error">
                   <AlertIcon />
-                  <AlertTitle>Login failed</AlertTitle>
+                  <AlertTitle>Create user failed</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
               {success && (
                 <Alert status="success">
                   <AlertIcon />
-                  <AlertTitle>Password Changed</AlertTitle>
+                  <AlertTitle>User created</AlertTitle>
                   <AlertDescription>{success}</AlertDescription>
                 </Alert>
               )}
+              <FormControl isInvalid={!!errors.username && touched.username}>
+                <FormLabel htmlFor="username">Username</FormLabel>
+                <Field as={Input} id="username" name="username" type="text" />
+                <FormErrorMessage>{errors.username}</FormErrorMessage>
+              </FormControl>
               <FormControl isInvalid={!!errors.email && touched.email}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
-                <Field disabled="true" as={Input} id="email" name="email" type="email" />
+                <Field as={Input} id="email" name="email" type="email" />
                 <FormErrorMessage>{errors.email}</FormErrorMessage>
               </FormControl>
               <FormControl
-                isInvalid={!!errors.currentPassword && touched.currentPassword}
+                isInvalid={!!errors.password && touched.password}
               >
-                <FormLabel htmlFor="currentPassword">
-                  Current Password
-                </FormLabel>
+                <FormLabel htmlFor="password">Password</FormLabel>
                 <Field
                   as={Input}
-                  id="currentPassword"
-                  name="currentPassword"
+                  id="password"
+                  name="password"
                   type="password"
                 />
-                <FormErrorMessage>{errors.currentPassword}</FormErrorMessage>
-              </FormControl>
-              <FormControl
-                isInvalid={!!errors.newPassword && touched.newPassword}
-              >
-                <FormLabel htmlFor="newPassword">New Password</FormLabel>
-                <Field
-                  as={Input}
-                  id="newPassword"
-                  name="newPassword"
-                  type="password"
-                />
-                <FormErrorMessage>{errors.newPassword}</FormErrorMessage>
+                <FormErrorMessage>{errors.password}</FormErrorMessage>
               </FormControl>
               <FormControl
                 isInvalid={
-                  !!errors.confirmNewPassword && touched.confirmNewPassword
+                  !!errors.confirmPassword && touched.confirmPassword
                 }
               >
-                <FormLabel htmlFor="confirmNewPassword">
-                  Confirm New Password
+                <FormLabel htmlFor="confirmPassword">
+                  Confirm Password
                 </FormLabel>
                 <Field
                   as={Input}
-                  id="confirmNewPassword"
-                  name="confirmNewPassword"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type="password"
                 />
-                <FormErrorMessage>{errors.confirmNewPassword}</FormErrorMessage>
+                <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
               </FormControl>
               <Stack spacing={6}>
                 <Button
@@ -177,5 +180,7 @@ export default function ChangePassword(): JSX.Element {
         )}
       </Formik>
     </Flex>
-  );
+  )
 }
+
+export default RegisterAdmin
