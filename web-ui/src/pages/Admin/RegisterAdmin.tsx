@@ -3,7 +3,9 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  Box,
   Button,
+  Container,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -94,10 +96,8 @@ const RegisterAdmin = () => {
   }
   
   return (
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
+    <Box
+      p={4}
     >
       <Formik
         initialValues={data}
@@ -108,9 +108,8 @@ const RegisterAdmin = () => {
       >
         {({ handleSubmit, errors, touched }) => (
           <form onSubmit={handleSubmit}>
-            <Stack spacing={4} w={"full"} minW={"md"} maxW={"lg"}>
-              <Heading fontSize={"2xl"}>Create New Admin User</Heading>
-              <Button onClick={testAuth}>Test Auth Method</Button>
+            <Stack spacing={4} as={Container} maxW={"3xl"}>
+              <Heading fontSize={"xl"}>Create New Admin User</Heading>
               {error && (
                 <Alert status="error">
                   <AlertIcon />
@@ -179,7 +178,7 @@ const RegisterAdmin = () => {
           </form>
         )}
       </Formik>
-    </Flex>
+    </Box>
   )
 }
 

@@ -3,7 +3,9 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  Box,
   Button,
+  Container,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -83,10 +85,8 @@ export default function ChangePassword(): JSX.Element {
   };
 
   return (
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
+    <Box
+      p={4}
     >
       <Formik
         initialValues={pwdData}
@@ -97,8 +97,8 @@ export default function ChangePassword(): JSX.Element {
       >
         {({ handleSubmit, errors, touched }) => (
           <form onSubmit={handleSubmit}>
-            <Stack spacing={4} w={"full"} minW={"md"} maxW={"lg"}>
-              <Heading fontSize={"2xl"}>Change Password</Heading>
+            <Stack spacing={4} as={Container} maxW={"3xl"}>
+              <Heading fontSize={"xl"}>Change Password</Heading>
               {error && (
                 <Alert status="error">
                   <AlertIcon />
@@ -115,7 +115,7 @@ export default function ChangePassword(): JSX.Element {
               )}
               <FormControl isInvalid={!!errors.email && touched.email}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
-                <Field disabled="true" as={Input} id="email" name="email" type="email" />
+                <Field disabled={true} as={Input} id="email" name="email" type="email" />
                 <FormErrorMessage>{errors.email}</FormErrorMessage>
               </FormControl>
               <FormControl
@@ -176,6 +176,6 @@ export default function ChangePassword(): JSX.Element {
           </form>
         )}
       </Formik>
-    </Flex>
+    </Box>
   );
 }

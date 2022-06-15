@@ -15,8 +15,8 @@ import Footer from "../footer/Footer";
 function Layout() {
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center">
-        <Grid minH="100vh" p={3}>
+      <Box >
+        <Grid minH="70vh" p={3}>
           <TopNavbar />
           <Outlet />
           <Footer />

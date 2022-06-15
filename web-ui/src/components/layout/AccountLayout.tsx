@@ -5,23 +5,23 @@ import { FiCompass, FiHome, FiTrendingUp } from "react-icons/fi";
 import LeftSideMenu, { LinkItemProps } from "./LeftSideMenu";
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, href: "/admin" },
-  { name: "Register Admin", icon: FiTrendingUp, href: "/admin/register-admin" },
-  { name: "Users", icon: FiCompass, href: "/admin/users" },
+  { name: "Home", icon: FiHome, href: "/account" },
+  { name: "Change Password", icon: FiTrendingUp, href: "/account/change-password" },
+  
 ];
 
-const AdminLayout = () => {
+const AccountLayout = () => {
   return (
     <Flex mt="2">
       <Box w="250px">
-        <LeftSideMenu menuHeading="Admin" menuItems={LinkItems} />
+        <LeftSideMenu menuHeading="Account" menuItems={LinkItems} />
       </Box>
       <Center bg="gray.300" w="1px"></Center>
       <Box flex="1">
         <Outlet />
       </Box>
     </Flex>
-  );
-};
+  )
+}
 
-export default AdminLayout;
+export default AccountLayout

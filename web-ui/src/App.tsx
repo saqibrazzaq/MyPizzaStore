@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import AccountLayout from "./components/layout/AccountLayout";
 import AdminLayout from "./components/layout/AdminLayout";
 import Layout from "./components/layout/Layout";
 import PersistLogin from "./hooks/PersistLogin";
@@ -7,7 +8,7 @@ import AccountHome from "./pages/Account/AccountHome";
 import AdminHome from "./pages/Admin/AdminHome";
 import AdminListUsers from "./pages/Admin/AdminListUsers";
 import RegisterAdmin from "./pages/Admin/RegisterAdmin";
-import ChangePassword from "./pages/auth/ChangePassword";
+import ChangePassword from "./pages/Account/ChangePassword";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import UnAuthorized from "./pages/auth/UnAuthorized";
@@ -52,7 +53,7 @@ export const App = () => {
             />
           }
         >
-          <Route path="account">
+          <Route path="account" element={<AccountLayout />}>
             <Route index element={<AccountHome />} />
             <Route path="change-password" element={<ChangePassword />} />
           </Route>

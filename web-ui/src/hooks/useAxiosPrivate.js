@@ -7,8 +7,8 @@ const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
-  console.log("Adding Authorization Bearer token in header");
-  console.log(auth);
+  // console.log("Adding Authorization Bearer token in header");
+  // console.log(auth);
 
   useEffect(() => {
     const requestIntercept = Api.interceptors.request.use(
