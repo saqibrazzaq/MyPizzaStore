@@ -147,7 +147,7 @@ namespace auth.Services
             if (roleResult.Succeeded == false)
                 throw new BadRequestException(result.Errors.FirstOrDefault().Description);
 
-            await SendVerificationEmail();
+            await SendVerificationEmailToUser(userEntity);
 
             return new ApiBaseResponse(true);
         }
@@ -174,7 +174,7 @@ namespace auth.Services
             if (roleResult.Succeeded == false)
                 throw new BadRequestException(roleResult.Errors.FirstOrDefault().Description);
 
-            SendVerificationEmail();
+            SendVerificationEmailToUser(userEntity);
 
             return new ApiBaseResponse(true);
         }
@@ -220,13 +220,8 @@ namespace auth.Services
                 throw new BadRequestException($"Username {dto.Username} is already taken.");
         }
 
-        public async Task<ApiBaseResponse> SendVerificationEmail()
+        private async Task SendVerificationEmailToUser(AppIdentityUser userEntity)
         {
-            // Verify email address
-            var userEntity = await _userManager.FindByNameAsync(UserName);
-            if (userEntity == null)
-                throw new NotFoundException("User not found.");
-
             // Check if email is already verified
             if (userEntity.EmailConfirmed == true)
                 throw new BadRequestException("Email address already verified");
@@ -239,10 +234,19 @@ namespace auth.Services
             userEntity.EmailVerificationToken = pinCode;
             userEntity.EmailVerificationTokenExpiryTime = DateTime.UtcNow.AddMinutes(minutes);
             await _userManager.UpdateAsync(userEntity);
-            
+
             var emailVerificationText = GeneratePinCodeVerificationText(pinCode, minutes);
             await _emailSender.SendEmailAsync(userEntity.Email, "Email Verification",
                 emailVerificationText);
+        }
+        public async Task<ApiBaseResponse> SendVerificationEmail()
+        {
+            // Verify email address
+            var userEntity = await _userManager.FindByNameAsync(UserName);
+            if (userEntity == null)
+                throw new NotFoundException("User not found.");
+
+            await SendVerificationEmailToUser(userEntity);
 
             return new ApiBaseResponse(true);
         }
