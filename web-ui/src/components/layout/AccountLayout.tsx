@@ -3,11 +3,13 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { FiCompass, FiHome, FiTrendingUp } from "react-icons/fi";
 import LeftSideMenu, { LinkItemProps } from "./LeftSideMenu";
+import { MdOutlineVerifiedUser } from 'react-icons/md';
+import { AiOutlineUnlock } from 'react-icons/ai';
 
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, href: "/account" },
-  { name: "Change Password", icon: FiTrendingUp, href: "/account/change-password" },
-  
+  { name: "Change Password", icon: AiOutlineUnlock, href: "/account/change-password" },
+  { name: "Verify Account", icon: MdOutlineVerifiedUser, href: "/account/verify"},
 ];
 
 const AccountLayout = () => {

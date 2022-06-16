@@ -42,8 +42,9 @@ export default function Login() {
     AuthService.login(values)
       .then((res) => {
         let authRes: AuthenticationResponseDto = res.data;
-        console.log(authRes);
+        // console.log(authRes);
         setAuth(authRes);
+        navigate("/");
       })
       .catch((err) => {
         let errDetails: ErrorDetails = err?.response?.data;

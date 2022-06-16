@@ -268,33 +268,33 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Admin",
     href: "/admin",
-    children: [
-      {
-        label: "Register Admin",
-        subLabel: "Create a new Admin user",
-        href: "/admin/register-admin",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
-      },
-    ],
+    // children: [
+    //   {
+    //     label: "Register Admin",
+    //     subLabel: "Create a new Admin user",
+    //     href: "/admin/register-admin",
+    //   },
+    //   {
+    //     label: "New & Noteworthy",
+    //     subLabel: "Up-and-coming Designers",
+    //     href: "#",
+    //   },
+    // ],
   },
   {
     label: "Account",
     href: "/account",
-    children: [
-      {
-        label: "Change Password",
-        href: "/account/change-password",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
-      },
-    ],
+    // children: [
+    //   {
+    //     label: "Change Password",
+    //     href: "/account/change-password",
+    //   },
+    //   {
+    //     label: "Freelance Projects",
+    //     subLabel: "An exclusive list for contract work",
+    //     href: "#",
+    //   },
+    // ],
   },
   {
     label: "Learn Design",

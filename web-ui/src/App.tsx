@@ -12,6 +12,7 @@ import ChangePassword from "./pages/Account/ChangePassword";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import UnAuthorized from "./pages/auth/UnAuthorized";
+import VerifyAccount from "./pages/Account/VerifyAccount";
 
 export const App = () => {
   enum Roles {
@@ -56,6 +57,7 @@ export const App = () => {
           <Route path="account" element={<AccountLayout />}>
             <Route index element={<AccountHome />} />
             <Route path="change-password" element={<ChangePassword />} />
+            <Route path="verify" element={<VerifyAccount />} />
           </Route>
         </Route>
       </Route>

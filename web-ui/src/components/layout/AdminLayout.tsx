@@ -1,13 +1,14 @@
 import { Box, Center, Flex, Square, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { FiCompass, FiHome, FiTrendingUp } from "react-icons/fi";
+import { FiUsers, FiHome, FiTrendingUp } from "react-icons/fi";
+import {GrUserAdmin} from 'react-icons/gr';
 import LeftSideMenu, { LinkItemProps } from "./LeftSideMenu";
 
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, href: "/admin" },
-  { name: "Register Admin", icon: FiTrendingUp, href: "/admin/register-admin" },
-  { name: "Users", icon: FiCompass, href: "/admin/users" },
+  { name: "Register Admin", icon: GrUserAdmin, href: "/admin/register-admin" },
+  { name: "Users", icon: FiUsers, href: "/admin/users" },
 ];
 
 const AdminLayout = () => {
