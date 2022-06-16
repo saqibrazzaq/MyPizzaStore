@@ -9,6 +9,3 @@ export function login(data: UserLoginDto) {
   return Api.post(url + "/login", data);
 }
 
-export function logout() {
-  return Api.post(url + "/logout");
-}

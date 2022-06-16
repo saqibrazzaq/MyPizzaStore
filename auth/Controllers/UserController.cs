@@ -87,6 +87,7 @@ namespace auth.Controllers
 
         [HttpGet("send-verification-email")]
         [ServiceFilter(typeof (ValidationFilterAttribute))]
+        [Authorize(Roles = Common.AllRoles)]
         public async Task<IActionResult> SendVerificationEmail(
             [FromQuery] SendVerificationEmailDto dto)
         {
@@ -175,9 +176,9 @@ namespace auth.Controllers
 
         [HttpGet("info")]
         [Authorize(Roles = Common.AllRoles)]
-        public async Task<IActionResult> GetUserByEmail()
+        public async Task<IActionResult> GetUser()
         {
-            var res = await _userService.GetUserByName(User.Identity.Name);
+            var res = await _userService.GetUser();
 
             return Ok(res.Data);
         }

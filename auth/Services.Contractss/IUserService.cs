@@ -20,6 +20,6 @@ namespace auth.Services.Contractss
         Task<ApiBaseResponse> ChangePassword(ChangePasswordDto dto);
         Task<ApiOkPagedResponse<IEnumerable<UserDto>, MetaData>>
             SearchPersonsAsync(UserParameters personParameters, bool trackChanges);
-        Task<ApiOkResponse<UserDto>> GetUserByName(string username);
+        Task<ApiOkResponse<UserDto>> GetUser();
     }
 }

@@ -24,13 +24,14 @@ namespace auth.Services
         private readonly IEmailSender _emailSender;
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
-
+        private readonly IHttpContextAccessor _contextAccessor;
         public UserService(UserManager<AppIdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
             IEmailSender emailSender,
-            IRepositoryManager repository, 
-            IMapper mapper)
+            IRepositoryManager repository,
+            IMapper mapper, 
+            IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -38,6 +39,7 @@ namespace auth.Services
             _emailSender = emailSender;
             _repository = repository;
             _mapper = mapper;
+            _contextAccessor = contextAccessor;
         }
 
         public async Task<ApiOkResponse<AuthenticationResponseDto>> Login(
@@ -147,7 +149,6 @@ namespace auth.Services
 
             await SendVerificationEmail(new SendVerificationEmailDto
             {
-                Email = dto.Email,
                 UrlVerifyEmail = dto.UrlVerifyEmail
             });
 
@@ -178,7 +179,6 @@ namespace auth.Services
 
             SendVerificationEmail(new SendVerificationEmailDto
             {
-                Email = dto.Email,
                 UrlVerifyEmail = dto.UrlVerifyEmail
             });
 
@@ -230,9 +230,9 @@ namespace auth.Services
             SendVerificationEmailDto dto)
         {
             // Verify email address
-            var userEntity = await _userManager.FindByEmailAsync(dto.Email);
+            var userEntity = await _userManager.FindByNameAsync(UserName);
             if (userEntity == null)
-                throw new NotFoundException("Email address not found.");
+                throw new NotFoundException("User not found.");
 
             // Check if email is already verified
             if (userEntity.EmailConfirmed == true)
@@ -439,15 +439,23 @@ namespace auth.Services
                 usersDto, usersWithMetadata.MetaData);
         }
 
-        public async Task<ApiOkResponse<UserDto>> GetUserByName(string username)
+        public async Task<ApiOkResponse<UserDto>> GetUser()
         {
-            
-            var userEntity = await _userManager.FindByNameAsync(username);
+            //_userManager.Get
+            var userEntity = await _userManager.FindByNameAsync(UserName);
             if (userEntity == null)
                 throw new NotFoundException("User not found");
 
             var userDto = _mapper.Map<UserDto>(userEntity);
             return new ApiOkResponse<UserDto>(userDto);
+        }
+
+        private string UserName
+        {
+            get
+            {
+                return _contextAccessor.HttpContext.User.Identity.Name;
+            }
         }
     }
 }

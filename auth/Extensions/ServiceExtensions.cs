@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace auth.Extensions
@@ -44,6 +45,8 @@ namespace auth.Extensions
 
         public static void ConfigureServices(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IDataSeedService, DataSeedService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailSender, EmailSender>();

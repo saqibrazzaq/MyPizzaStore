@@ -35,7 +35,7 @@ export default function Login() {
   const { auth, setAuth }: AuthModel = useAuth();
   const navigate = useNavigate();
 
-  let loginData = new UserLoginDto("saqibrazzaq@gmail.coma", "Saqib123!");
+  let loginData = new UserLoginDto("saq.ibrazzaq@gmail.com", "Saqib123!");
 
   const submitForm = (values: UserLoginDto) => {
     setError("");
