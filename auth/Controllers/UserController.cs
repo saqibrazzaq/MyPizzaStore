@@ -172,5 +172,14 @@ namespace auth.Controllers
 
             return Ok(res);
         }
+
+        [HttpGet("info")]
+        [Authorize(Roles = Common.AllRoles)]
+        public async Task<IActionResult> GetUserByEmail()
+        {
+            var res = await _userService.GetUserByName(User.Identity.Name);
+
+            return Ok(res.Data);
+        }
     }
 }

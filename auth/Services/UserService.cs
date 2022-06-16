@@ -438,5 +438,16 @@ namespace auth.Services
             return new ApiOkPagedResponse<IEnumerable<UserDto>, MetaData>(
                 usersDto, usersWithMetadata.MetaData);
         }
+
+        public async Task<ApiOkResponse<UserDto>> GetUserByName(string username)
+        {
+            
+            var userEntity = await _userManager.FindByNameAsync(username);
+            if (userEntity == null)
+                throw new NotFoundException("User not found");
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+            return new ApiOkResponse<UserDto>(userDto);
+        }
     }
 }
