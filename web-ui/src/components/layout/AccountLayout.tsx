@@ -9,7 +9,7 @@ import { AiOutlineUnlock } from 'react-icons/ai';
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, href: "/account" },
   { name: "Change Password", icon: AiOutlineUnlock, href: "/account/change-password" },
-  { name: "Verify Account", icon: MdOutlineVerifiedUser, href: "/account/verify"},
+  { name: "Verify Account", icon: MdOutlineVerifiedUser, href: "/account/verification-status"},
 ];
 
 const AccountLayout = () => {

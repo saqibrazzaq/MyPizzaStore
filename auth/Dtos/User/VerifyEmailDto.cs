@@ -5,11 +5,8 @@ namespace auth.Dtos.User
     public class VerifyEmailDto
     {
         [Required]
-        public string? VerificationToken { get; set; }
-        [Required(ErrorMessage = "Email is required")]
-        [MaxLength(255, ErrorMessage = "Maximum 255 characters for Email")]
-        [EmailAddress]
-        public string? Email { get; set; }
+        public string? PinCode { get; set; }
+        
 
     }
 }

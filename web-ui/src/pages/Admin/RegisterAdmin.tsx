@@ -30,7 +30,6 @@ import Api from "../../Api/Api";
 YupPassword(Yup); // extend yup
 
 const RegisterAdmin = () => {
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { auth, setAuth }: AuthModel = useAuth();
@@ -75,7 +74,8 @@ const RegisterAdmin = () => {
     setError("");
     setSuccess("");
     console.log(values);
-    axiosPrivate.post("User/register-admin", values)
+    axiosPrivate
+      .post("User/register-admin", values)
       .then((res) => {
         console.log("New Admin user created successfully.");
         setSuccess("New Admin user created successfully.");
@@ -88,17 +88,18 @@ const RegisterAdmin = () => {
   };
 
   const testAuth = () => {
-    axiosPrivate.get("WeatherForecast/test").then(res => {
-      console.log(res)
-    }).catch(err => {
-      console.log(err)
-    })
-  }
-  
+    axiosPrivate
+      .get("WeatherForecast/test")
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <Box
-      p={4}
-    >
+    <Box p={4}>
       <Formik
         initialValues={data}
         onSubmit={(values) => {
@@ -134,9 +135,7 @@ const RegisterAdmin = () => {
                 <Field as={Input} id="email" name="email" type="email" />
                 <FormErrorMessage>{errors.email}</FormErrorMessage>
               </FormControl>
-              <FormControl
-                isInvalid={!!errors.password && touched.password}
-              >
+              <FormControl isInvalid={!!errors.password && touched.password}>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <Field
                   as={Input}
@@ -147,9 +146,7 @@ const RegisterAdmin = () => {
                 <FormErrorMessage>{errors.password}</FormErrorMessage>
               </FormControl>
               <FormControl
-                isInvalid={
-                  !!errors.confirmPassword && touched.confirmPassword
-                }
+                isInvalid={!!errors.confirmPassword && touched.confirmPassword}
               >
                 <FormLabel htmlFor="confirmPassword">
                   Confirm Password
@@ -164,7 +161,7 @@ const RegisterAdmin = () => {
               </FormControl>
               <Stack spacing={6}>
                 <Button
-                type="submit"
+                  type="submit"
                   bg={"blue.400"}
                   color={"white"}
                   _hover={{
@@ -179,7 +176,7 @@ const RegisterAdmin = () => {
         )}
       </Formik>
     </Box>
-  )
-}
+  );
+};
 
-export default RegisterAdmin
+export default RegisterAdmin;

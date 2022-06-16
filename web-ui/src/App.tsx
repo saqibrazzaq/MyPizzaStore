@@ -57,7 +57,7 @@ export const App = () => {
           <Route path="account" element={<AccountLayout />}>
             <Route index element={<AccountHome />} />
             <Route path="change-password" element={<ChangePassword />} />
-            <Route path="verify" element={<VerifyAccount />} />
+            <Route path="verification-status" element={<VerifyAccount />} />
           </Route>
         </Route>
       </Route>

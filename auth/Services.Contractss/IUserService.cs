@@ -11,8 +11,7 @@ namespace auth.Services.Contractss
         Task<ApiBaseResponse> RegisterAdmin(RegisterUserDto dto);
         Task<ApiBaseResponse> DeleteUser(DeleteUserDto dto);
         Task<ApiOkResponse<TokenDto>> RefreshToken(TokenDto dto);
-        Task<ApiBaseResponse> SendVerificationEmail (
-            SendVerificationEmailDto dto);
+        Task<ApiBaseResponse> SendVerificationEmail ();
         Task<ApiBaseResponse> VerifyEmail(VerifyEmailDto dto);
         Task<ApiBaseResponse> SendForgotPasswordEmail(
             SendForgotPasswordEmailDto dto);

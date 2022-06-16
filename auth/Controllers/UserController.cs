@@ -86,20 +86,18 @@ namespace auth.Controllers
         }
 
         [HttpGet("send-verification-email")]
-        [ServiceFilter(typeof (ValidationFilterAttribute))]
         [Authorize(Roles = Common.AllRoles)]
-        public async Task<IActionResult> SendVerificationEmail(
-            [FromQuery] SendVerificationEmailDto dto)
+        public async Task<IActionResult> SendVerificationEmail()
         {
-            await _userService.SendVerificationEmail(dto);
+            await _userService.SendVerificationEmail();
             
-            return Ok();
+            return Ok("Verification email sent.");
         }
 
-        [HttpGet("verify-email")]
+        [HttpPost("verify-email")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> VerifyEmail (
-            [FromQuery] VerifyEmailDto dto)
+            [FromBody] VerifyEmailDto dto)
         {
             await _userService.VerifyEmail(dto);
 

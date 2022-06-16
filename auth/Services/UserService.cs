@@ -147,10 +147,7 @@ namespace auth.Services
             if (roleResult.Succeeded == false)
                 throw new BadRequestException(result.Errors.FirstOrDefault().Description);
 
-            await SendVerificationEmail(new SendVerificationEmailDto
-            {
-                UrlVerifyEmail = dto.UrlVerifyEmail
-            });
+            await SendVerificationEmail();
 
             return new ApiBaseResponse(true);
         }
@@ -177,10 +174,7 @@ namespace auth.Services
             if (roleResult.Succeeded == false)
                 throw new BadRequestException(roleResult.Errors.FirstOrDefault().Description);
 
-            SendVerificationEmail(new SendVerificationEmailDto
-            {
-                UrlVerifyEmail = dto.UrlVerifyEmail
-            });
+            SendVerificationEmail();
 
             return new ApiBaseResponse(true);
         }
@@ -226,8 +220,7 @@ namespace auth.Services
                 throw new BadRequestException($"Username {dto.Username} is already taken.");
         }
 
-        public async Task<ApiBaseResponse> SendVerificationEmail(
-            SendVerificationEmailDto dto)
+        public async Task<ApiBaseResponse> SendVerificationEmail()
         {
             // Verify email address
             var userEntity = await _userManager.FindByNameAsync(UserName);
@@ -239,15 +232,15 @@ namespace auth.Services
                 throw new BadRequestException("Email address already verified");
 
             // Create a token
-            var emailVerificationToken = GenerateRefreshToken();
-            
+            var pinCode = GeneratePinCode();
+            var minutes = int.Parse(_configuration["JWT:EmailVerificationTokenValidityInMinutes"]);
+
             // Update email verification token in repository
-            userEntity.EmailVerificationToken = emailVerificationToken;
-            userEntity.EmailVerificationTokenExpiryTime = DateTime.UtcNow.AddDays(
-                    int.Parse(_configuration["JWT:EmailVerificationTokenValidityInDays"]));
+            userEntity.EmailVerificationToken = pinCode;
+            userEntity.EmailVerificationTokenExpiryTime = DateTime.UtcNow.AddMinutes(minutes);
             await _userManager.UpdateAsync(userEntity);
             
-            var emailVerificationText = GenerateEmailVerificationText(userEntity, dto.UrlVerifyEmail);
+            var emailVerificationText = GeneratePinCodeVerificationText(pinCode, minutes);
             await _emailSender.SendEmailAsync(userEntity.Email, "Email Verification",
                 emailVerificationText);
 
@@ -257,7 +250,7 @@ namespace auth.Services
         public async Task<ApiBaseResponse> VerifyEmail(VerifyEmailDto dto)
         {
             // Verify email address
-            var userEntity = await _userManager.FindByEmailAsync(dto.Email);
+            var userEntity = await _userManager.FindByNameAsync(UserName);
             if (userEntity == null)
                 throw new NotFoundException("Email address not found.");
 
@@ -265,14 +258,14 @@ namespace auth.Services
             if (userEntity.EmailConfirmed == true)
                 throw new BadRequestException("Email address already verified");
 
-            // Check verification token
-            if (string.IsNullOrEmpty(userEntity.EmailVerificationToken))
-                throw new BadRequestException("Invalid verification token");
-
             // Check verification token expiry
             if (userEntity.EmailVerificationTokenExpiryTime == null ||
                 userEntity.EmailVerificationTokenExpiryTime < DateTime.UtcNow)
-                throw new BadRequestException("Email verification token expired");
+                throw new BadRequestException("Pin Code expired");
+
+            // Check pin code
+            if (userEntity.EmailVerificationToken.Equals(dto.PinCode) == false)
+                throw new BadRequestException("Incorrect pin code");
 
             // All checks complete, Verify email address
             userEntity.EmailConfirmed = true;
@@ -349,14 +342,11 @@ namespace auth.Services
             return new ApiBaseResponse(true);
         }
 
-        private string GenerateEmailVerificationText(
-            AppIdentityUser userEntity, string url)
+        private string GeneratePinCodeVerificationText(string pinCode, int minutes)
         {
-            string text = $"Please click on the below link to verify your email address" +
-                $"<br />. <a href='{url}" +
-                $"?Email={userEntity.Email}" +
-                $"&verificationToken={userEntity.EmailVerificationToken}'>" +
-                $"Verify email address</a>";
+            string text = $"Pin Code to verify your email address" +
+                $"<br />{pinCode}<br />" +
+                $"This pin code will expire in {minutes} minutes.";
             return text;
         }
 
@@ -428,6 +418,14 @@ namespace auth.Services
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
+        }
+
+        private static string GeneratePinCode()
+        {
+            int _min = 1000;
+            int _max = 9999;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max).ToString();
         }
 
         public async Task<ApiOkPagedResponse<IEnumerable<UserDto>, MetaData>> SearchPersonsAsync(UserParameters userParameters, bool trackChanges)
