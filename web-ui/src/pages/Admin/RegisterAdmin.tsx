@@ -26,6 +26,7 @@ import AuthModel from "../../Models/User/AuthModel";
 import RegisterUserRequestDto from "../../Models/User/RegisterUserRequestDto";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import Api from "../../Api/Api";
+import SubmitButton from "../../components/Buttons/SubmitButton";
 
 YupPassword(Yup); // extend yup
 
@@ -160,16 +161,7 @@ const RegisterAdmin = () => {
                 <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
               </FormControl>
               <Stack spacing={6}>
-                <Button
-                  type="submit"
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                >
-                  Submit
-                </Button>
+                <SubmitButton text="Register Admin User" />
               </Stack>
             </Stack>
           </form>

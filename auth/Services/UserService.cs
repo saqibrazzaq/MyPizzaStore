@@ -181,6 +181,9 @@ namespace auth.Services
 
         public async Task<ApiBaseResponse> DeleteUser(DeleteUserDto dto)
         {
+            if (dto.Username.Equals("admin", StringComparison.OrdinalIgnoreCase))
+                throw new BadRequestException("Admin user cannot be deleted");
+
             var userEntity = await _userManager.FindByNameAsync(dto.Username);
             if (userEntity == null)
                 throw new BadRequestException("User does not exist");
@@ -290,10 +293,9 @@ namespace auth.Services
 
             // Create a token
             var forgotPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(userEntity);
-
             // Generate forgot password email text
             string emailText = GenerateForgotPasswordEmailText(
-                userEntity.Email, forgotPasswordToken, dto.UrlResetForgottenPassword);
+                forgotPasswordToken);
             await _emailSender.SendEmailAsync(userEntity.Email,
                 "Reset your password", emailText);
 
@@ -318,18 +320,14 @@ namespace auth.Services
         }
 
         private string GenerateForgotPasswordEmailText(
-            string email, string token, string url)
+            string token)
         {
-            string emailText = $"Please click on the link below to reset your password. <br />" +
-                $"Password reset token: {token} <br />" +
-                $"<a href='{url}" +
-                $"?Email={email}" +
-                $"&ForgotPasswordToken={token}'>" +
-                $"Reset password</a>";
+            string emailText = $"Please use the token below for password reset. <br />" +
+                $"{token} <br />";
             return emailText;
         }
 
-        public async Task<ApiBaseResponse> ResetForgottenPassword(ResetForgottenPasswordDto dto)
+        public async Task<ApiBaseResponse> ResetPassword(ResetPasswordDto dto)
         {
             // Verify email address
             var userEntity = await _userManager.FindByEmailAsync(dto.Email);
@@ -441,7 +439,30 @@ namespace auth.Services
                 usersDto, usersWithMetadata.MetaData);
         }
 
-        public async Task<ApiOkResponse<UserDto>> GetUser()
+        /// <summary>
+        /// Get any user for the requested username
+        /// For admins only
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
+        public async Task<ApiOkResponse<UserDto>> GetUser(GetUserRequestParams dto)
+        {
+            var userEntity = await _userManager.FindByNameAsync(dto.Username);
+            if (userEntity == null)
+                throw new NotFoundException(UserName + " Not found.");
+
+            var userDto = _mapper.Map<UserDto>(userEntity);
+            return new ApiOkResponse<UserDto>(userDto);
+        }
+
+        /// <summary>
+        /// Get information for currently logged in user
+        /// Any user with any role can call this method, he will get own info
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
+        public async Task<ApiOkResponse<UserDto>> GetLoggedInUser()
         {
             //_userManager.Get
             var userEntity = await _userManager.FindByNameAsync(UserName);

@@ -15,10 +15,11 @@ namespace auth.Services.Contractss
         Task<ApiBaseResponse> VerifyEmail(VerifyEmailDto dto);
         Task<ApiBaseResponse> SendForgotPasswordEmail(
             SendForgotPasswordEmailDto dto);
-        Task<ApiBaseResponse> ResetForgottenPassword(ResetForgottenPasswordDto dto);
+        Task<ApiBaseResponse> ResetPassword(ResetPasswordDto dto);
         Task<ApiBaseResponse> ChangePassword(ChangePasswordDto dto);
         Task<ApiOkPagedResponse<IEnumerable<UserDto>, MetaData>>
             SearchPersonsAsync(UserParameters personParameters, bool trackChanges);
-        Task<ApiOkResponse<UserDto>> GetUser();
+        Task<ApiOkResponse<UserDto>> GetLoggedInUser();
+        Task<ApiOkResponse<UserDto>> GetUser(GetUserRequestParams dto);
     }
 }

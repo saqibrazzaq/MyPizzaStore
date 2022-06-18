@@ -109,94 +109,93 @@ const VerifyAccount = () => {
       });
   };
 
+  const showEmailVerificationError = () => (
+    <Alert status="error">
+      <AlertIcon />
+      <AlertTitle>Pin code error</AlertTitle>
+      <AlertDescription>{verifyEmailError}</AlertDescription>
+    </Alert>
+  );
+
+  const showEmailVerificationSuccess = () => (
+    <Alert status="success">
+      <AlertIcon />
+      <AlertTitle>Email verified</AlertTitle>
+      <AlertDescription>{verifyEmailSuccess}</AlertDescription>
+    </Alert>
+  );
+
+  const showAccountVerifiedSuccess = () => (
+    <Alert status="success">
+      <AlertIcon />
+      <AlertTitle>Account verified</AlertTitle>
+      <AlertDescription></AlertDescription>
+    </Alert>
+  );
+
+  const showAccountVerifiedError = () => (
+    <Box>
+      <Alert status="error">
+        <AlertIcon />
+        <AlertTitle>Account is not verified</AlertTitle>
+        <AlertDescription>{sendEmailerror}</AlertDescription>
+      </Alert>
+
+      <Button onClick={sendVerificationEmail} colorScheme="blue" mt={4}>
+        Send Verification Email
+      </Button>
+    </Box>
+  );
+
+  const showPinCodeForm = () => (
+    <Box p={0}>
+      <Formik
+        initialValues={data}
+        onSubmit={(values) => {
+          submitForm(values);
+        }}
+        validationSchema={validationSchema}
+      >
+        {({ handleSubmit, errors, touched }) => (
+          <form onSubmit={handleSubmit}>
+            <Stack spacing={9} as={Container} maxW={"3xl"}>
+              {verifyEmailError && showEmailVerificationError()}
+              {verifyEmailSuccess && showEmailVerificationSuccess()}
+              <FormControl isInvalid={!!errors.pinCode && touched.pinCode}>
+                <FormLabel htmlFor="pinCode">
+                  Email sent, Enter Pin Code
+                </FormLabel>
+                <HStack>
+                  <PinInput onChange={(e) => setPinCodeValue(e)}>
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                    <PinInputField />
+                  </PinInput>
+                </HStack>
+                <FormErrorMessage>{errors.pinCode}</FormErrorMessage>
+              </FormControl>
+              <Stack spacing={6}>
+                <Button type="submit" colorScheme="blue">
+                  Verify Pin Code
+                </Button>
+              </Stack>
+            </Stack>
+          </form>
+        )}
+      </Formik>
+    </Box>
+  );
+
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         <Heading fontSize={"xl"}>Verify Account</Heading>
-        {user?.emailConfirmed ? (
-          <Alert status="success">
-            <AlertIcon />
-            <AlertTitle>Account verified</AlertTitle>
-            <AlertDescription></AlertDescription>
-          </Alert>
-        ) : (
-          <Box>
-            <Alert status="error">
-              <AlertIcon />
-              <AlertTitle>Account is not verified</AlertTitle>
-              <AlertDescription>{sendEmailerror}</AlertDescription>
-            </Alert>
+        {user?.emailConfirmed
+          ? showAccountVerifiedSuccess()
+          : showAccountVerifiedError()}
 
-            <Button onClick={sendVerificationEmail} colorScheme="blue" mt={4}>
-              Send Verification Email
-            </Button>
-          </Box>
-        )}
-
-        {sendEmailSuccess && (
-          <Box p={0}>
-            {/* <Alert status="success">
-              <AlertIcon />
-              <AlertTitle>Email sent</AlertTitle>
-              <AlertDescription>{sendEmailSuccess}</AlertDescription>
-            </Alert> */}
-            <Formik
-              initialValues={data}
-              onSubmit={(values) => {
-                submitForm(values);
-              }}
-              validationSchema={validationSchema}
-            >
-              {({ handleSubmit, errors, touched }) => (
-                <form onSubmit={handleSubmit}>
-                  <Stack spacing={9} as={Container} maxW={"3xl"}>
-                    {verifyEmailError && (
-                      <Alert status="error">
-                        <AlertIcon />
-                        <AlertTitle>Pin code error</AlertTitle>
-                        <AlertDescription>{verifyEmailError}</AlertDescription>
-                      </Alert>
-                    )}
-                    {verifyEmailSuccess && (
-                      <Alert status="success">
-                        <AlertIcon />
-                        <AlertTitle>Email verified</AlertTitle>
-                        <AlertDescription>
-                          {verifyEmailSuccess}
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                    <FormControl
-                      isInvalid={!!errors.pinCode && touched.pinCode}
-                    >
-                      <FormLabel htmlFor="pinCode">Email sent, Enter Pin Code</FormLabel>
-                      {/* <Field
-                        as={Input}
-                        id="pinCode"
-                        name="pinCode"
-                        type="text"
-                      /> */}
-                      <HStack>
-                        <PinInput onChange={(e) => setPinCodeValue(e)}>
-                          <PinInputField />
-                          <PinInputField />
-                          <PinInputField />
-                          <PinInputField />
-                        </PinInput>
-                      </HStack>
-                      <FormErrorMessage>{errors.pinCode}</FormErrorMessage>
-                    </FormControl>
-                    <Stack spacing={6}>
-                      <Button type="submit" colorScheme="blue">
-                        Verify Pin Code
-                      </Button>
-                    </Stack>
-                  </Stack>
-                </form>
-              )}
-            </Formik>
-          </Box>
-        )}
+        {sendEmailSuccess && showPinCodeForm()}
       </Stack>
     </Box>
   );

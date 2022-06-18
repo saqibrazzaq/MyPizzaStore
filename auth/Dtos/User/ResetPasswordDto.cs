@@ -5,7 +5,7 @@ namespace auth.Dtos.User
     // If a user forgets his password, he can use forgot password option
     // Forgot password will send email with email verification token
     // With token, one can just set a new password
-    public class ResetForgottenPasswordDto
+    public class ResetPasswordDto
     {
         [Required]
         public string? ForgotPasswordToken { get; set; }

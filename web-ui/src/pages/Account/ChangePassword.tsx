@@ -24,6 +24,7 @@ import { useState } from "react";
 import AuthModel from "../../Models/User/AuthModel";
 import ChangePasswordRequestDto from "../../Models/User/ChangePasswordRequestDto";
 import { Field, Formik } from "formik";
+import SubmitButton from "../../components/Buttons/SubmitButton";
 
 YupPassword(Yup); // extend yup
 
@@ -161,16 +162,7 @@ export default function ChangePassword(): JSX.Element {
                 <FormErrorMessage>{errors.confirmNewPassword}</FormErrorMessage>
               </FormControl>
               <Stack spacing={6}>
-                <Button
-                type="submit"
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                >
-                  Submit
-                </Button>
+                <SubmitButton text="Change Password" />
               </Stack>
             </Stack>
           </form>

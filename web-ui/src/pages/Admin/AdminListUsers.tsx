@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   Heading,
+  IconButton,
   Link,
   Stack,
   Table,
@@ -21,7 +22,10 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import PagedResponse from "../../Models/PagedResponse";
 import { Link as RouteLink } from "react-router-dom";
 import UserDto from "../../Models/User/UserDto";
+import { MdDeleteOutline } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
 import SearchUsersRequestParameters from "../../Models/User/SearchUsersRequestParameters";
+import DeleteIconButton from "../../components/Buttons/DeleteIconButton";
 
 const AdminListUsers = () => {
   const [pagedRes, setPagedRes] = useState<PagedResponse<UserDto>>();
@@ -93,7 +97,11 @@ const AdminListUsers = () => {
                   <Tr key={item.email}>
                     <Td>{item.userName}</Td>
                     <Td>{item.email}</Td>
-                    <Td isNumeric>25.4</Td>
+                    <Td>
+                      <Link as={RouteLink} to={"/admin/users/delete/" + item.userName}>
+                      <DeleteIconButton />
+                      </Link>
+                    </Td>
                   </Tr>
                 ))
               ) : (

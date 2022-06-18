@@ -13,6 +13,9 @@ import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/SignUp";
 import UnAuthorized from "./pages/auth/UnAuthorized";
 import VerifyAccount from "./pages/Account/VerifyAccount";
+import DeleteUser from "./pages/Admin/DeleteUser";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 export const App = () => {
   enum Roles {
@@ -26,6 +29,8 @@ export const App = () => {
         {/* Public routes */}
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route path="unauthorized" element={<UnAuthorized />} />
 
         {/* Admin Only routes */}
@@ -35,12 +40,12 @@ export const App = () => {
               <RequireAuth allowedRoles={[Roles.Admin, Roles.Manager]} />
             }
           >
-            <Route path="admin" element={<AdminLayout />} >
+            <Route path="admin" element={<AdminLayout />}>
               <Route index element={<AdminHome />} />
               <Route path="register-admin" element={<RegisterAdmin />} />
               <Route path="users" element={<AdminListUsers />} />
+              <Route path="users/delete/:username" element={<DeleteUser />} />
             </Route>
-            
           </Route>
         </Route>
 

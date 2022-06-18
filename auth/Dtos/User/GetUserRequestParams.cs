@@ -4,9 +4,8 @@ namespace auth.Dtos.User
 {
     public class GetUserRequestParams
     {
-        [Required(ErrorMessage = "Email is required")]
-        [MaxLength(255, ErrorMessage = "Maximum 255 characters for Email")]
-        [EmailAddress]
-        public string? Email { get; set; }
+        [Required(ErrorMessage = "Username is required")]
+        [MaxLength(50, ErrorMessage = "Maximum 50 characters for Username")]
+        public string? Username { get; set; }
     }
 }

@@ -23,8 +23,8 @@ import ErrorDetails from "../../Models/Error/ErrorDetails";
 import AuthenticationResponseDto from "../../Models/User/AuthenticationResponseDto";
 import UserLoginDto from "../../Models/User/UserLoginDto";
 import * as AuthService from "../../Services/AuthService";
-import useAuth from '../../hooks/useAuth';
-import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { Link as RouteLink, useNavigate } from "react-router-dom";
 import AuthModel from "../../Models/User/AuthModel";
 
 YupPassword(Yup); // extend yup
@@ -35,7 +35,7 @@ export default function Login() {
   const { auth, setAuth }: AuthModel = useAuth();
   const navigate = useNavigate();
 
-  let loginData = new UserLoginDto("saq.ibrazzaq@gmail.com", "Saqib123!");
+  let loginData = new UserLoginDto("saqibrazzaq@gmail.com", "Saqib123!");
 
   const submitForm = (values: UserLoginDto) => {
     setError("");
@@ -110,7 +110,13 @@ export default function Login() {
                     justify={"space-between"}
                   >
                     <Checkbox>Remember me</Checkbox>
-                    <Link color={"blue.500"}>Forgot password?</Link>
+                    <Link
+                      as={RouteLink}
+                      to="/forgot-password"
+                      color={"blue.500"}
+                    >
+                      Forgot password?
+                    </Link>
                   </Stack>
                   <Button type="submit" colorScheme={"blue"} variant={"solid"}>
                     Sign in

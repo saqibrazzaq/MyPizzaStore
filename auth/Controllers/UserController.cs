@@ -114,12 +114,12 @@ namespace auth.Controllers
             return Ok();
         }
 
-        [HttpPost("reset-forgotten-password")]
+        [HttpPost("reset-password")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> ResetForgottenPassword
-            ([FromBody] ResetForgottenPasswordDto dto)
+        public async Task<IActionResult> ResetPassword
+            ([FromBody] ResetPasswordDto dto)
         {
-            await _userService.ResetForgottenPassword(dto);
+            await _userService.ResetPassword(dto);
 
             return Ok();
         }
@@ -176,7 +176,18 @@ namespace auth.Controllers
         [Authorize(Roles = Common.AllRoles)]
         public async Task<IActionResult> GetUser()
         {
-            var res = await _userService.GetUser();
+            var res = await _userService.GetLoggedInUser();
+
+            return Ok(res.Data);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = Common.AdminRole)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> GetUser(
+            [FromQuery] GetUserRequestParams dto)
+        {
+            var res = await _userService.GetUser(dto);
 
             return Ok(res.Data);
         }
