@@ -86,7 +86,7 @@ export default function TopNavbar() {
               bg: "pink.300",
             }}
             as={RouteLink}
-            to="/signup"
+            to="/register"
           >
             Sign Up
           </Button>

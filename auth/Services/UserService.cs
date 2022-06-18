@@ -127,7 +127,7 @@ namespace auth.Services
 
         }
 
-        public async Task<ApiBaseResponse> RegisterUser(RegisterUserDto dto)
+        public async Task<ApiOkResponse<AuthenticationResponseDto>> RegisterUser(RegisterUserDto dto)
         {
             await CheckExistingEmailAndUsername(dto);
 
@@ -149,7 +149,7 @@ namespace auth.Services
 
             await SendVerificationEmailToUser(userEntity);
 
-            return new ApiBaseResponse(true);
+            return await Login(new LoginUserDto { Email = dto.Email, Password = dto.Password});
         }
 
         public async Task<ApiBaseResponse> RegisterAdmin(RegisterUserDto dto)

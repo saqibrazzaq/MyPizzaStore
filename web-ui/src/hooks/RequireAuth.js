@@ -11,7 +11,7 @@ const RequireAuth = ({ allowedRoles }) => {
     // console.log("User logged in.");
     return <Outlet />;
   } else {
-    if (auth?.user) {
+    if (auth?.email) {
       // console.log("User logged in, but unauthorized.");
       return <Navigate to="/unauthorized" state={{ from: location }} replace />;
     } else {

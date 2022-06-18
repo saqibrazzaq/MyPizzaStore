@@ -28,7 +28,7 @@ export const App = () => {
       <Route path="/" element={<Layout />}>
         {/* Public routes */}
         <Route path="login" element={<Login />} />
-        <Route path="signup" element={<SignUp />} />
+        <Route path="register" element={<SignUp />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="unauthorized" element={<UnAuthorized />} />

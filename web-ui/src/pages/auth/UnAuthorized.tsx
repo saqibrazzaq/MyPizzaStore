@@ -22,7 +22,7 @@ export default function UnAuthorized() {
       </Heading>
       <Text color={'gray.500'}>
         You are not authorized to visit this page.
-        Please login with your email/password.
+        Please request an Admin to set your rights.
       </Text>
     </Box>
   );

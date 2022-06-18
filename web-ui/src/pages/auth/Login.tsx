@@ -14,6 +14,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Text,
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import { useState } from "react";
@@ -79,7 +80,6 @@ export default function Login() {
         >
           {({ handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
-              <Stack spacing={4} w={"full"} maxW={"md"}>
                 <Heading fontSize={"2xl"}>Sign in to your account</Heading>
                 {error && (
                   <Alert status="error">
@@ -118,11 +118,24 @@ export default function Login() {
                       Forgot password?
                     </Link>
                   </Stack>
+                  <Stack
+                    direction={{ base: "column", sm: "row" }}
+                    align={"start"}
+                    justify={"space-between"}
+                  >
+                    <Text>Don't have an account?</Text>
+                    <Link
+                      as={RouteLink}
+                      to="/register"
+                      color={"blue.500"}
+                    >
+                      Create Account
+                    </Link>
+                  </Stack>
                   <Button type="submit" colorScheme={"blue"} variant={"solid"}>
                     Sign in
                   </Button>
                 </Stack>
-              </Stack>
             </form>
           )}
         </Formik>

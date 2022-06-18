@@ -50,9 +50,7 @@ const ResetPassword = () => {
     <Alert status="success">
       <AlertIcon />
       <AlertTitle>Password reset successfull</AlertTitle>
-      <AlertDescription>
-        {success}
-      </AlertDescription>
+      <AlertDescription>{success}</AlertDescription>
     </Alert>
   );
 
@@ -60,19 +58,22 @@ const ResetPassword = () => {
     setSuccess("");
     setError("");
 
-    axios.post("User/reset-password", values).then(res => {
-      const successMessage = "Please use your new password to login.";
-      setSuccess(successMessage);
-      toast({
-        title: "Password reset successfull",
+    axios
+      .post("User/reset-password", values)
+      .then((res) => {
+        const successMessage = "Please use your new password to login.";
+        setSuccess(successMessage);
+        toast({
+          title: "Password reset successfull",
           description: successMessage,
           status: "success",
           position: "top-right",
-      });
-    }).catch(err => {
-      let errDetails: ErrorDetails = err?.response?.data;
+        });
+      })
+      .catch((err) => {
+        let errDetails: ErrorDetails = err?.response?.data;
         setError(errDetails?.Message || "Service failed.");
-    })
+      });
   };
 
   const validationSchema = Yup.object({

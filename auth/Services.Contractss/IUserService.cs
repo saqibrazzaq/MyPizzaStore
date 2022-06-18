@@ -7,7 +7,7 @@ namespace auth.Services.Contractss
     public interface IUserService
     {
         Task<ApiOkResponse<AuthenticationResponseDto>> Login(LoginUserDto dto);
-        Task<ApiBaseResponse> RegisterUser(RegisterUserDto dto);
+        Task<ApiOkResponse<AuthenticationResponseDto>> RegisterUser(RegisterUserDto dto);
         Task<ApiBaseResponse> RegisterAdmin(RegisterUserDto dto);
         Task<ApiBaseResponse> DeleteUser(DeleteUserDto dto);
         Task<ApiOkResponse<TokenDto>> RefreshToken(TokenDto dto);
