@@ -16,6 +16,7 @@ import VerifyAccount from "./pages/Account/VerifyAccount";
 import DeleteUser from "./pages/Admin/DeleteUser";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
+import SignOut from "./pages/auth/SignOut";
 
 export const App = () => {
   enum Roles {
@@ -28,6 +29,7 @@ export const App = () => {
       <Route path="/" element={<Layout />}>
         {/* Public routes */}
         <Route path="login" element={<Login />} />
+        <Route path="logout" element={<SignOut />} />
         <Route path="register" element={<SignUp />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="reset-password" element={<ResetPassword />} />

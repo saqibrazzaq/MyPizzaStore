@@ -1,13 +1,16 @@
-import * as AuthService from "../Services/AuthService";
+import { useEffect } from "react";
 import useAuth from "./useAuth";
+import useAxiosPrivate from "./useAxiosPrivate";
 
 const useLogout = () => {
   const { setAuth } = useAuth();
+  const axios = useAxiosPrivate();
 
   const logout = async () => {
+    
     setAuth({});
 
-    AuthService.logout()
+    axios.post("/User/logout")
       .then((res) => {
         console.log("logout successful");
       })

@@ -14,6 +14,12 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Menu,
+  MenuButton,
+  Avatar,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -22,9 +28,73 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 import { Link as RouteLink } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import AuthModel from "../../Models/User/AuthModel";
 
 export default function TopNavbar() {
   const { isOpen, onToggle } = useDisclosure();
+  const { auth }: AuthModel = useAuth();
+
+  const showMenuForLoggedInUser = () => (
+    <>
+      <Menu>
+        <MenuButton
+          as={Button}
+          rounded={"full"}
+          variant={"link"}
+          cursor={"pointer"}
+          minW={0}
+        >
+          <Avatar
+            size={"sm"}
+            src={
+              "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+            }
+          />
+        </MenuButton>
+        <MenuList>
+          <MenuItem>
+            <Link as={RouteLink} to="/account">
+              My Account
+            </Link>
+          </MenuItem>
+          <MenuItem>Link 2</MenuItem>
+          <MenuDivider />
+          <MenuItem>
+            <Link as={RouteLink} to="/logout">
+              Logout
+            </Link>
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    </>
+  );
+
+  const showMenuForPublicUser = () => (
+    <>
+      <Button fontSize={"sm"} fontWeight={400} as={RouteLink} to="/login">
+        Sign In
+      </Button>
+      <Button
+        display={{ base: "none", md: "inline-flex" }}
+        fontSize={"sm"}
+        fontWeight={600}
+        color={"white"}
+        bg={"pink.400"}
+        _hover={{
+          bg: "pink.300",
+        }}
+        as={RouteLink}
+        to="/register"
+      >
+        Sign Up
+      </Button>
+    </>
+  );
+
+  const showSignInMenu = () => (
+    <>{auth?.email ? showMenuForLoggedInUser() : showMenuForPublicUser()}</>
+  );
 
   return (
     <Box>
@@ -73,23 +143,7 @@ export default function TopNavbar() {
           direction={"row"}
           spacing={6}
         >
-          <Button fontSize={"sm"} fontWeight={400} as={RouteLink} to="/login">
-            Sign In
-          </Button>
-          <Button
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            _hover={{
-              bg: "pink.300",
-            }}
-            as={RouteLink}
-            to="/register"
-          >
-            Sign Up
-          </Button>
+          {showSignInMenu()}
         </Stack>
       </Flex>
 

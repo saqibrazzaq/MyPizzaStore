@@ -37,6 +37,15 @@ namespace auth.Controllers
             return Ok(res.Data);
         }
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            // Delete cookie
+            setRefreshTokenCookie("");
+
+            return Ok();
+        }
+
         [HttpPost("refresh-token")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RefreshToken(
