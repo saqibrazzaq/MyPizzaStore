@@ -21,7 +21,7 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import useAuth from "../../hooks/useAuth";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
 import AuthenticationResponseDto from "../../Models/User/AuthenticationResponseDto";
 import AuthModel from "../../Models/User/AuthModel";
@@ -37,7 +37,7 @@ const SignUp = () => {
   const { auth, setAuth }: AuthModel = useAuth();
 
   const toast = useToast();
-  const axios = useAxiosPrivate();
+  const axios = useAxiosAuth();
   const navigate = useNavigate();
 
   const data = new RegisterUserDto(

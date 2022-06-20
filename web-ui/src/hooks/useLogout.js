@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import useAuth from "./useAuth";
-import useAxiosPrivate from "./useAxiosPrivate";
+import useAxiosAuth from "./useAxiosAuth";
 
 const useLogout = () => {
   const { setAuth } = useAuth();
-  const axios = useAxiosPrivate();
+  const axios = useAxiosAuth();
 
   const logout = async () => {
     

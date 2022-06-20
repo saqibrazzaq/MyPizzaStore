@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import UserDto from "../../Models/User/UserDto";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import { BsCheckCircle } from "react-icons/bs";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
 import VerifyEmailDto from "../../Models/User/VerifyEmailDto";
@@ -29,7 +29,7 @@ import { Field, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 
 const VerifyAccount = () => {
-  const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosAuth();
   const [user, setUser] = useState<UserDto>();
   const [sendEmailerror, setSendEmailError] = useState("");
   const [sendEmailSuccess, setSendEmailSuccess] = useState("");

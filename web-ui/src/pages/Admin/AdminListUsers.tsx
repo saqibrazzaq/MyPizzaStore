@@ -18,7 +18,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import PagedResponse from "../../Models/PagedResponse";
 import { Link as RouteLink } from "react-router-dom";
 import UserDto from "../../Models/User/UserDto";
@@ -29,7 +29,7 @@ import DeleteIconButton from "../../components/Buttons/DeleteIconButton";
 
 const AdminListUsers = () => {
   const [pagedRes, setPagedRes] = useState<PagedResponse<UserDto>>();
-  const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosAuth();
 
   useEffect(() => {
     searchUsers(new SearchUsersRequestParameters("", 1, DEFAULT_PAGE_SIZE, ""));

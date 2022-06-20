@@ -20,7 +20,7 @@ import ForgotPasswordDto from "../../Models/User/ForgotPasswordDto";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 import SubmitButton from "../../components/Buttons/SubmitButton";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const ForgotPassword = () => {
 
   const toast = useToast();
   const navigate = useNavigate();
-  const axios = useAxiosPrivate();
+  const axios = useAxiosAuth();
 
   const validationSchema = Yup.object({
     email: Yup.string()

@@ -36,7 +36,7 @@ export default function TopNavbar() {
   const { auth }: AuthModel = useAuth();
 
   const showMenuForLoggedInUser = () => (
-    <>
+    <Box>
       <Menu>
         <MenuButton
           as={Button}
@@ -53,21 +53,21 @@ export default function TopNavbar() {
           />
         </MenuButton>
         <MenuList>
-          <MenuItem>
-            <Link as={RouteLink} to="/account">
+          <MenuItem as={RouteLink} to="/account">
+            {/* <Link as={RouteLink} to="/account"> */}
               My Account
-            </Link>
+            {/* </Link> */}
           </MenuItem>
           <MenuItem>Link 2</MenuItem>
           <MenuDivider />
-          <MenuItem>
-            <Link as={RouteLink} to="/logout">
+          <MenuItem as={RouteLink} to="/logout">
+            {/* <Link as={RouteLink} to="/logout"> */}
               Logout
-            </Link>
+            {/* </Link> */}
           </MenuItem>
         </MenuList>
       </Menu>
-    </>
+    </Box>
   );
 
   const showMenuForPublicUser = () => (

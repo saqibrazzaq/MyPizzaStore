@@ -31,7 +31,7 @@ import { Link as RouteLink, useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../components/Buttons/BackButton";
 import CancelButton from "../../components/Buttons/CancelButton";
 import DeleteButton from "../../components/Buttons/DeleteButton";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
 import DeleteUserDto from "../../Models/User/DeleteUserDto";
 import GetUserDto from "../../Models/User/GetUserDto";
@@ -46,7 +46,7 @@ const DeleteUser = () => {
 
   const toast = useToast();
 
-  const axios = useAxiosPrivate();
+  const axios = useAxiosAuth();
   const navigate = useNavigate();
   let params = useParams();
   const apiParams = new GetUserDto(params.username || "");

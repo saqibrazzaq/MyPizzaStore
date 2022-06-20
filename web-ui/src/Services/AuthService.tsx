@@ -1,4 +1,4 @@
-import Api from "../Api/Api";
+import Api from "../Api/AuthApi";
 import UserLoginDto from "../Models/User/UserLoginDto";
 
 const url = "User";

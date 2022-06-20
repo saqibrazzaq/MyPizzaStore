@@ -1,9 +1,9 @@
-import Api from "../Api/Api";
+import Api from "../Api/AuthApi";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
-const useAxiosPrivate = () => {
+const useAxiosAuth = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
@@ -46,4 +46,4 @@ const useAxiosPrivate = () => {
   return Api;
 };
 
-export default useAxiosPrivate;
+export default useAxiosAuth;

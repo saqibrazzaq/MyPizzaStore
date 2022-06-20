@@ -21,14 +21,14 @@ import ResetPasswordDto from "../../Models/User/ResetPasswordDto";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 import SubmitButton from "../../components/Buttons/SubmitButton";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
 YupPassword(Yup); // extend yup
 
 const ResetPassword = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const axios = useAxiosPrivate();
+  const axios = useAxiosAuth();
   const toast = useToast();
 
   const data = new ResetPasswordDto(

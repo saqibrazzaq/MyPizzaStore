@@ -17,7 +17,7 @@ import {
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -25,7 +25,7 @@ import { Field, Formik } from "formik";
 import AuthModel from "../../Models/User/AuthModel";
 import RegisterUserRequestDto from "../../Models/User/RegisterUserRequestDto";
 import useRefreshToken from "../../hooks/useRefreshToken";
-import Api from "../../Api/Api";
+import Api from "../../Api/AuthApi";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 
 YupPassword(Yup); // extend yup
@@ -35,7 +35,7 @@ const RegisterAdmin = () => {
   const [success, setSuccess] = useState("");
   const { auth, setAuth }: AuthModel = useAuth();
   const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosAuth();
 
   const refresh = useRefreshToken();
 

@@ -17,7 +17,7 @@ import {
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -33,7 +33,7 @@ export default function ChangePassword(): JSX.Element {
   const [success, setSuccess] = useState("");
   const { auth, setAuth }: AuthModel = useAuth();
   const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosAuth();
 
   let pwdData = new ChangePasswordRequestDto();
   pwdData.currentPassword = "";
