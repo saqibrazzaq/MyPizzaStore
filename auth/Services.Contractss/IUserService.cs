@@ -21,5 +21,6 @@ namespace auth.Services.Contractss
             SearchPersonsAsync(UserParameters personParameters, bool trackChanges);
         Task<ApiOkResponse<UserDto>> GetLoggedInUser();
         Task<ApiOkResponse<UserDto>> GetUser(GetUserRequestParams dto);
+        Task<ApiBaseResponse> UpdateProfilePicture(IFormFile formFile);
     }
 }

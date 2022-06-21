@@ -7,9 +7,12 @@ using auth.Repository.Contracts;
 using auth.Services.Contractss;
 using auth.Utility;
 using AutoMapper;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -25,13 +28,15 @@ namespace auth.Services
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IWebHostEnvironment _environment;
         public UserService(UserManager<AppIdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
             IEmailSender emailSender,
             IRepositoryManager repository,
-            IMapper mapper, 
-            IHttpContextAccessor contextAccessor)
+            IMapper mapper,
+            IHttpContextAccessor contextAccessor,
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -40,6 +45,7 @@ namespace auth.Services
             _repository = repository;
             _mapper = mapper;
             _contextAccessor = contextAccessor;
+            _environment = environment;
         }
 
         public async Task<ApiOkResponse<AuthenticationResponseDto>> Login(
@@ -150,6 +156,54 @@ namespace auth.Services
             await SendVerificationEmailToUser(userEntity);
 
             return await Login(new LoginUserDto { Email = dto.Email, Password = dto.Password});
+        }
+
+        public async Task<ApiBaseResponse> UpdateProfilePicture(IFormFile file)
+        {
+            var newProfilePicturePath = saveNewFileInTempFolder(file);
+            var uploadResult = uploadNewProfilePictureToCloudinary(newProfilePicturePath);
+            await updateProfilePictureInRepository(uploadResult);
+            return new ApiBaseResponse(true);
+        }
+
+        private async Task updateProfilePictureInRepository(ImageUploadResult uploadResult)
+        {
+            var userEntity = await _userManager.FindByNameAsync(UserName);
+            userEntity.ProfilePictureUrl = uploadResult.Eager[0].SecureUrl.ToString();
+            userEntity.ProfilePictureCloudinaryId = uploadResult.PublicId;
+            await _userManager.UpdateAsync(userEntity);
+        }
+
+        private ImageUploadResult uploadNewProfilePictureToCloudinary(string newProfilePicturePath)
+        {
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription(newProfilePicturePath),
+                Folder = Common.CloudinaryFolderName,
+                EagerTransforms = new List<Transformation>()
+                {
+                    new EagerTransformation().Width(200).Height(200).Gravity("faces").Crop("thumb")
+                }
+            };
+            Cloudinary cloudinary = new Cloudinary();
+            return cloudinary.Upload(uploadParams);
+        }
+
+        private string saveNewFileInTempFolder(IFormFile file)
+        {
+            var pathToSave = Path.Combine(_environment.WebRootPath, Common.TempFolderName);
+            if (file.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + "." + Path.GetExtension(file.FileName);
+                var fullPath = Path.Combine(pathToSave, fileName);
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+                return fullPath;
+            }
+
+            throw new BadRequestException("Could not save profile picture");
         }
 
         public async Task<ApiBaseResponse> RegisterAdmin(RegisterUserDto dto)

@@ -1,4 +1,3 @@
-import { DEFAULT_PAGE_SIZE } from "../../utility/Common";
 import {
   Box,
   Button,
@@ -26,13 +25,14 @@ import { MdDeleteOutline } from "react-icons/md";
 import { AiFillDelete } from "react-icons/ai";
 import SearchUsersRequestParameters from "../../Models/User/SearchUsersRequestParameters";
 import DeleteIconButton from "../../components/Buttons/DeleteIconButton";
+import Common from "../../utility/Common";
 
 const AdminListUsers = () => {
   const [pagedRes, setPagedRes] = useState<PagedResponse<UserDto>>();
   const axiosPrivate = useAxiosAuth();
 
   useEffect(() => {
-    searchUsers(new SearchUsersRequestParameters("", 1, DEFAULT_PAGE_SIZE, ""));
+    searchUsers(new SearchUsersRequestParameters("", 1, Common.DEFAULT_PAGE_SIZE, ""));
   }, []);
 
   const previousPage = () => {
@@ -41,7 +41,7 @@ const AdminListUsers = () => {
       let searchParams = new SearchUsersRequestParameters(
         "",
         previousPageNumber,
-        DEFAULT_PAGE_SIZE,
+        Common.DEFAULT_PAGE_SIZE,
         ""
       );
 
@@ -55,7 +55,7 @@ const AdminListUsers = () => {
       let searchParams = new SearchUsersRequestParameters(
         "",
         nextPageNumber,
-        DEFAULT_PAGE_SIZE,
+        Common.DEFAULT_PAGE_SIZE,
         ""
       );
 

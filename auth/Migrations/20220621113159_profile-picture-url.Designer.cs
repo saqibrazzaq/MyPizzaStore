@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using auth.Repository.SqlServer;
 
@@ -11,9 +12,10 @@ using auth.Repository.SqlServer;
 namespace auth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220621113159_profile-picture-url")]
+    partial class profilepictureurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,9 +237,6 @@ namespace auth.Migrations
 
                     b.Property<DateTime?>("EmailVerificationTokenExpiryTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ProfilePictureCloudinaryId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("nvarchar(max)");

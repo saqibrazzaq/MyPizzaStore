@@ -10,5 +10,8 @@
         public const string AllRoles = AdminRole + "," + ManagerRole + "," + UserRole;
 
         public const string RefreshTokenCookieName = "refreshToken";
+
+        public const string TempFolderName = "temp";
+        public const string CloudinaryFolderName = "mypizzastore/profile";
     }
 }

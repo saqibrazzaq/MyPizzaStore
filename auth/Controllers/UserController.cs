@@ -190,6 +190,15 @@ namespace auth.Controllers
             return Ok(res.Data);
         }
 
+        [HttpPost("update-profile-picture")]
+        [Authorize(Roles = Common.AllRoles)]
+        public async Task<IActionResult> UpdateProfilePicture()
+        {
+            Console.WriteLine(Request.Form.Files.Count);
+            await _userService.UpdateProfilePicture(Request.Form.Files[0]);
+            return NoContent();
+        }
+
         [HttpGet]
         [Authorize(Roles = Common.AdminRole)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

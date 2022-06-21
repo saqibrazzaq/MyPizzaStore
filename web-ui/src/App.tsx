@@ -17,6 +17,7 @@ import DeleteUser from "./pages/Admin/DeleteUser";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import SignOut from "./pages/auth/SignOut";
+import ProfilePicture from "./pages/Account/ProfilePicture";
 
 export const App = () => {
   enum Roles {
@@ -51,9 +52,9 @@ export const App = () => {
           </Route>
         </Route>
 
-        {/* Manager routes */}
+        {/* Manager ONLY routes */}
 
-        {/* User routes */}
+        {/* All roles routes */}
         <Route
           element={
             <RequireAuth
@@ -64,6 +65,7 @@ export const App = () => {
           <Route path="account" element={<AccountLayout />}>
             <Route index element={<AccountHome />} />
             <Route path="change-password" element={<ChangePassword />} />
+            <Route path="profile-picture" element={<ProfilePicture />} />
             <Route path="verification-status" element={<VerifyAccount />} />
           </Route>
         </Route>
