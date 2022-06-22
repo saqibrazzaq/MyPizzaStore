@@ -30,10 +30,28 @@ import {
 import { Link as RouteLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import AuthModel from "../../Models/User/AuthModel";
+import { useEffect, useState } from "react";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
+import Common from "../../utility/Common";
 
 export default function TopNavbar() {
   const { isOpen, onToggle } = useDisclosure();
   const { auth }: AuthModel = useAuth();
+  const [image, setImage] = useState(Common.DEFAULT_PROFILE_PICTURE);
+  const axios = useAxiosAuth();
+
+  useEffect(() => {
+    loadUserInfo();
+  }, []);
+
+  const loadUserInfo = () => {
+    axios.get("User/info").then((res) => {
+      console.log(res);
+      if (res.data.profilePictureUrl) {
+        setImage(res.data.profilePictureUrl);
+      }
+    });
+  };
 
   const showMenuForLoggedInUser = () => (
     <Box>
@@ -45,24 +63,19 @@ export default function TopNavbar() {
           cursor={"pointer"}
           minW={0}
         >
-          <Avatar
-            size={"sm"}
-            src={
-              "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-            }
-          />
+          <Avatar size={"sm"} src={image} />
         </MenuButton>
         <MenuList>
           <MenuItem as={RouteLink} to="/account">
             {/* <Link as={RouteLink} to="/account"> */}
-              My Account
+            My Account
             {/* </Link> */}
           </MenuItem>
           <MenuItem>Link 2</MenuItem>
           <MenuDivider />
           <MenuItem as={RouteLink} to="/logout">
             {/* <Link as={RouteLink} to="/logout"> */}
-              Logout
+            Logout
             {/* </Link> */}
           </MenuItem>
         </MenuList>

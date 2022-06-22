@@ -13,18 +13,23 @@ import {
   Input,
   shouldShowFallbackImage,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Common from "../../utility/Common";
-import { Field } from "formik";
 import UserDto from "../../Models/User/UserDto";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
 import ErrorDetails from "../../Models/Error/ErrorDetails";
+import SubmitButton from "../../components/Buttons/SubmitButton";
+import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePicture = () => {
   const [error, setError] = useState("");
   const [image, setImage] = useState(Common.DEFAULT_PROFILE_PICTURE);
   const axiosPrivate = useAxiosAuth();
+  const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadUserInfo();
@@ -35,8 +40,8 @@ const ProfilePicture = () => {
     axiosPrivate
       .get("User/info")
       .then((res) => {
-        console.log(res);
-        if(res.data.profilePictureUrl) {
+        // console.log(res);
+        if (res.data.profilePictureUrl) {
           setImage(res.data.profilePictureUrl);
         }
       })
@@ -46,6 +51,15 @@ const ProfilePicture = () => {
         setError(errDetails?.Message || "Service failed.");
       });
   };
+
+  const successToast = () => {
+    toast({
+      title: "Profile picture updated successfully",
+      description: "",
+      status: "success",
+      position: "top-right",
+    });
+  }
 
   const showError = () => (
     <Alert status="error">
@@ -57,14 +71,49 @@ const ProfilePicture = () => {
 
   const showImage = () => <Image boxSize="200px" src={image} />;
 
-  const handleSubmit = () => {};
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    axiosPrivate.post("User/update-profile-picture", fd, config)
+    .then(res => {
+      // console.log(res.data);
+      successToast();
+      loadUserInfo();
+      acceptedFiles.splice(0);
+    }).catch(err => {
+      console.log(err);
+    })
+  };
 
-  const showUploadForm = () => (
-    <form onSubmit={handleSubmit}>
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  let fd = new FormData();
+
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+
+  const files = acceptedFiles.map((file) => (
+    <li key={file.name}>
+      {file.name} - {file.size} bytes
+    </li>
+  ));
+
+  acceptedFiles.map((file) => {
+    fd.append('File[]',file);
+  })
+
+  const showForm = () => (
+    <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
       <FormControl>
-        <FormLabel htmlFor="username">Username</FormLabel>
-        <Field as={Input} id="username" name="username" type="file" />
+        <div {...getRootProps({ className: "dropzone" })}>
+          <input {...getInputProps()} />
+          <p>Drag 'n' drop some files here, or click to select files</p>
+        </div>
+        <aside>
+          <h4>Files</h4>
+          <ul>{files}</ul>
+        </aside>
       </FormControl>
+      <Stack spacing={6}>
+        <SubmitButton text="Upload Profile Picture" />
+      </Stack>
     </form>
   );
 
@@ -74,6 +123,7 @@ const ProfilePicture = () => {
         <Heading fontSize={"xl"}>User Profile Picture</Heading>
         {error && showError()}
         {image && showImage()}
+        {showForm()}
       </Stack>
     </Box>
   );

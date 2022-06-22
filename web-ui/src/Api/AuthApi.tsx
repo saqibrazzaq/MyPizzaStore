@@ -1,9 +1,8 @@
 import axios from "axios";
-
-const BASE_URL = "https://localhost:7083/api/v1";
+import Common from "../utility/Common";
 
 export default axios.create({
-  baseURL: BASE_URL,
+  baseURL: Common.BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true
 });

@@ -162,6 +162,7 @@ namespace auth.Services
         {
             var newProfilePicturePath = saveNewFileInTempFolder(file);
             var uploadResult = uploadNewProfilePictureToCloudinary(newProfilePicturePath);
+            File.Delete(newProfilePicturePath);
             await updateProfilePictureInRepository(uploadResult);
             return new ApiBaseResponse(true);
         }
@@ -169,9 +170,16 @@ namespace auth.Services
         private async Task updateProfilePictureInRepository(ImageUploadResult uploadResult)
         {
             var userEntity = await _userManager.FindByNameAsync(UserName);
+            DeleteExistingProfilePictureFromCloudinary(userEntity.ProfilePictureCloudinaryId);
             userEntity.ProfilePictureUrl = uploadResult.Eager[0].SecureUrl.ToString();
             userEntity.ProfilePictureCloudinaryId = uploadResult.PublicId;
             await _userManager.UpdateAsync(userEntity);
+        }
+
+        private void DeleteExistingProfilePictureFromCloudinary(string? profilePictureCloudinaryId)
+        {
+            Cloudinary cloudinary = new Cloudinary();
+            cloudinary.Destroy(new DeletionParams(profilePictureCloudinaryId));
         }
 
         private ImageUploadResult uploadNewProfilePictureToCloudinary(string newProfilePicturePath)
@@ -186,7 +194,8 @@ namespace auth.Services
                 }
             };
             Cloudinary cloudinary = new Cloudinary();
-            return cloudinary.Upload(uploadParams);
+            var result = cloudinary.Upload(uploadParams);
+            return result;
         }
 
         private string saveNewFileInTempFolder(IFormFile file)
