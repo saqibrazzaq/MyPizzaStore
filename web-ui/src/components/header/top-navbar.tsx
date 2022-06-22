@@ -349,21 +349,6 @@ const NAV_ITEMS: Array<NavItem> = [
     // ],
   },
   {
-    label: "Account",
-    href: "/account",
-    // children: [
-    //   {
-    //     label: "Change Password",
-    //     href: "/account/change-password",
-    //   },
-    //   {
-    //     label: "Freelance Projects",
-    //     subLabel: "An exclusive list for contract work",
-    //     href: "#",
-    //   },
-    // ],
-  },
-  {
     label: "Learn Design",
     href: "#",
   },
