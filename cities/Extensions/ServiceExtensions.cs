@@ -1,5 +1,7 @@
 ﻿using cities.Repository.Contracts;
 using cities.Repository.SqlServer;
+using cities.Services;
+using cities.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace cities.Extensions
@@ -23,6 +25,11 @@ namespace cities.Extensions
             });
         }
 
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+        }
+
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
@@ -30,7 +37,8 @@ namespace cities.Extensions
 
         public static void ConfigureServices(this IServiceCollection services)
         {
-            
+            services.AddScoped<IDataSeedService, DataSeedService>();
+            services.AddScoped<IResetCityStateCountriesService, ResetCityStateCountriesService>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,

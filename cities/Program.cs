@@ -13,6 +13,7 @@ LogManager.LoadConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "nlog
 builder.Services.ConfigureCors();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServices();
+builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(Program));
