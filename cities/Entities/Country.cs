@@ -6,7 +6,9 @@ namespace cities.Entities
     [Table("Country")]
     public class Country
     {
-        [Key, Required]
+        [Key]
+        public Guid CountryId { get; set; }
+        [Required]
         public string? CountryCode { get; set; }
         [Required]
         public string? Name { get; set; }
@@ -21,5 +23,6 @@ namespace cities.Entities
 
         // Child tables
         public IEnumerable<TimeZone>? TimeZones { get; set; }
+        public IEnumerable<State>? States { get; set; }
     }
 }

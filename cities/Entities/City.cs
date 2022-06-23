@@ -10,5 +10,10 @@ namespace cities.Entities
         public Guid CityId { get; set; }
         [Required]
         public string? Name { get; set; }
+
+        // Foreign keys
+        public Guid? StateId { get; set; }
+        [ForeignKey("StateId")]
+        public State? State { get; set; }
     }
 }

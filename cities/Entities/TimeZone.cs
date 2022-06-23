@@ -16,8 +16,8 @@ namespace cities.Entities
         public string? TimeZoneName { get; set; }
 
         // Foreign keys
-        [ForeignKey("CountryCode")]
-        public string? CountryCode { get; set; }
+        public Guid? CountryId { get; set; }
+        [ForeignKey("CountryId")]
         public Country? Country { get; set; }
     }
 }

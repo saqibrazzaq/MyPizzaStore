@@ -14,13 +14,6 @@ namespace cities.Repository.SqlServer
         public DbSet<Entities.TimeZone>? TimeZones { get; set; }
         public DbSet<State>? States { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // State table composite key
-            modelBuilder.Entity<State>()
-                .HasKey(x => new { x.StateCode, x.CountryCode });
-        }
+        
     }
 }
