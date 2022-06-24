@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using cities.Dtos.Country;
+using cities.Dtos.TimeZone;
 using cities.Entities;
 
 namespace cities
@@ -22,11 +23,16 @@ namespace cities
                 .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.state_code));
             CreateMap<Models.DataSeed.Cities.City, Entities.City>();
 
-            // Dtos
+            // Country
             CreateMap<Country, CountryResponseDto>();
             CreateMap<Country, CountryDetailResponseDto>();
             CreateMap<UpdateCountryRequestDto, Country>();
             CreateMap<CreateCountryRequestDto, Country>();
+
+            // TimeZone
+            CreateMap<Entities.TimeZone, TimeZoneResponseDto>();
+            CreateMap<CreateTimeZoneRequestDto, Entities.TimeZone>();
+            CreateMap<UpdateTimeZoneRequestDto, Entities.TimeZone>();
         }
     }
 }
