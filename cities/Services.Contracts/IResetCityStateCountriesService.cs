@@ -2,6 +2,6 @@
 {
     public interface IResetCityStateCountriesService
     {
-        Task ResetAllData();
+        void ResetAllData();
     }
 }

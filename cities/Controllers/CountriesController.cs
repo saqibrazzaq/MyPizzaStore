@@ -17,19 +17,47 @@ namespace cities.Controllers
             _countryService = countryService;
         }
 
-        [HttpGet("all")]
-        public IActionResult GetAllCountries([FromQuery] GetAllCountriesRequestDto dto)
+        [HttpGet]
+        public IActionResult GetAllCountries()
         {
-            var countryDtos = _countryService.GetAllCountries(dto);
+            var countryDtos = _countryService.GetAllCountries();
             return Ok(countryDtos.Data);
         }
 
-        [HttpGet("details")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public IActionResult GetCountryByCode([FromQuery] GetCountryByCodeRequestDto dto)
+        [HttpGet("{countryId}")]
+        public IActionResult GetCountry(Guid countryId)
         {
-            var countryDto = _countryService.GetCountryByCode(dto);
+            var countryDto = _countryService.GetCountry(countryId);
             return Ok(countryDto.Data);
+        }
+
+        [HttpGet("getByCode/{countryCode}")]
+        public IActionResult GetCountryByCode(string countryCode)
+        {
+            var countryDto = _countryService.GetCountryByCode(countryCode);
+            return Ok(countryDto.Data);
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public IActionResult CreateCountry([FromBody] CreateCountryRequestDto dto)
+        {
+            _countryService.CreateCountry(dto);
+            return NoContent();
+        }
+
+        [HttpPut("{countryId}")]
+        public IActionResult UpdateCountry(Guid countryId, [FromBody] UpdateCountryRequestDto dto)
+        {
+            _countryService.UpdateCountry(countryId, dto);
+            return NoContent();
+        }
+
+        [HttpDelete("{countryId}")]
+        public IActionResult DeleteCountry(Guid countryId)
+        {
+            _countryService.DeleteCountry(countryId);
+            return NoContent();
         }
     }
 }

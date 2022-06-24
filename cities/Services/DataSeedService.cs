@@ -11,9 +11,9 @@ namespace cities.Services
             _resetCityStateCountriesService = resetCityStateCountriesService;
         }
 
-        public async Task ResetCityStateCountries()
+        public void ResetCityStateCountries()
         {
-            await _resetCityStateCountriesService.ResetAllData();
+            _resetCityStateCountriesService.ResetAllData();
         }
     }
 }

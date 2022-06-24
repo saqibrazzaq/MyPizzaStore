@@ -25,6 +25,8 @@ namespace cities
             // Dtos
             CreateMap<Country, CountryResponseDto>();
             CreateMap<Country, CountryDetailResponseDto>();
+            CreateMap<UpdateCountryRequestDto, Country>();
+            CreateMap<CreateCountryRequestDto, Country>();
         }
     }
 }

@@ -17,14 +17,14 @@ namespace cities.Services
             _repository = repository;
         }
 
-        public async Task ResetAllData()
+        public void ResetAllData()
         {
-            await DeleteAllData();
-            await ImportAllData();
+            DeleteAllData();
+            ImportAllData();
             
         }
 
-        private async Task ImportAllData()
+        private void ImportAllData()
         {
             var file = Path.Combine(Directory.GetCurrentDirectory(), "Data", "countries+states+cities.json");
             if (File.Exists(file))
@@ -38,36 +38,36 @@ namespace cities.Services
                 {
                     _repository.CountryRepository.Create(countryEntity);
                 }
-                await _repository.SaveAsync();
+                _repository.Save();
                 Console.WriteLine(countries.Length + " countries imported.");
             }
         }
 
-        private async Task DeleteAllData()
+        private void DeleteAllData()
         {
             foreach(var tzEntity in _repository.TimeZoneRepository.FindAll(trackChanges: true))
             {
                 _repository.TimeZoneRepository.Delete(tzEntity);
             }
-            await _repository.SaveAsync();
+            _repository.Save();
 
             foreach (var cityEntity in _repository.CityRepository.FindAll(trackChanges: true))
             {
                 _repository.CityRepository.Delete(cityEntity);
             }
-            await _repository.SaveAsync();
+            _repository.Save();
 
             foreach(var stateEntity in _repository.StateRepository.FindAll(trackChanges: true))
             {
                 _repository.StateRepository.Delete(stateEntity);
             }
-            await _repository.SaveAsync();
+            _repository.Save();
 
-            foreach(var countryEntity in _repository.CountryRepository.FindAll(trackChanges: true))
+            foreach (var countryEntity in _repository.CountryRepository.FindAll(trackChanges: true))
             {
                 _repository.CountryRepository.Delete(countryEntity);
             }
-            await _repository.SaveAsync();
+            _repository.Save();
         }
     }
 }

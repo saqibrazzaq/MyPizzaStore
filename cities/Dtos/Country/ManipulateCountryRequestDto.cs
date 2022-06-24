@@ -1,9 +1,11 @@
-﻿namespace cities.Dtos.Country
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace cities.Dtos.Country
 {
-    public class CountryDetailResponseDto
+    public class ManipulateCountryRequestDto
     {
-        public Guid CountryId { get; set; }
         public string? CountryCode { get; set; }
+        [Required]
         public string? Name { get; set; }
         public string? PhoneCode { get; set; }
         public string? Capital { get; set; }

@@ -16,9 +16,9 @@ namespace cities.Controllers
         }
 
         [HttpGet("reset-data")]
-        public async Task<IActionResult> ResetData()
+        public IActionResult ResetData()
         {
-            await _dataSeedService.ResetCityStateCountries();
+            _dataSeedService.ResetCityStateCountries();
             return Ok();
         }
     }

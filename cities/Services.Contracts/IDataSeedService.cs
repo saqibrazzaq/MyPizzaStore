@@ -2,6 +2,6 @@
 {
     public interface IDataSeedService
     {
-        Task ResetCityStateCountries();
+        void ResetCityStateCountries();
     }
 }

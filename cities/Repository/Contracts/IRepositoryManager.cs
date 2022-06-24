@@ -6,6 +6,6 @@
         IStateRepository StateRepository { get; }
         ITimeZoneRepository TimeZoneRepository { get; }
         ICityRepository CityRepository { get; }
-        Task SaveAsync();
+        void Save();
     }
 }
