@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using cities.Dtos.Country;
+using cities.Entities;
 
 namespace cities
 {
@@ -19,6 +21,10 @@ namespace cities
             CreateMap<Models.DataSeed.Cities.State, Entities.State>()
                 .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.state_code));
             CreateMap<Models.DataSeed.Cities.City, Entities.City>();
+
+            // Dtos
+            CreateMap<Country, CountryResponseDto>();
+            CreateMap<Country, CountryDetailResponseDto>();
         }
     }
 }

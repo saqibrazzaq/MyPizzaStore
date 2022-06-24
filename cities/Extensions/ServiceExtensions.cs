@@ -39,6 +39,8 @@ namespace cities.Extensions
         {
             services.AddScoped<IDataSeedService, DataSeedService>();
             services.AddScoped<IResetCityStateCountriesService, ResetCityStateCountriesService>();
+
+            services.AddScoped<ICountryService, CountryService>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,
