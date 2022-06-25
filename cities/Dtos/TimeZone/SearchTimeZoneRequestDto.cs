@@ -2,6 +2,6 @@
 {
     public class SearchTimeZoneRequestDto : PagedRequestParameters
     {
-        public string? SearchText { get; set; }
+        
     }
 }

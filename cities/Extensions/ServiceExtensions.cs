@@ -42,6 +42,7 @@ namespace cities.Extensions
 
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ITimeZoneService, TimeZoneService>();
+            services.AddScoped<IStateService, StateService>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,

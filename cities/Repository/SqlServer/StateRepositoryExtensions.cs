@@ -1,12 +1,13 @@
-﻿using cities.Dtos.TimeZone;
+﻿using cities.Dtos.State;
+using cities.Entities;
 using System.Linq.Dynamic.Core;
 
 namespace cities.Repository.SqlServer
 {
-    public static class TimeZoneRepositoryExtensions
+    public static class StateRepositoryExtensions
     {
-        public static IQueryable<Entities.TimeZone> Search(this IQueryable<Entities.TimeZone> items,
-            SearchTimeZoneRequestDto searchParams)
+        public static IQueryable<State> Search(this IQueryable<State> items,
+            SearchStateRequestDto searchParams)
         {
             // Empty search term
             if (string.IsNullOrWhiteSpace(searchParams.SearchText))
@@ -19,21 +20,19 @@ namespace cities.Repository.SqlServer
             var itemsToReturn = items.Where(
                 // Name
                 x => (x.Name ?? "").ToLower().Contains(searchTerm) ||
-                (x.Abbreviation ?? "").ToLower().Contains(searchTerm) ||
-                (x.TimeZoneName ?? "").ToLower().Contains(searchTerm) ||
-                (x.GmtOffsetName ?? "").ToLower().Contains(searchTerm)
+                (x.StateCode ?? "").ToLower().Contains(searchTerm)
                 );
 
             return itemsToReturn;
         }
 
-        public static IQueryable<Entities.TimeZone> Sort(this IQueryable<Entities.TimeZone> items,
+        public static IQueryable<State> Sort(this IQueryable<State> items,
             string? orderBy)
         {
             if (string.IsNullOrWhiteSpace(orderBy))
                 return items.OrderBy(e => e.Name);
 
-            var orderQuery = OrderQueryBuilder.CreateOrderQuery<Entities.TimeZone>(orderBy);
+            var orderQuery = OrderQueryBuilder.CreateOrderQuery<State>(orderBy);
 
             if (string.IsNullOrWhiteSpace(orderQuery))
                 return items.OrderBy(e => e.Name);

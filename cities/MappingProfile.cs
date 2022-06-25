@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using cities.Dtos.Country;
+using cities.Dtos.State;
 using cities.Dtos.TimeZone;
 using cities.Entities;
 
@@ -33,6 +34,11 @@ namespace cities
             CreateMap<Entities.TimeZone, TimeZoneResponseDto>();
             CreateMap<CreateTimeZoneRequestDto, Entities.TimeZone>();
             CreateMap<UpdateTimeZoneRequestDto, Entities.TimeZone>();
+
+            // State
+            CreateMap<State, StateResponseDto>();
+            CreateMap<CreateStateRequestDto, State>();
+            CreateMap<UpdateStateRequestDto, State>();
         }
     }
 }
