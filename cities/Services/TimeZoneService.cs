@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using cities.Dtos.PagedRequest;
 using cities.Dtos.TimeZone;
 using cities.Models.Exceptions;
 using cities.Models.Responses;
@@ -91,6 +92,16 @@ namespace cities.Services
                 throw new NotFoundException("No time zones found with country code " + countryCode);
 
             return GetTimeZoneByCountryId(countryId);
+        }
+
+        public ApiOkPagedResponse<IEnumerable<TimeZoneResponseDto>, MetaData> 
+            SearchTimeZones(SearchTimeZoneRequestDto dto)
+        {
+            var timeZonePagedEntities = _repositoryManager.TimeZoneRepository.SearchTimeZones(
+                dto, trackChanges: false);
+            var timeZoneDtos = _mapper.Map<IEnumerable<TimeZoneResponseDto>>(timeZonePagedEntities);
+            return new ApiOkPagedResponse<IEnumerable<TimeZoneResponseDto>, MetaData>(
+                timeZoneDtos, timeZonePagedEntities.MetaData);
         }
     }
 }

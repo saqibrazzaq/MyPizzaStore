@@ -24,13 +24,13 @@ namespace cities.Repository.SqlServer
             _context.Set<T>().Remove(entity);
         }
 
-        public IEnumerable<T> FindAll(bool trackChanges) =>
+        public IQueryable<T> FindAll(bool trackChanges) =>
             !trackChanges ?
               _context.Set<T>()
                 .AsNoTracking() :
               _context.Set<T>();
 
-        public IEnumerable<T> FindByCondition(Expression<Func<T, bool>> expression,
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression,
         bool trackChanges,
         Func<IEnumerable<T>, IIncludableQueryable<T, object>> include = null)
         {

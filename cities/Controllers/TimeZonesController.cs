@@ -24,11 +24,19 @@ namespace cities.Controllers
             return Ok(timeZoneDtos.Data);
         }
 
+        [HttpGet("search")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public IActionResult SearchTimeZones([FromQuery] SearchTimeZoneRequestDto dto)
+        {
+            var res = _timeZoneService.SearchTimeZones(dto);
+            return Ok(res);
+        }
+
         [HttpGet("{timeZoneId}")]
         public IActionResult GetTimeZone(Guid timeZoneId)
         {
-            var timeZoneDto = _timeZoneService.GetTimeZone(timeZoneId);
-            return Ok(timeZoneDto.Data);
+            var res = _timeZoneService.GetTimeZone(timeZoneId);
+            return Ok(res.Data);
         }
 
         [HttpGet("getByCountryId/{countryId}")]

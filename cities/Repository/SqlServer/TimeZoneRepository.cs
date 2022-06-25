@@ -1,4 +1,6 @@
-﻿using cities.Repository.Contracts;
+﻿using cities.Dtos.PagedRequest;
+using cities.Dtos.TimeZone;
+using cities.Repository.Contracts;
 
 namespace cities.Repository.SqlServer
 {
@@ -6,6 +8,22 @@ namespace cities.Repository.SqlServer
     {
         public TimeZoneRepository(AppDbContext context) : base(context)
         {
+        }
+
+        public PagedList<Entities.TimeZone> SearchTimeZones(
+            SearchTimeZoneRequestDto dto, bool trackChanges)
+        {
+            var timeZoneEntities = FindAll(trackChanges)
+                .Search(dto)
+                .Sort(dto.OrderBy)
+                .Skip((dto.PageNumber - 1) * dto.PageSize)
+                .Take(dto.PageSize)
+                .ToList();
+            var count = FindAll(trackChanges: false)
+                .Search(dto)
+                .Count();
+            return new PagedList<Entities.TimeZone>(timeZoneEntities, count, 
+                dto.PageNumber, dto.PageSize);
         }
     }
 }
