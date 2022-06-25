@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using cities.Dtos.City;
 using cities.Dtos.Country;
 using cities.Dtos.State;
 using cities.Dtos.TimeZone;
@@ -39,6 +40,17 @@ namespace cities
             CreateMap<State, StateResponseDto>();
             CreateMap<CreateStateRequestDto, State>();
             CreateMap<UpdateStateRequestDto, State>();
+
+            // City
+            CreateMap<City, CityResponseDto>();
+            CreateMap<City, CityDetailResponseDto>()
+                .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.State.StateCode))
+                .ForMember(dest => dest.StateName, opt => opt.MapFrom(src => src.State.Name))
+                .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.State.Country.CountryId))
+                .ForMember(dest => dest.CountryCode, opt => opt.MapFrom(src => src.State.Country.CountryCode))
+                .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.State.Country.Name));
+            CreateMap<CreateCityRequestDto, City>();
+            CreateMap<UpdateCityRequestDto, City>();
         }
     }
 }

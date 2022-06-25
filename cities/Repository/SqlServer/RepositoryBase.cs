@@ -32,7 +32,7 @@ namespace cities.Repository.SqlServer
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression,
         bool trackChanges,
-        Func<IEnumerable<T>, IIncludableQueryable<T, object>> include = null)
+        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             // Get query
             IQueryable<T> query = _context.Set<T>();

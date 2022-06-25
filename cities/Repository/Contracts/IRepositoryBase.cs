@@ -9,7 +9,7 @@ namespace cities.Repository.Contracts
         IQueryable<T> FindByCondition(
             Expression<Func<T, bool>> expression,
             bool trackChanges,
-            Func<IEnumerable<T>, IIncludableQueryable<T, object>> include = null
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null
             );
         void Create(T entity);
         void Delete(T entity);
