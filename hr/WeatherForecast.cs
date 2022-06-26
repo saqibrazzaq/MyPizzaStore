@@ -1,4 +1,4 @@
-namespace stores
+namespace hr
 {
     public class WeatherForecast
     {
