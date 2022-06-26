@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace hr.Entities
+namespace stores.Entities
 {
     [Table("Employee")]
     public class Employee
@@ -22,20 +22,21 @@ namespace hr.Entities
         public string? Address1 { get; set; }
         [MaxLength(500)]
         public string? Address2 { get; set; }
-        public string? CityId { get; set; }
 
+        // Microservice Api keys from
+        public Guid? CityId { get; set; }
 
         // Foreign keys
-        [ForeignKey("DepartmentId")]
         public Guid? DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
         public Department? Department { get; set; }
 
-        [ForeignKey("JobId")]
-        public Guid? JobId { get; set; }
-        public Job? Job { get; set; }
+        public Guid? DesignationId { get; set; }
+        [ForeignKey("DesignationId")]
+        public Designation? Designation { get; set; }
 
+        public char? GenderCode { get; set; }
         [ForeignKey("GenderCode")]
-        public char GenderCode { get; set; }
         public Gender? Gender { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace hr.Entities
+namespace stores.Entities
 {
     [Table("Branch")]
     public class Branch
@@ -10,13 +10,17 @@ namespace hr.Entities
         public Guid BranchId { get; set; }
         [Required, MaxLength(500)]
         public string? Name { get; set; }
-        [Required]
-        public string? Location { get; set; }
+        public string? Address1 { get; set; }
+        public string? Address2 { get; set; }
+
 
         // Foreign keys
-        [ForeignKey("CompanyId")]
         public Guid? CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
         public Company? Company { get; set; }
+
+        // Microservice Api keys from
+        public Guid? CityId { get; set; }
 
         // Child tables
         public IEnumerable<Department>? Departments { get; set; }
