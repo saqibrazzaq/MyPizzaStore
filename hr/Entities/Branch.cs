@@ -10,7 +10,9 @@ namespace hr.Entities
         public Guid BranchId { get; set; }
         [Required, MaxLength(500)]
         public string? Name { get; set; }
+        [MaxLength(500)]
         public string? Address1 { get; set; }
+        [MaxLength(500)]
         public string? Address2 { get; set; }
 
 
