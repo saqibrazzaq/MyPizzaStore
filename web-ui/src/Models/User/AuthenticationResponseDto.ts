@@ -3,4 +3,5 @@ export default class AuthenticationResponseDto {
   roles?: string[];
   accessToken?: string;
   emailConfirmed: boolean = false;
+  accountId?: string;
 }

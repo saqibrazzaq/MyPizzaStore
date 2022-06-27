@@ -20,8 +20,9 @@ const PersistLogin = () => {
       }
     }
 
-    // console.log("auth: " + auth);
-    // console.log("verifyRefreshToken: " + auth?.accessToken);
+    // console.log("auth.email: " + auth?.email);
+    // console.log("auth.accountId: " + auth?.accountId);
+    // console.log("auth.accessToken: " + auth?.accessToken);
     !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
   }, []);
 

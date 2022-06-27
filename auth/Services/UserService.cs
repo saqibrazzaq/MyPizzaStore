@@ -65,7 +65,8 @@ namespace auth.Services
                 {
                     Email = userEntity.Email,
                     Roles = await _userManager.GetRolesAsync(userEntity),
-                    EmailConfirmed = userEntity.EmailConfirmed
+                    EmailConfirmed = userEntity.EmailConfirmed,
+                    AccountId = userEntity.AccountId
                 };
 
                 // Generate access/refresh tokens

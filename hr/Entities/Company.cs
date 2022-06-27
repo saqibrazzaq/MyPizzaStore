@@ -17,6 +17,8 @@ namespace hr.Entities
 
         // Microservice Api keys from
         public Guid? CityId { get; set; }
+        [Required]
+        public Guid? AccountId { get; set; }
 
         // Child tables
         public IEnumerable<Branch>? Branches { get; set; }
