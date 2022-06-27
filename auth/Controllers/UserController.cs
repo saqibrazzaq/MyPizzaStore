@@ -73,7 +73,7 @@ namespace auth.Controllers
         }
 
         [HttpPost("register-admin")]
-        [Authorize(Roles = Common.AdminRole)]
+        [Authorize(Roles = Common.AllAdminRoles)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterAdmin(
             [FromBody] RegisterUserDto dto)
@@ -84,7 +84,7 @@ namespace auth.Controllers
         }
 
         [HttpPost("delete-user")]
-        [Authorize(Roles = Common.AdminRole)]
+        [Authorize(Roles = Common.AllAdminRoles)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> DeleteUser(
             [FromBody] DeleteUserDto dto)
@@ -170,7 +170,7 @@ namespace auth.Controllers
         }
 
         [HttpGet("search-users")]
-        [Authorize(Roles = Common.AdminRole)]
+        [Authorize(Roles = Common.AllAdminRoles)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> SearchUsers(
             [FromQuery] UserParameters userparameters)
@@ -200,7 +200,7 @@ namespace auth.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Common.AdminRole)]
+        [Authorize(Roles = Common.AllAdminRoles)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetUser(
             [FromQuery] GetUserRequestParams dto)

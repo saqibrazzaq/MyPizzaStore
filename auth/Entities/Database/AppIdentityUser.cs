@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace auth.Entities.Database
 {
@@ -10,5 +11,10 @@ namespace auth.Entities.Database
         public DateTime? EmailVerificationTokenExpiryTime { get; set; }
         public string? ProfilePictureUrl { get; set; }
         public string? ProfilePictureCloudinaryId { get; set; }
+
+        // Foreign keys
+        public Guid? AccountId { get; set; }
+        [ForeignKey("AccountId")]
+        public Account? Account { get; set; }
     }
 }

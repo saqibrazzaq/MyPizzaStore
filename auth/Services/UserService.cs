@@ -23,6 +23,7 @@ namespace auth.Services
     {
         private readonly UserManager<AppIdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAccountRepository _accountRepository;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
         private readonly IRepositoryManager _repository;
@@ -36,7 +37,8 @@ namespace auth.Services
             IRepositoryManager repository,
             IMapper mapper,
             IHttpContextAccessor contextAccessor,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment, 
+            IAccountRepository accountRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -46,6 +48,7 @@ namespace auth.Services
             _mapper = mapper;
             _contextAccessor = contextAccessor;
             _environment = environment;
+            _accountRepository = accountRepository;
         }
 
         public async Task<ApiOkResponse<AuthenticationResponseDto>> Login(
@@ -137,11 +140,18 @@ namespace auth.Services
         {
             await CheckExistingEmailAndUsername(dto);
 
+            // Add default roles if do not exist
+            await AddDefaultRoles();
+
+            var accountEntity = new Entities.Database.Account();
+            _accountRepository.Create(accountEntity);
+
             // Create the user
             var userEntity = new AppIdentityUser
             {
                 UserName = dto.Username,
-                Email = dto.Email
+                Email = dto.Email,
+                AccountId = accountEntity.AccountId,
             };
             var result = await _userManager.CreateAsync(userEntity, dto.Password);
 
@@ -149,7 +159,8 @@ namespace auth.Services
                 throw new BadRequestException(result.Errors.FirstOrDefault().Description);
 
             // Add this user in User role
-            var roleResult = await _userManager.AddToRoleAsync(userEntity, Common.UserRole);
+
+            var roleResult = await _userManager.AddToRoleAsync(userEntity, Common.OwnerRole);
             if (roleResult.Succeeded == false)
                 throw new BadRequestException(result.Errors.FirstOrDefault().Description);
 
@@ -229,8 +240,7 @@ namespace auth.Services
             if (resultUser.Succeeded == false)
                 throw new BadRequestException(resultUser.Errors.FirstOrDefault().Description);
 
-            // Add default roles if do not exist
-            await AddDefaultRoles();
+            
 
             // Assign admin role
             var roleResult = await _userManager.AddToRoleAsync(userEntity, Common.AdminRole);
@@ -244,18 +254,17 @@ namespace auth.Services
 
         public async Task<ApiBaseResponse> DeleteUser(DeleteUserDto dto)
         {
-            if (dto.Username.Equals("admin", StringComparison.OrdinalIgnoreCase))
-                throw new BadRequestException("Admin user cannot be deleted");
-
             var userEntity = await _userManager.FindByNameAsync(dto.Username);
             if (userEntity == null)
                 throw new BadRequestException("User does not exist");
-            else
-            {
-                var resultUser = await _userManager.DeleteAsync(userEntity);
-                if (resultUser.Succeeded == false)
-                    throw new BadRequestException(resultUser.Errors.FirstOrDefault().Description);
-            }
+
+            var roles = await _userManager.GetRolesAsync(userEntity);
+            if (roles.Contains(Common.OwnerRole))
+                throw new BadRequestException("Owner user cannot be deleted");
+
+            var resultUser = await _userManager.DeleteAsync(userEntity);
+            if (resultUser.Succeeded == false)
+                throw new BadRequestException(resultUser.Errors.FirstOrDefault().Description);
 
             return new ApiBaseResponse(true);
         }

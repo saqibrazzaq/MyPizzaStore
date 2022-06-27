@@ -47,6 +47,8 @@ namespace auth.Extensions
         {
             services.AddHttpContextAccessor();
 
+            services.AddScoped<IAccountRepository, AccountRepository>();
+
             services.AddScoped<IDataSeedService, DataSeedService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailSender, EmailSender>();

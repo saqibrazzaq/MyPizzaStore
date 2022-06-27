@@ -24,6 +24,7 @@ export const App = () => {
     Admin = "Admin",
     Manager = "Manager",
     User = "User",
+    Owner = "Owner"
   }
   return (
     <Routes>
@@ -40,7 +41,7 @@ export const App = () => {
         <Route element={<PersistLogin />}>
           <Route
             element={
-              <RequireAuth allowedRoles={[Roles.Admin, Roles.Manager]} />
+              <RequireAuth allowedRoles={[Roles.Owner, Roles.Admin, Roles.Manager]} />
             }
           >
             <Route path="admin" element={<AdminLayout />}>
@@ -58,7 +59,7 @@ export const App = () => {
         <Route
           element={
             <RequireAuth
-              allowedRoles={[Roles.Admin, Roles.Manager, Roles.User]}
+              allowedRoles={[Roles.Owner, Roles.Admin, Roles.Manager, Roles.User]}
             />
           }
         >

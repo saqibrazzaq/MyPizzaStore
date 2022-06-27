@@ -40,11 +40,17 @@ const SignUp = () => {
   const axios = useAxiosAuth();
   const navigate = useNavigate();
 
+  // const data = new RegisterUserDto(
+  //   "saqib.razzaq",
+  //   "saqib.razzaq@gmail.com",
+  //   "Saqib123!",
+  //   "Saqib123!"
+  // );
   const data = new RegisterUserDto(
-    "saqib.razzaq",
-    "saqib.razzaq@gmail.com",
-    "Saqib123!",
-    "Saqib123!"
+    "",
+    "",
+    "",
+    ""
   );
 
   const submitForm = (values: RegisterUserDto) => {
