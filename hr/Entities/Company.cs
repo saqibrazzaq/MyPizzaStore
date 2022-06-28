@@ -15,7 +15,7 @@ namespace hr.Entities
         [MaxLength(500)]
         public string? Address2 { get; set; }
 
-        // Microservice Api keys from
+        // Microservice Api keys
         public Guid? CityId { get; set; }
         [Required]
         public Guid? AccountId { get; set; }

@@ -11,5 +11,7 @@ namespace hr.Entities
         [Required, MaxLength(500)]
         public string? Name { get; set; }
 
+        // Microservice Api keys
+        public Guid? AccountId { get; set; }
     }
 }
