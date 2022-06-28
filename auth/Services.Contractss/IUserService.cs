@@ -1,6 +1,6 @@
 ﻿using auth.Dtos;
 using auth.Dtos.User;
-using auth.Entities.Responses;
+using common.Models.Responses;
 
 namespace auth.Services.Contractss
 {

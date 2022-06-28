@@ -1,4 +1,10 @@
-﻿namespace cities.Models.Responses
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace common.Models.Responses
 {
     public class ApiBaseResponse
     {

@@ -2,9 +2,9 @@
 using cities.Dtos.Country;
 using cities.Entities;
 using cities.Models.Exceptions;
-using cities.Models.Responses;
 using cities.Repository.Contracts;
 using cities.Services.Contracts;
+using common.Models.Responses;
 
 namespace cities.Services
 {

@@ -3,9 +3,9 @@ using cities.Dtos.City;
 using cities.Dtos.PagedRequest;
 using cities.Entities;
 using cities.Models.Exceptions;
-using cities.Models.Responses;
 using cities.Repository.Contracts;
 using cities.Services.Contracts;
+using common.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace cities.Services

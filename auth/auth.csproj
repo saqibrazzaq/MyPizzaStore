@@ -31,4 +31,8 @@
     <Folder Include="wwwroot\temp\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\common\common.csproj" />
+  </ItemGroup>
+
 </Project>

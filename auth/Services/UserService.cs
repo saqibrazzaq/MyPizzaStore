@@ -2,13 +2,13 @@
 using auth.Dtos.User;
 using auth.Entities.Database;
 using auth.Entities.Exceptions;
-using auth.Entities.Responses;
 using auth.Repository.Contracts;
 using auth.Services.Contractss;
 using auth.Utility;
 using AutoMapper;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using common.Models.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

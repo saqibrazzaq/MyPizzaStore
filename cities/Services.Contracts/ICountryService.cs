@@ -1,5 +1,5 @@
 ﻿using cities.Dtos.Country;
-using cities.Models.Responses;
+using common.Models.Responses;
 
 namespace cities.Services.Contracts
 {

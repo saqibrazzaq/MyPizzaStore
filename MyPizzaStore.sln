@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cities", "cities\cities.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hr", "hr\hr.csproj", "{232F9FB0-D4AC-42E3-A0F6-8634B8DC27EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common", "common\common.csproj", "{AE14CBF1-8C6B-430B-B671-99F4B92B7F00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{232F9FB0-D4AC-42E3-A0F6-8634B8DC27EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{232F9FB0-D4AC-42E3-A0F6-8634B8DC27EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{232F9FB0-D4AC-42E3-A0F6-8634B8DC27EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE14CBF1-8C6B-430B-B671-99F4B92B7F00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE14CBF1-8C6B-430B-B671-99F4B92B7F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE14CBF1-8C6B-430B-B671-99F4B92B7F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE14CBF1-8C6B-430B-B671-99F4B92B7F00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
