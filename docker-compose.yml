@@ -1,0 +1,65 @@
+version: '3.4'
+
+services:
+  auth:
+    image: ${DOCKER_REGISTRY-}auth
+    build:
+      context: .
+      dockerfile: auth/Dockerfile
+    depends_on:
+      - authdb
+
+  authdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    volumes:
+      - authdb_data:/var/opt/mssql/data
+    container_name: authdb
+    environment:
+      SA_PASSWORD: "Saqib123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+  cities:
+    image: ${DOCKER_REGISTRY-}cities
+    build:
+      context: .
+      dockerfile: cities/Dockerfile
+    depends_on:
+      - citiesdb
+
+  citiesdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    volumes:
+      - citiesdb_data:/var/opt/mssql/data
+    container_name: citiesdb
+    environment:
+      SA_PASSWORD: "Saqib123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+
+
+  hr:
+    image: ${DOCKER_REGISTRY-}hr
+    build:
+      context: .
+      dockerfile: hr/Dockerfile
+    depends_on:
+      - hrdb
+
+  hrdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    volumes:
+      - hrdb_data:/var/opt/mssql/data
+    container_name: hrdb
+    environment:
+      SA_PASSWORD: "Saqib123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433"
+
+volumes:
+  authdb_data: 
+  citiesdb_data:
+  hrdb_data:

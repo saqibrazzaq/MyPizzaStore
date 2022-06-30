@@ -37,7 +37,7 @@ namespace hr.Extensions
 
         public static void ConfigureServices(this IServiceCollection services)
         {
-            
+            services.AddScoped<ICompanyService, CompanyService>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,
