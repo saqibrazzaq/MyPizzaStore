@@ -24,8 +24,7 @@ namespace auth.Services
         public async Task AddDefaultRolesAndUsers()
         {
             // Default roles which should exist
-            var roleNames = new List<string>() { 
-                Common.AdminRole, Common.ManagerRole, Common.UserRole };
+            var roleNames = Common.AllRoles.Split(',');
             foreach (var roleName in roleNames)
             {
                 // Add role, if it does not already exist

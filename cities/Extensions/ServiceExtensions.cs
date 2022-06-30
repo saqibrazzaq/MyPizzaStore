@@ -35,6 +35,18 @@ namespace cities.Extensions
             services.AddScoped<IRepositoryManager, RepositoryManager>();
         }
 
+        public static void MigrateDatabase(this IServiceCollection services)
+        {
+            var dbContext = services.BuildServiceProvider().GetRequiredService<AppDbContext>();
+            dbContext.Database.Migrate();
+        }
+
+        public static void SeedDefaultData(this IServiceCollection services)
+        {
+            var dataSeeder = services.BuildServiceProvider().GetRequiredService<IDataSeedService>();
+            dataSeeder.ResetCityStateCountries();
+        }
+
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<IDataSeedService, DataSeedService>();

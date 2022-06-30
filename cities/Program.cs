@@ -7,6 +7,8 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 // Add services to the container.
 // NLog
 LogManager.LoadConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "nlog.config"));
@@ -16,7 +18,8 @@ builder.Services.ConfigureServices();
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 
-builder.Services.AddAutoMapper(typeof(Program));
+
+
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -42,6 +45,10 @@ var app = builder.Build();
 // Configure logger
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
+
+// Seed service requires logger
+builder.Services.MigrateDatabase();
+builder.Services.SeedDefaultData();
 
 
 // Configure the HTTP request pipeline.

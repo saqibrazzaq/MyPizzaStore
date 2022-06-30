@@ -15,6 +15,8 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServices();
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.MigrateDatabase();
+builder.Services.SeedDefaultData();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

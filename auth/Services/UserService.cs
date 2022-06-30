@@ -141,9 +141,6 @@ namespace auth.Services
         {
             await CheckExistingEmailAndUsername(dto);
 
-            // Add default roles if do not exist
-            await AddDefaultRoles();
-
             var accountEntity = new Entities.Database.Account();
             _accountRepository.Create(accountEntity);
 
@@ -268,23 +265,6 @@ namespace auth.Services
                 throw new BadRequestException(resultUser.Errors.FirstOrDefault().Description);
 
             return new ApiBaseResponse(true);
-        }
-
-        private async Task AddDefaultRoles()
-        {
-            // Get all roles
-            var allRoleNames = Common.AllRoles.Split(',');
-
-            foreach (var roleName in allRoleNames)
-            {
-                var role = await _roleManager.FindByNameAsync(roleName);
-                if (role == null)
-                {
-                    var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
-                    if (roleResult.Succeeded == false)
-                        throw new BadRequestException(roleResult.Errors.FirstOrDefault().Description);
-                }
-            }
         }
 
         private async Task CheckExistingEmailAndUsername(RegisterUserDto dto)

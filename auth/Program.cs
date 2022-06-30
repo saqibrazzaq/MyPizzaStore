@@ -19,6 +19,8 @@ builder.Services.ConfigureServices();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwt(builder.Configuration);
+builder.Services.MigrateDatabase();
+builder.Services.SeedDefaultData();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -46,11 +48,6 @@ var app = builder.Build();
 // Configure logger
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
-
-// Data seed
-var dataSeeder = app.Services.CreateScope().
-    ServiceProvider.GetRequiredService<IDataSeedService>();
-dataSeeder.AddDefaultRolesAndUsers();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

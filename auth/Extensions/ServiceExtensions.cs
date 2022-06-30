@@ -43,6 +43,18 @@ namespace auth.Extensions
             services.AddScoped<IRepositoryManager, RepositoryManager>();
         }
 
+        public static void MigrateDatabase(this IServiceCollection services)
+        {
+            var dbContext = services.BuildServiceProvider().GetRequiredService<AppDbContext>();
+            dbContext.Database.Migrate();
+        }
+
+        public static void SeedDefaultData(this IServiceCollection services)
+        {
+            var dataSeeder = services.BuildServiceProvider().GetRequiredService<IDataSeedService>();
+            dataSeeder.AddDefaultRolesAndUsers();
+        }
+
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
