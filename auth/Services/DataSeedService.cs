@@ -33,25 +33,25 @@ namespace auth.Services
                     await _roleManager.CreateAsync(new IdentityRole(roleName));
             }
 
-            // Add admin user
-            var username = _configuration["DefaultUser:Username"];
-            var email = _configuration["DefaultUser:Email"];
-            var password = _configuration["DefaultUser:Password"];
+            //// Add admin user
+            //var username = _configuration["DefaultUser:Username"];
+            //var email = _configuration["DefaultUser:Email"];
+            //var password = _configuration["DefaultUser:Password"];
 
-            var userEntity = await _userManager.FindByNameAsync(username);
-            if (userEntity == null)
-            {
-                var res = await _userManager.CreateAsync(new AppIdentityUser
-                {
-                    UserName = username,
-                    Email = email
-                }, password);
-                if (res.Succeeded)
-                {
-                    userEntity = await _userManager.FindByNameAsync(username);
-                    await _userManager.AddToRoleAsync(userEntity, Common.AdminRole);
-                }
-            }
+            //var userEntity = await _userManager.FindByNameAsync(username);
+            //if (userEntity == null)
+            //{
+            //    var res = await _userManager.CreateAsync(new AppIdentityUser
+            //    {
+            //        UserName = username,
+            //        Email = email
+            //    }, password);
+            //    if (res.Succeeded)
+            //    {
+            //        userEntity = await _userManager.FindByNameAsync(username);
+            //        await _userManager.AddToRoleAsync(userEntity, Common.AdminRole);
+            //    }
+            //}
         }
     }
 }
