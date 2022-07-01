@@ -28,14 +28,14 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link as RouteLink, useNavigate, useParams } from "react-router-dom";
-import BackButton from "../../components/Buttons/BackButton";
-import CancelButton from "../../components/Buttons/CancelButton";
-import DeleteButton from "../../components/Buttons/DeleteButton";
-import useAxiosAuth from "../../hooks/useAxiosAuth";
-import ErrorDetails from "../../Models/Error/ErrorDetails";
-import DeleteUserDto from "../../Models/User/DeleteUserDto";
-import GetUserDto from "../../Models/User/GetUserDto";
-import UserDto from "../../Models/User/UserDto";
+import BackButton from "../../../components/Buttons/BackButton";
+import CancelButton from "../../../components/Buttons/CancelButton";
+import DeleteButton from "../../../components/Buttons/DeleteButton";
+import useAxiosAuth from "../../../hooks/useAxiosAuth";
+import ErrorDetails from "../../../Models/Error/ErrorDetails";
+import DeleteUserDto from "../../../Models/User/DeleteUserDto";
+import GetUserDto from "../../../Models/User/GetUserDto";
+import UserDto from "../../../Models/User/UserDto";
 
 const DeleteUser = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

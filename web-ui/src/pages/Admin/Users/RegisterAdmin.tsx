@@ -16,17 +16,17 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
-import ErrorDetails from "../../Models/Error/ErrorDetails";
-import useAxiosAuth from "../../hooks/useAxiosAuth";
-import useAuth from "../../hooks/useAuth";
+import ErrorDetails from "../../../Models/Error/ErrorDetails";
+import useAxiosAuth from "../../../hooks/useAxiosAuth";
+import useAuth from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Field, Formik } from "formik";
-import AuthModel from "../../Models/User/AuthModel";
-import RegisterUserRequestDto from "../../Models/User/RegisterUserRequestDto";
-import useRefreshToken from "../../hooks/useRefreshToken";
-import Api from "../../Api/AuthApi";
-import SubmitButton from "../../components/Buttons/SubmitButton";
+import AuthModel from "../../../Models/User/AuthModel";
+import RegisterUserRequestDto from "../../../Models/User/RegisterUserRequestDto";
+import useRefreshToken from "../../../hooks/useRefreshToken";
+import Api from "../../../Api/AuthApi";
+import SubmitButton from "../../../components/Buttons/SubmitButton";
 
 YupPassword(Yup); // extend yup
 

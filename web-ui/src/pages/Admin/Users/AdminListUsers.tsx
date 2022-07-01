@@ -17,15 +17,15 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import useAxiosAuth from "../../hooks/useAxiosAuth";
-import PagedResponse from "../../Models/PagedResponse";
+import useAxiosAuth from "../../../hooks/useAxiosAuth";
+import PagedResponse from "../../../Models/PagedResponse";
 import { Link as RouteLink } from "react-router-dom";
-import UserDto from "../../Models/User/UserDto";
+import UserDto from "../../../Models/User/UserDto";
 import { MdDeleteOutline } from "react-icons/md";
 import { AiFillDelete } from "react-icons/ai";
-import SearchUsersRequestParameters from "../../Models/User/SearchUsersRequestParameters";
-import DeleteIconButton from "../../components/Buttons/DeleteIconButton";
-import Common from "../../utility/Common";
+import SearchUsersRequestParameters from "../../../Models/User/SearchUsersRequestParameters";
+import DeleteIconButton from "../../../components/Buttons/DeleteIconButton";
+import Common from "../../../utility/Common";
 
 const AdminListUsers = () => {
   const [pagedRes, setPagedRes] = useState<PagedResponse<UserDto>>();
