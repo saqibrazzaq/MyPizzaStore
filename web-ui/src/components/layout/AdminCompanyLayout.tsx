@@ -6,7 +6,7 @@ import {GrUserAdmin} from 'react-icons/gr';
 import LeftSideMenu, { LinkItemProps } from "./LeftSideMenu";
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, href: "/admin" },
+  { name: "Back", icon: FiHome, href: "/admin" },
   { name: "Companies", icon: GrUserAdmin, href: "/admin/company/list" },
   { name: "Branches", icon: FiUsers, href: "/admin/company/branches/list" },
 ];

@@ -23,6 +23,8 @@ import AdminUsersHome from "./pages/Admin/Users/AdminUsersHome";
 import AdminCompanyLayout from "./components/layout/AdminCompanyLayout";
 import AdminCompanyHome from "./pages/Admin/Company/AdminCompanyHome";
 import AdminListCompanies from "./pages/Admin/Company/AdminListCompanies";
+import AdminUpdateCompany from "./pages/Admin/Company/AdminUpdateCompany";
+import AdminDeleteCompany from "./pages/Admin/Company/AdminDeleteCompany";
 
 export const App = () => {
   enum Roles {
@@ -57,14 +59,16 @@ export const App = () => {
               <Route path="company" />
             </Route>
             <Route path="admin/users" element={<AdminUsersLayout />}>
-              <Route index element={<AdminUsersHome />} />
+              <Route index element={<AdminListUsers />} />
               <Route path="list" element={<AdminListUsers />} />
               <Route path="register-admin" element={<RegisterAdmin />} />
               <Route path="delete/:username" element={<DeleteUser />} />
             </Route>
             <Route path="admin/company" element={<AdminCompanyLayout />}>
-              <Route index element={<AdminCompanyHome />} />
+              <Route index element={<AdminListCompanies />} />
               <Route path="list" element={<AdminListCompanies />} />
+              <Route path="update/:companyId" element={<AdminUpdateCompany />} />
+              <Route path="delete/:companyId" element={<AdminDeleteCompany />} />
             </Route>
           </Route>
         </Route>

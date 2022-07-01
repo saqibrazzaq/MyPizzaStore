@@ -25,7 +25,6 @@ import { Field, Formik } from "formik";
 import AuthModel from "../../../Models/User/AuthModel";
 import RegisterUserRequestDto from "../../../Models/User/RegisterUserRequestDto";
 import useRefreshToken from "../../../hooks/useRefreshToken";
-import Api from "../../../Api/AuthApi";
 import SubmitButton from "../../../components/Buttons/SubmitButton";
 
 YupPassword(Yup); // extend yup

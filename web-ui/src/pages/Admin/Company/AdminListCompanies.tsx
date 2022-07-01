@@ -1,4 +1,18 @@
-import { Box, Container, Heading, Link, Stack, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Heading,
+  Link,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import { config } from "dotenv";
 import React, { useEffect, useState } from "react";
 import HrApi from "../../../Api/HrApi";
@@ -8,6 +22,7 @@ import CompanyResponseDto from "../../../Models/Hr/Company/CompanyResponseDto";
 import GetAllCompaniesRequestParameters from "../../../Models/Hr/Company/GetAllCompaniesRequestParameters";
 import AuthModel from "../../../Models/User/AuthModel";
 import { Link as RouteLink } from "react-router-dom";
+import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
 
 const AdminListCompanies = () => {
   const { auth }: AuthModel = useAuth();
@@ -24,7 +39,7 @@ const AdminListCompanies = () => {
       params: getAllParams,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setCompanies(res.data);
       })
       .catch((err) => {
@@ -34,33 +49,41 @@ const AdminListCompanies = () => {
 
   const displayCompanies = () => (
     <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Name</Th>
-                <Th></Th>
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th></Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {companies ? (
+            companies.map((item) => (
+              <Tr key={item.companyId}>
+                <Td>{item.name}</Td>
+                <Td>
+                  <Link mr={2}
+                    as={RouteLink}
+                    to={"/admin/company/update/" + item.companyId}
+                  >
+                    <UpdateIconButton />
+                  </Link>
+                  <Link
+                    as={RouteLink}
+                    to={"/admin/company/delete/" + item.companyId}
+                  >
+                    <DeleteIconButton />
+                  </Link>
+                </Td>
               </Tr>
-            </Thead>
-            <Tbody>
-              {companies ? (
-                companies.map((item) => (
-                  <Tr key={item.companyId}>
-                    <Td>{item.name}</Td>
-                    <Td>
-                      <Link as={RouteLink} to={"/admin/users/delete/" + item.companyId}>
-                      <DeleteIconButton />
-                      </Link>
-                    </Td>
-                  </Tr>
-                ))
-              ) : (
-                <></>
-              )}
-            </Tbody>
-            
-          </Table>
-        </TableContainer>
-  )
+            ))
+          ) : (
+            <></>
+          )}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
 
   return (
     <Box p={4}>

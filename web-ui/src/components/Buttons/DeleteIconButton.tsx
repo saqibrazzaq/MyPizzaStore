@@ -10,7 +10,7 @@ const DeleteIconButton = () => {
       fontSize="18px"
       colorScheme="red"
       icon={<AiFillDelete />}
-      aria-label="Delete User"
+      aria-label="Delete"
     />
   );
 };
