@@ -1,8 +1,11 @@
 import {
   Box,
   Container,
+  Flex,
   Heading,
+  HStack,
   Link,
+  Spacer,
   Stack,
   Table,
   TableContainer,
@@ -23,6 +26,8 @@ import GetAllCompaniesRequestParameters from "../../../Models/Hr/Company/GetAllC
 import AuthModel from "../../../Models/User/AuthModel";
 import { Link as RouteLink } from "react-router-dom";
 import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
+import SubmitButton from "../../../components/Buttons/SubmitButton";
+import RegularButton from "../../../components/Buttons/RegularButton";
 
 const AdminListCompanies = () => {
   const { auth }: AuthModel = useAuth();
@@ -62,7 +67,8 @@ const AdminListCompanies = () => {
               <Tr key={item.companyId}>
                 <Td>{item.name}</Td>
                 <Td>
-                  <Link mr={2}
+                  <Link
+                    mr={2}
                     as={RouteLink}
                     to={"/admin/company/update/" + item.companyId}
                   >
@@ -85,10 +91,24 @@ const AdminListCompanies = () => {
     </TableContainer>
   );
 
+  const displayHeading = () => (
+    <Flex>
+      <Box>
+        <Heading fontSize={"xl"}>Companies</Heading>
+      </Box>
+      <Spacer />
+      <Box>
+        <Link as={RouteLink} to="/admin/company/update">
+          <RegularButton text="Create Company" />
+        </Link>
+      </Box>
+    </Flex>
+  );
+
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
-        <Heading fontSize={"xl"}>Companies</Heading>
+        {displayHeading()}
         {companies && displayCompanies()}
       </Stack>
     </Box>

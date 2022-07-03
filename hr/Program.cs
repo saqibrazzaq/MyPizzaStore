@@ -1,3 +1,4 @@
+using common.JsonConverters;
 using hr.ActionFilters;
 using hr.Extensions;
 using hr.Services.Contracts;
@@ -34,6 +35,7 @@ builder.Services.AddControllers(config =>
 }).AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    x.JsonSerializerOptions.Converters.Add(new JsonStringGuidConverter());
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

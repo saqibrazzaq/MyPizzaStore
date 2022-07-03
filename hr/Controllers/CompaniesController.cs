@@ -25,8 +25,8 @@ namespace hr.Controllers
             return Ok(res.Data);
         }
 
-        [HttpGet("{companyId}")]
-        [ServiceFilter(typeof (ValidationFilterAttribute))]
+        [HttpGet("{companyId}", Name = "FindByCompanyId")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult FindByCompanyId(Guid companyId, [FromQuery] FindByCompanyIdRequestDto dto)
         {
             var res = _companyService.FindByCompanyId(companyId, dto);
@@ -37,8 +37,8 @@ namespace hr.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult Create([FromBody] CreateCompanyRequestDto dto)
         {
-            _companyService.Create(dto);
-            return NoContent();
+            var res = _companyService.Create(dto);
+            return CreatedAtAction(nameof(FindByCompanyId), new { res.CompanyId, res.AccountId }, res);
         }
 
         [HttpPut("{companyId}")]

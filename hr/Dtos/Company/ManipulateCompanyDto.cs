@@ -12,6 +12,6 @@ namespace hr.Dtos.Company
         [MaxLength(500)]
         public string? Address2 { get; set; }
         // Microservice Api keys
-        public Guid? CityId { get; set; }
+        public Guid? CityId { get; set; } = Guid.Empty;
     }
 }

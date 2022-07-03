@@ -67,6 +67,7 @@ export const App = () => {
             <Route path="admin/company" element={<AdminCompanyLayout />}>
               <Route index element={<AdminListCompanies />} />
               <Route path="list" element={<AdminListCompanies />} />
+              <Route path="update" element={<AdminUpdateCompany />} />
               <Route path="update/:companyId" element={<AdminUpdateCompany />} />
               <Route path="delete/:companyId" element={<AdminDeleteCompany />} />
             </Route>

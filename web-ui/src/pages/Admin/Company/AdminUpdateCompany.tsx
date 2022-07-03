@@ -33,6 +33,7 @@ const AdminUpdateCompany = () => {
   const navigate = useNavigate();
   let params = useParams();
   const companyId = params.companyId;
+  const updateText = companyId ? "Update Company" : "Create Company";
   const findCompanyReq = new FindByCompanyIdRequestParams(auth.accountId);
 
   const [companyData, setCompanyData] = useState(
@@ -40,8 +41,10 @@ const AdminUpdateCompany = () => {
   );
 
   useEffect(() => {
-    loadCompanyDetails();
-  }, []);
+    if (companyId) {
+      loadCompanyDetails();
+    }
+  }, [companyId]);
 
   const loadCompanyDetails = () => {
     HrApi.get("Companies/" + companyId, {
@@ -69,6 +72,29 @@ const AdminUpdateCompany = () => {
     setError("");
     setSuccess("");
     // console.log(values);
+    if (companyId) {
+      updateCompany(values);
+    } else {
+      createCompany(values);
+    }
+  };
+
+  const createCompany = (values: UpdateCompanyRequestParams) => {
+    console.log(values);
+    HrApi.post("Companies", values)
+      .then((res) => {
+        setSuccess("Company created successfully. ");
+        navigate("/admin/company/update/" + res.data.companyId);
+      })
+      .catch((err) => {
+        console.log(err);
+        let errDetails: ErrorDetails = err?.response?.data;
+        // console.log("Error: " + err?.response?.data?.Message);
+        setError(errDetails?.Message || "Company service failed.");
+      });
+  };
+
+  const updateCompany = (values: UpdateCompanyRequestParams) => {
     HrApi.put("Companies/" + companyId, values)
       .then((res) => {
         // console.log("Company updated successfully.");
@@ -115,12 +141,7 @@ const AdminUpdateCompany = () => {
               <FormControl isInvalid={!!errors.name && touched.name}>
                 <FormLabel htmlFor="name">Company Name</FormLabel>
                 <Field as={Input} id="name" name="name" type="text" />
-                <Field
-                  as={Input}
-                  id="accountId"
-                  name="accountId"
-                  type="hidden"
-                />
+                <Field as={Input} id="accountId" name="accountId" type="text" />
                 <FormErrorMessage>{errors.name}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.address1 && touched.address1}>
@@ -139,7 +160,7 @@ const AdminUpdateCompany = () => {
                 <FormErrorMessage>{errors.cityId}</FormErrorMessage>
               </FormControl>
               <Stack spacing={6}>
-                <SubmitButton text="Update Company" />
+                <SubmitButton text={updateText} />
               </Stack>
             </Stack>
           </form>
@@ -151,7 +172,7 @@ const AdminUpdateCompany = () => {
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
-        <Heading fontSize={"xl"}>Update Company</Heading>
+        <Heading fontSize={"xl"}>{updateText}</Heading>
         {showUpdateForm()}
       </Stack>
     </Box>

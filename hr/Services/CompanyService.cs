@@ -19,11 +19,12 @@ namespace hr.Services
             _mapper = mapper;
         }
 
-        public void Create(CreateCompanyRequestDto dto)
+        public CompanyDetailResponseDto Create(CreateCompanyRequestDto dto)
         {
             var companyEntity = _mapper.Map<Company>(dto);
             _repositoryManager.CompanyRepository.Create(companyEntity);
             _repositoryManager.Save();
+            return _mapper.Map<CompanyDetailResponseDto>(companyEntity);
         }
 
         public void Delete(Guid companyId, DeleteCompanyRequestDto dto)
