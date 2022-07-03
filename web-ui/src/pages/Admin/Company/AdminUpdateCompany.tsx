@@ -141,7 +141,7 @@ const AdminUpdateCompany = () => {
               <FormControl isInvalid={!!errors.name && touched.name}>
                 <FormLabel htmlFor="name">Company Name</FormLabel>
                 <Field as={Input} id="name" name="name" type="text" />
-                <Field as={Input} id="accountId" name="accountId" type="text" />
+                <Field as={Input} id="accountId" name="accountId" type="hidden" />
                 <FormErrorMessage>{errors.name}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.address1 && touched.address1}>
