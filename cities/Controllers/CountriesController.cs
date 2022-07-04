@@ -24,6 +24,13 @@ namespace cities.Controllers
             return Ok(countryDtos.Data);
         }
 
+        [HttpGet("search")]
+        public IActionResult Search([FromQuery] SearchCountryRequestDto dto)
+        {
+            var res = _countryService.Search(dto);
+            return Ok(res);
+        }
+
         [HttpGet("{countryId}")]
         public IActionResult GetCountry(Guid countryId)
         {

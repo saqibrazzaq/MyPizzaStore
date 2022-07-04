@@ -1,4 +1,5 @@
 ﻿using cities.Dtos.Country;
+using cities.Dtos.PagedRequest;
 using common.Models.Responses;
 
 namespace cities.Services.Contracts
@@ -11,5 +12,6 @@ namespace cities.Services.Contracts
         void CreateCountry(CreateCountryRequestDto dto);
         void UpdateCountry(Guid countryId, UpdateCountryRequestDto dto);
         void DeleteCountry(Guid countryId);
+        ApiOkPagedResponse<IEnumerable<CountryResponseDto>, MetaData> Search(SearchCountryRequestDto dto);
     }
 }

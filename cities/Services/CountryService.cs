@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using cities.Dtos.Country;
+using cities.Dtos.PagedRequest;
 using cities.Entities;
 using cities.Models.Exceptions;
 using cities.Repository.Contracts;
@@ -81,6 +82,14 @@ namespace cities.Services
             var countryEntity = GetCountryIfExists(countryId, true);
             _repositoryManager.CountryRepository.Delete(countryEntity);
             _repositoryManager.Save();
+        }
+
+        public ApiOkPagedResponse<IEnumerable<CountryResponseDto>, MetaData> Search(SearchCountryRequestDto dto)
+        {
+            var countryPagedEntities = _repositoryManager.CountryRepository.SearchCountries(dto, false);
+            var countryDtos = _mapper.Map<IEnumerable<CountryResponseDto>>(countryPagedEntities);
+            return new ApiOkPagedResponse<IEnumerable<CountryResponseDto>, MetaData>(
+                countryDtos, countryPagedEntities.MetaData);
         }
     }
 }

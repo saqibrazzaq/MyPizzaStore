@@ -29,6 +29,7 @@ import UpdateCompanyRequestParams from "../../../Models/Hr/Company/UpdateCompany
 import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompanyIdRequestParams";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import BackButton from "../../../components/Buttons/BackButton";
+import CountryDropdown from "../../../components/Dropdowns/CountryDropdown";
 
 const AdminUpdateCompany = () => {
   const [error, setError] = useState("");
@@ -162,6 +163,8 @@ const AdminUpdateCompany = () => {
                 <FormLabel htmlFor="cityId">City</FormLabel>
                 <Field as={Input} id="cityId" name="cityId" type="text" />
                 <FormErrorMessage>{errors.cityId}</FormErrorMessage>
+                
+                <CountryDropdown></CountryDropdown>
               </FormControl>
               <Stack spacing={6}>
                 <SubmitButton text={updateText} />
