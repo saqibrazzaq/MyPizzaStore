@@ -5136,3 +5136,12 @@
 2022-07-03 18:41:22.2734 Trace  Scanning Property LineEnding 'Default' NLog.Targets
 2022-07-03 18:41:22.2734 Trace FileTarget(Name=logfile) has 2 layouts
 2022-07-03 18:41:22.2894 Trace FileTarget(Name=logfile): Using appenderFactory: NLog.Internal.FileAppenders.SingleProcessFileAppender+Factory
+2022-07-04 06:41:14.4559 Debug Targets configured when LogLevel >= Debug for Logger: auth.Services.LoggerManager
+2022-07-04 06:41:14.4559 Debug Logger auth.Services.LoggerManager [Debug] => logfile
+2022-07-04 06:41:14.4559 Debug Logger auth.Services.LoggerManager [Info] => logfile
+2022-07-04 06:41:14.4559 Debug Logger auth.Services.LoggerManager [Warn] => logfile
+2022-07-04 06:41:14.4638 Debug Logger auth.Services.LoggerManager [Error] => logfile
+2022-07-04 06:41:14.4638 Debug Logger auth.Services.LoggerManager [Fatal] => logfile
+2022-07-04 06:41:14.4787 Debug FileTarget(Name=logfile): Preparing for new file '/app/bin/Debug/net6.0/.\logs\2022-07-04_logfile.txt'
+2022-07-04 06:41:14.4846 Debug FileTarget(Name=logfile): Creating file appender: /app/bin/Debug/net6.0/.\logs\2022-07-04_logfile.txt
+2022-07-04 06:41:14.4846 Trace FileTarget(Name=logfile): Opening /app/bin/Debug/net6.0/.\logs\2022-07-04_logfile.txt with allowFileSharedWriting=False

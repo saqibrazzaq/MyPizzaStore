@@ -12,12 +12,14 @@ import {
   FormLabel,
   Heading,
   Input,
+  Link,
+  Spacer,
   Stack,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
 import useAuth from "../../../hooks/useAuth";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link as RouteLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Field, Formik } from "formik";
 import AuthModel from "../../../Models/User/AuthModel";
@@ -25,6 +27,8 @@ import HrApi from "../../../Api/HrApi";
 import SubmitButton from "../../../components/Buttons/SubmitButton";
 import UpdateCompanyRequestParams from "../../../Models/Hr/Company/UpdateCompanyRequestParams";
 import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompanyIdRequestParams";
+import RegularButton from "../../../components/Buttons/RegularButton";
+import BackButton from "../../../components/Buttons/BackButton";
 
 const AdminUpdateCompany = () => {
   const [error, setError] = useState("");
@@ -169,10 +173,24 @@ const AdminUpdateCompany = () => {
     </Box>
   );
 
+  const displayHeading = () => (
+    <Flex>
+      <Box>
+        <Heading fontSize={"xl"}>{updateText}</Heading>
+      </Box>
+      <Spacer />
+      <Box>
+        <Link ml={2} as={RouteLink} to="/admin/company/list">
+          <BackButton />
+        </Link>
+      </Box>
+    </Flex>
+  );
+
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
-        <Heading fontSize={"xl"}>{updateText}</Heading>
+        {displayHeading()}
         {showUpdateForm()}
       </Stack>
     </Box>

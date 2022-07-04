@@ -28,6 +28,7 @@ import { Link as RouteLink } from "react-router-dom";
 import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
 import SubmitButton from "../../../components/Buttons/SubmitButton";
 import RegularButton from "../../../components/Buttons/RegularButton";
+import BackButton from "../../../components/Buttons/BackButton";
 
 const AdminListCompanies = () => {
   const { auth }: AuthModel = useAuth();
@@ -100,6 +101,9 @@ const AdminListCompanies = () => {
       <Box>
         <Link as={RouteLink} to="/admin/company/update">
           <RegularButton text="Create Company" />
+        </Link>
+        <Link ml={2} as={RouteLink} to="/admin">
+          <BackButton />
         </Link>
       </Box>
     </Flex>

@@ -12,9 +12,11 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   Heading,
   HStack,
   Link,
+  Spacer,
   Stack,
   Table,
   TableContainer,
@@ -102,14 +104,12 @@ const AdminDeleteCompany = () => {
           </Tbody>
         </Table>
       </TableContainer>
-      <HStack spacing={4}>
+      <HStack pt={4} spacing={4}>
         <Link onClick={onOpen}>
           <DeleteButton text="YES, I WANT TO DELETE THIS COMPANY" />
         </Link>
 
-        <Link as={RouteLink} to="/admin/company/list">
-          <BackButton />
-        </Link>
+        
       </HStack>
     </div>
   );
@@ -151,7 +151,7 @@ const AdminDeleteCompany = () => {
     HrApi.get("Companies/" + companyId, {
       params: apiUrlParams
     }).then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       setCompany(res.data);
     }).catch(err => {
       let errDetails: ErrorDetails = err?.response?.data;
@@ -159,10 +159,24 @@ const AdminDeleteCompany = () => {
     })
   }
 
+  const displayHeading = () => (
+    <Flex>
+      <Box>
+        <Heading fontSize={"xl"}>Delete Company</Heading>
+      </Box>
+      <Spacer />
+      <Box>
+        <Link ml={2} as={RouteLink} to="/admin/company/list">
+          <BackButton />
+        </Link>
+      </Box>
+    </Flex>
+  );
+
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
-      <Heading fontSize={"xl"}>Delete Company</Heading>
+      {displayHeading()}
       <Text fontSize="xl">
           Are you sure you want to delete the following company?
         </Text>

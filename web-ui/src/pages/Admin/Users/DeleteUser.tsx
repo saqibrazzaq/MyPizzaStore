@@ -12,9 +12,11 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   Heading,
   HStack,
   Link,
+  Spacer,
   Stack,
   Table,
   TableContainer,
@@ -112,14 +114,12 @@ const DeleteUser = () => {
           </Tbody>
         </Table>
       </TableContainer>
-      <HStack spacing={4}>
+      <HStack pt={4} spacing={4}>
         <Link onClick={onOpen}>
           <DeleteButton text="YES, I WANT TO DELETE THIS USER" />
         </Link>
 
-        <Link as={RouteLink} to="/admin/users">
-          <BackButton />
-        </Link>
+        
       </HStack>
     </div>
   );
@@ -153,10 +153,24 @@ const DeleteUser = () => {
     </AlertDialog>
   );
 
+  const displayHeading = () => (
+    <Flex>
+      <Box>
+        <Heading fontSize={"xl"}>Delete User</Heading>
+      </Box>
+      <Spacer />
+      <Box>
+        <Link ml={2} as={RouteLink} to="/admin/users/list">
+          <BackButton />
+        </Link>
+      </Box>
+    </Flex>
+  );
+
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
-        <Heading fontSize={"xl"}>Delete User</Heading>
+        {displayHeading()}
         <Text fontSize="xl">
           Are you sure you want to delete the following user?
         </Text>

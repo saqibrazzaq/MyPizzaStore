@@ -2,9 +2,11 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   Heading,
   IconButton,
   Link,
+  Spacer,
   Stack,
   Table,
   TableCaption,
@@ -26,6 +28,7 @@ import { AiFillDelete } from "react-icons/ai";
 import SearchUsersRequestParameters from "../../../Models/User/SearchUsersRequestParameters";
 import DeleteIconButton from "../../../components/Buttons/DeleteIconButton";
 import Common from "../../../utility/Common";
+import BackButton from "../../../components/Buttons/BackButton";
 
 const AdminListUsers = () => {
   const [pagedRes, setPagedRes] = useState<PagedResponse<UserDto>>();
@@ -78,10 +81,24 @@ const AdminListUsers = () => {
       });
   };
 
+  const displayHeading = () => (
+    <Flex>
+      <Box>
+        <Heading fontSize={"xl"}>Search Users</Heading>
+      </Box>
+      <Spacer />
+      <Box>
+        <Link ml={2} as={RouteLink} to="/admin">
+          <BackButton />
+        </Link>
+      </Box>
+    </Flex>
+  );
+
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
-        <Heading fontSize={"xl"}>Search Users</Heading>
+        {displayHeading()}
         <TableContainer>
           <Table variant="simple">
             <Thead>
