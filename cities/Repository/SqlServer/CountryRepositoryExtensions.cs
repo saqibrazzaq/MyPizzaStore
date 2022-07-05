@@ -19,6 +19,12 @@ namespace cities.Repository.SqlServer
                 );
             }
 
+            if (searchParams.CountryId != null && searchParams.CountryId != Guid.Empty)
+            {
+                itemsToReturn = itemsToReturn.Where(
+                    x => x.CountryId == searchParams.CountryId);
+            }
+
             return itemsToReturn;
         }
 

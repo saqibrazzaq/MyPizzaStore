@@ -2,5 +2,6 @@
 {
     public class SearchCountryRequestDto : PagedRequestParameters
     {
+        public Guid? CountryId { get; set; }
     }
 }

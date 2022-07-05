@@ -1,12 +1,14 @@
-import React, { Component, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import citiesApi from "../../Api/citiesApi";
 
-const CountryDropdown = () => {
+const CountryDropdown = ({handleChange, selectedCountry}) => {
   const [inputValue, setInputValue] = useState("");
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadCountries = () => {
+    setIsLoading(true);
     citiesApi
       .get("Countries/search", {
         params: {
@@ -18,6 +20,8 @@ const CountryDropdown = () => {
       })
       .catch((err) => {
         console.log(err);
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -29,12 +33,8 @@ const CountryDropdown = () => {
     return () => clearTimeout(timer);
   }, [inputValue]);
 
-  const handleChange = (newValue) => {
-    console.log(newValue);
-  };
   const handleInputChange = (newValue) => {
     setInputValue(newValue);
-    console.log(newValue);
   };
 
   return (
@@ -45,6 +45,10 @@ const CountryDropdown = () => {
         options={items}
         onChange={handleChange}
         onInputChange={handleInputChange}
+        isClearable={true}
+        placeholder="Select country..."
+        isLoading={isLoading}
+        value={selectedCountry}
       ></Select>
     </div>
   );

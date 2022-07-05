@@ -9,19 +9,27 @@ namespace cities.Repository.SqlServer
         public static IQueryable<State> Search(this IQueryable<State> items,
             SearchStateRequestDto searchParams)
         {
-            // Empty search term
-            if (string.IsNullOrWhiteSpace(searchParams.SearchText))
-                return items;
-
             // Convert to lower case
-            var searchTerm = searchParams.SearchText.Trim().ToLower();
+            var searchTerm = searchParams?.SearchText?.Trim().ToLower();
+
+            var itemsToReturn = items;
 
             // Search in different properties
-            var itemsToReturn = items.Where(
+            if (string.IsNullOrWhiteSpace(searchTerm) == false)
+            {
+                itemsToReturn = itemsToReturn.Where(
                 // Name
                 x => (x.Name ?? "").ToLower().Contains(searchTerm) ||
                 (x.StateCode ?? "").ToLower().Contains(searchTerm)
                 );
+            }
+                
+
+            if (searchParams?.CountryId != null && searchParams.CountryId != Guid.Empty)
+            {
+                itemsToReturn = itemsToReturn.Where(
+                    x => x.CountryId == searchParams.CountryId);
+            }
 
             return itemsToReturn;
         }

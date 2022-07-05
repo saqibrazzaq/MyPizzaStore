@@ -30,8 +30,17 @@ import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompa
 import RegularButton from "../../../components/Buttons/RegularButton";
 import BackButton from "../../../components/Buttons/BackButton";
 import CountryDropdown from "../../../components/Dropdowns/CountryDropdown";
+import CountryResponseDto from "../../../Models/Cities/Country/CountryResponseDto";
+import StateDropdown from "../../../components/Dropdowns/StateDropdown";
+import StateResponseDto from "../../../Models/Cities/State/StateResponseDto";
+import CityDropdown from "../../../components/Dropdowns/CityDropdown";
+import CityResponseDto from "../../../Models/Cities/City/CityResponseDto";
+import CityStateCountryDropdown from "../../../components/Dropdowns/CityStateCountryDropdown";
 
 const AdminUpdateCompany = () => {
+  const [city, setCity] = useState<any>();
+  const [cityId, setCityId] = useState();
+  
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { auth }: AuthModel = useAuth();
@@ -56,8 +65,9 @@ const AdminUpdateCompany = () => {
       params: findCompanyReq,
     })
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setCompanyData(res.data);
+        setCityId(res.data.cityId);
       })
       .catch((err) => {
         console.log(err);
@@ -76,7 +86,7 @@ const AdminUpdateCompany = () => {
   const submitForm = (values: UpdateCompanyRequestParams) => {
     setError("");
     setSuccess("");
-    // console.log(values);
+    console.log(values);
     if (companyId) {
       updateCompany(values);
     } else {
@@ -138,7 +148,7 @@ const AdminUpdateCompany = () => {
         validationSchema={validationSchema}
         enableReinitialize={true}
       >
-        {({ handleSubmit, errors, touched }) => (
+        {({ handleSubmit, errors, touched, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={4} as={Container} maxW={"3xl"}>
               {error && showUpdateError()}
@@ -146,7 +156,12 @@ const AdminUpdateCompany = () => {
               <FormControl isInvalid={!!errors.name && touched.name}>
                 <FormLabel htmlFor="name">Company Name</FormLabel>
                 <Field as={Input} id="name" name="name" type="text" />
-                <Field as={Input} id="accountId" name="accountId" type="hidden" />
+                <Field
+                  as={Input}
+                  id="accountId"
+                  name="accountId"
+                  type="hidden"
+                />
                 <FormErrorMessage>{errors.name}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.address1 && touched.address1}>
@@ -163,8 +178,16 @@ const AdminUpdateCompany = () => {
                 <FormLabel htmlFor="cityId">City</FormLabel>
                 <Field as={Input} id="cityId" name="cityId" type="text" />
                 <FormErrorMessage>{errors.cityId}</FormErrorMessage>
-                
-                <CountryDropdown></CountryDropdown>
+
+                <CityStateCountryDropdown
+                  cityId={cityId}
+                  selectedCity={city}
+                  handleChange={(newValue?: CityResponseDto) => {
+                    console.log("city: " + newValue?.name);
+                    setFieldValue("cityId", newValue?.cityId);
+                    setCity(newValue);
+                  }}
+                ></CityStateCountryDropdown>
               </FormControl>
               <Stack spacing={6}>
                 <SubmitButton text={updateText} />
@@ -175,6 +198,8 @@ const AdminUpdateCompany = () => {
       </Formik>
     </Box>
   );
+
+  
 
   const displayHeading = () => (
     <Flex>
