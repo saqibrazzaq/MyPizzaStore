@@ -1,5 +1,6 @@
 ﻿using auth.Dtos.User;
 using auth.Entities.Database;
+using common.Repository;
 using System.Linq.Dynamic.Core;
 
 namespace auth.Repository.SqlServer.Extensions

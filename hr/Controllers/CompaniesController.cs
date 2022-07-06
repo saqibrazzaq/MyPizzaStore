@@ -29,7 +29,8 @@ namespace hr.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult Search([FromQuery] SearchCompaniesRequestDto dto)
         {
-            return Ok();
+            var res = _companyService.Search(dto);
+            return Ok(res);
         }
 
         [HttpGet("{companyId}", Name = "FindByCompanyId")]

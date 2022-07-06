@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using common.Models.Parameters;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace hr.Dtos.Company
 {
-    public class ManipulateCompanyDto : RequestDto
+    public class ManipulateCompanyDto : AccountIdRequestParameters
     {
         [Required, MaxLength(500)]
         public string? Name { get; set; }

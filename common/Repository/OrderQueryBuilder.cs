@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
 
-namespace auth.Repository.SqlServer.Extensions
+namespace common.Repository
 {
     public static class OrderQueryBuilder
     {

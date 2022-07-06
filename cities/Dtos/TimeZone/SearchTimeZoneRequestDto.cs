@@ -2,7 +2,7 @@
 
 namespace cities.Dtos.TimeZone
 {
-    public class SearchTimeZoneRequestDto : PagedRequestParameters
+    public class SearchTimeZoneRequestDto : PagedRequestParametersPublic
     {
         
     }

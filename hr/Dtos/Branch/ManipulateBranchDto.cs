@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using common.Models.Parameters;
+using System.ComponentModel.DataAnnotations;
 
 namespace hr.Dtos.Branch
 {
-    public class ManipulateBranchDto : RequestDto
+    public class ManipulateBranchDto : AccountIdRequestParameters
     {
         [Required, MaxLength(500)]
         public string? Name { get; set; }

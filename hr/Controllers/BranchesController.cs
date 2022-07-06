@@ -10,18 +10,21 @@ namespace hr.Controllers
     public class BranchesController : ControllerBase
     {
         [HttpGet("all-branches")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult FindAll([FromQuery] FindAllBranchesRequestDto dto)
         {
             return Ok();
         }
         
         [HttpGet("all-branches/{companyId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult FindAllByCompanyId(Guid companyId, [FromQuery] FindAllBranchesByCompanyIdRequestDto dto)
         {
             return Ok();
         }
 
         [HttpGet("{branchId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult FindByBranchId(Guid branchId, [FromQuery] FindByBranchIdRequestDto dto)
         {
             return Ok();
@@ -42,6 +45,7 @@ namespace hr.Controllers
         }
 
         [HttpDelete("{branchId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult Delete(Guid branchId, [FromQuery] DeleteBranchRequestDto dto)
         {
             return NoContent();

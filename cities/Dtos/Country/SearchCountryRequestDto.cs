@@ -2,7 +2,7 @@
 
 namespace cities.Dtos.Country
 {
-    public class SearchCountryRequestDto : PagedRequestParameters
+    public class SearchCountryRequestDto : PagedRequestParametersPublic
     {
         public Guid? CountryId { get; set; }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace common.Models.Parameters
 {
-    public class PagedRequestParameters : AccountIdRequestParameters
+    public class PagedRequestParametersPublic
     {
         const int maxPageSize = 50;
         public int PageNumber { get; set; } = 1;

@@ -72,7 +72,10 @@ namespace hr.Services
 
         public ApiOkPagedResponse<IEnumerable<CompanyResponseDto>, MetaData> Search(SearchCompaniesRequestDto dto)
         {
-            return null;
+            var companyPagedEntities = _repositoryManager.CompanyRepository.SearchCompanies(dto, false);
+            var companyDtos = _mapper.Map<IEnumerable<CompanyResponseDto>>(companyPagedEntities);
+            return new ApiOkPagedResponse<IEnumerable<CompanyResponseDto>, MetaData>(companyDtos,
+                companyPagedEntities.MetaData);
         }
     }
 }

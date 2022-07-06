@@ -1,6 +1,8 @@
-﻿namespace hr.Dtos.Branch
+﻿using common.Models.Parameters;
+
+namespace hr.Dtos.Branch
 {
-    public class FindAllBranchesRequestDto : RequestDto
+    public class FindAllBranchesRequestDto : AccountIdRequestParameters
     {
     }
 }
