@@ -14,7 +14,11 @@ const StateDropdown = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const loadStates = () => {
-    const searchParams = new StateSearchRequestParams(countryId, inputValue);
+    const searchParams = new StateSearchRequestParams(
+      countryId,
+      "",
+      inputValue
+    );
     if (countryId) {
       setIsLoading(true);
       citiesApi
@@ -27,7 +31,8 @@ const StateDropdown = ({
         })
         .catch((err) => {
           console.log(err);
-        }).finally(() => {
+        })
+        .finally(() => {
           setIsLoading(false);
         });
     }

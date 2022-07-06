@@ -9,7 +9,7 @@ const CityDropdown = ({ stateId, handleChange, isDisabled, selectedCity }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const loadCities = () => {
-    const searchParams = new CitySearchRequestParams(stateId, inputValue);
+    const searchParams = new CitySearchRequestParams(stateId, "", inputValue);
     if (stateId) {
       setIsLoading(true);
       citiesApi

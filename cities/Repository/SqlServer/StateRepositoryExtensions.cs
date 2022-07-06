@@ -23,12 +23,17 @@ namespace cities.Repository.SqlServer
                 (x.StateCode ?? "").ToLower().Contains(searchTerm)
                 );
             }
-                
 
             if (searchParams?.CountryId != null && searchParams.CountryId != Guid.Empty)
             {
                 itemsToReturn = itemsToReturn.Where(
                     x => x.CountryId == searchParams.CountryId);
+            }
+
+            if (searchParams?.StateId != null && searchParams.StateId != Guid.Empty)
+            {
+                itemsToReturn = itemsToReturn.Where(
+                    x => x.StateId == searchParams.StateId);
             }
 
             return itemsToReturn;

@@ -7,6 +7,8 @@ import StateResponseDto from "../../Models/Cities/State/StateResponseDto";
 import CountryResponseDto from "../../Models/Cities/Country/CountryResponseDto";
 import citiesApi from "../../Api/citiesApi";
 import CountrySearchRequestParams from "../../Models/Cities/Country/CountrySearchRequestParams";
+import StateSearchRequestParams from "../../Models/Cities/State/StateSearchRequestParams";
+import CitySearchRequestParams from "../../Models/Cities/City/CitySearchRequestParams";
 
 const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
   console.log("city id passed: " + cityId);
@@ -53,7 +55,7 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
           const cityDetailResponse = res.data;
           console.log(cityDetailResponse);
           if (cityDetailResponse) {
-            initializeCountry(cityDetailResponse.countryId);
+            initializeCountry(cityDetailResponse);
           }
         })
         .catch((err) => {
@@ -62,8 +64,11 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
     }
   };
 
-  const initializeCountry = (countryId) => {
-    const countrySearchParams = new CountrySearchRequestParams(countryId, "");
+  const initializeCountry = (cityDetailResponse) => {
+    const countrySearchParams = new CountrySearchRequestParams(
+      cityDetailResponse.countryId,
+      ""
+    );
     citiesApi
       .get("Countries/search", {
         params: countrySearchParams,
@@ -72,11 +77,42 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
         const countryResponse = res.data.pagedList[0];
         setCountry(countryResponse);
         console.log("Initial country: " + countryResponse.name);
+        initializeState(cityDetailResponse);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const initializeState = (cityDetailResponse) => {
+    const stateSearchParams = new StateSearchRequestParams(
+      cityDetailResponse.countryId,
+      cityDetailResponse.stateId,
+      ""
+    );
+    citiesApi
+      .get("States/search", {
+        params: stateSearchParams,
+      })
+      .then((res) => {
+        const stateResponse = res.data.pagedList[0];
+        setState(stateResponse);
+        console.log("Initial state: " + stateResponse.name);
+        initializeCity(cityDetailResponse);
+      });
+  };
+
+  const initializeCity = (cityDetailResponse) => {
+    const citySearchParams = new CitySearchRequestParams(cityDetailResponse.stateId,
+      cityDetailResponse.cityId, "");
+      citiesApi.get("Cities/search", {
+        params: citySearchParams
+      }).then(res => {
+        const cityResponse = res.data.pagedList[0];
+        
+        console.log("Initial city: " + cityResponse.name);
+      })
+  }
 
   return (
     <div>

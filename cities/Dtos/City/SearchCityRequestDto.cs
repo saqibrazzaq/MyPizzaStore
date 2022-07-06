@@ -3,5 +3,6 @@
     public class SearchCityRequestDto : PagedRequestParameters
     {
         public Guid? StateId { get; set; }
+        public Guid? CityId { get; set; }
     }
 }

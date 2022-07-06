@@ -23,7 +23,13 @@ namespace cities.Repository.SqlServer
                 itemsToReturn = itemsToReturn.Where(
                     x => x.StateId == searchParams.StateId);
             }
-            
+
+            if (searchParams.CityId != null && searchParams.CityId != Guid.Empty)
+            {
+                itemsToReturn = itemsToReturn.Where(
+                    x => x.CityId == searchParams.CityId);
+            }
+
 
             return itemsToReturn;
         }
