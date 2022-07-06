@@ -1,6 +1,12 @@
-﻿namespace auth.Dtos
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace common.Models.Parameters
 {
-    public class RequestParameters
+    public class PagedRequestParameters
     {
         const int maxPageSize = 50;
         public int PageNumber { get; set; } = 1;
@@ -17,5 +23,6 @@
             }
         }
         public string? OrderBy { get; set; }
+        public string? SearchText { get; set; }
     }
 }

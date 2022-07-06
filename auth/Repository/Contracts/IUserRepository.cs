@@ -1,6 +1,7 @@
 ﻿using auth.Dtos;
 using auth.Dtos.User;
 using auth.Entities.Database;
+using common.Models.Parameters;
 
 namespace auth.Repository.Contracts
 {

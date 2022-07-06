@@ -1,7 +1,7 @@
-import HrRequestParameters from "../HrRequestParameters";
+import AccountIdParameters from "../HrRequestParameters";
 
 export default class GetAllCompaniesRequestParameters 
-extends HrRequestParameters {
+extends AccountIdParameters {
    
   constructor(accountId?:string) {
     super(accountId);

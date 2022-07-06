@@ -29,20 +29,28 @@ import UpdateIconButton from "../../../components/Buttons/UpdateIconButton";
 import SubmitButton from "../../../components/Buttons/SubmitButton";
 import RegularButton from "../../../components/Buttons/RegularButton";
 import BackButton from "../../../components/Buttons/BackButton";
+import SearchCompaniesRequestParams from "../../../Models/Hr/Company/SearchCompaniesRequestParams";
+import Common from "../../../utility/Common";
 
 const AdminListCompanies = () => {
   const { auth }: AuthModel = useAuth();
-  const getAllParams = new GetAllCompaniesRequestParameters(auth.accountId);
-
   const [companies, setCompanies] = useState<CompanyResponseDto[]>();
 
   useEffect(() => {
-    loadCompanies();
+    loadCompanies(
+      new SearchCompaniesRequestParams(
+        "",
+        1,
+        Common.DEFAULT_PAGE_SIZE,
+        "",
+        auth.accountId
+      )
+    );
   }, []);
 
-  const loadCompanies = () => {
+  const loadCompanies = (searchParams: SearchCompaniesRequestParams) => {
     HrApi.get("Companies", {
-      params: getAllParams,
+      params: searchParams,
     })
       .then((res) => {
         // console.log(res.data);

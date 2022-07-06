@@ -3,6 +3,7 @@ using auth.Dtos.User;
 using auth.Entities.Database;
 using auth.Repository.Contracts;
 using auth.Repository.SqlServer.Extensions;
+using common.Models.Parameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace auth.Repository.SqlServer

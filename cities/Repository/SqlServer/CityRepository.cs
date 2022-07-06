@@ -1,7 +1,7 @@
 ﻿using cities.Dtos.City;
-using cities.Dtos.PagedRequest;
 using cities.Entities;
 using cities.Repository.Contracts;
+using common.Models.Parameters;
 
 namespace cities.Repository.SqlServer
 {

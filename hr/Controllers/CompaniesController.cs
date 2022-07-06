@@ -25,6 +25,13 @@ namespace hr.Controllers
             return Ok(res.Data);
         }
 
+        [HttpGet("search")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public IActionResult Search([FromQuery] SearchCompaniesRequestDto dto)
+        {
+            return Ok();
+        }
+
         [HttpGet("{companyId}", Name = "FindByCompanyId")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult FindByCompanyId(Guid companyId, [FromQuery] FindByCompanyIdRequestDto dto)

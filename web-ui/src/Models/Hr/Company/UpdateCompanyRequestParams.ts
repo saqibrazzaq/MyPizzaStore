@@ -1,6 +1,6 @@
-import HrRequestParameters from "../HrRequestParameters";
+import AccountIdParameters from "../HrRequestParameters";
 
-export default class UpdateCompanyRequestParams extends HrRequestParameters {
+export default class UpdateCompanyRequestParams extends AccountIdParameters {
   name?: string;
   address1?: string;
   address2?: string;

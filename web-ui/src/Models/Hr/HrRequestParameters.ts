@@ -1,4 +1,4 @@
-export default class HrRequestParameters {
+export default class AccountIdParameters {
   accountId?: string;
 
   constructor(accountId?: string) {

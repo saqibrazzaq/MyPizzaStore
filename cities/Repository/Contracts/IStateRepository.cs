@@ -1,6 +1,6 @@
-﻿using cities.Dtos.PagedRequest;
-using cities.Dtos.State;
+﻿using cities.Dtos.State;
 using cities.Entities;
+using common.Models.Parameters;
 
 namespace cities.Repository.Contracts
 {

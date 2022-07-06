@@ -1,6 +1,8 @@
-﻿namespace auth.Dtos.User
+﻿using common.Models.Parameters;
+
+namespace auth.Dtos.User
 {
-    public class UserParameters : RequestParameters
+    public class UserParameters : PagedRequestParameters
     {
         public string? SearchTerm { get; set; }
     }

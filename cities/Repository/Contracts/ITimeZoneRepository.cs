@@ -1,5 +1,5 @@
-﻿using cities.Dtos.PagedRequest;
-using cities.Dtos.TimeZone;
+﻿using cities.Dtos.TimeZone;
+using common.Models.Parameters;
 
 namespace cities.Repository.Contracts
 {

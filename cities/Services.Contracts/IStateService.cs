@@ -1,5 +1,5 @@
-﻿using cities.Dtos.PagedRequest;
-using cities.Dtos.State;
+﻿using cities.Dtos.State;
+using common.Models.Parameters;
 using common.Models.Responses;
 
 namespace cities.Services.Contracts

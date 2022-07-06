@@ -1,6 +1,6 @@
-﻿using cities.Dtos.PagedRequest;
-using cities.Dtos.TimeZone;
+﻿using cities.Dtos.TimeZone;
 using cities.Repository.Contracts;
+using common.Models.Parameters;
 
 namespace cities.Repository.SqlServer
 {

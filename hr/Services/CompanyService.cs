@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using common.Models.Exceptions;
+using common.Models.Parameters;
 using common.Models.Responses;
 using hr.Dtos.Company;
 using hr.Entities;
@@ -67,6 +68,11 @@ namespace hr.Services
             var companyEntity = findByCompanyIdIfExists(companyId, dto.AccountId, true);
             _mapper.Map(dto, companyEntity);
             _repositoryManager.Save();
+        }
+
+        public ApiOkPagedResponse<IEnumerable<CompanyResponseDto>, MetaData> Search(SearchCompaniesRequestDto dto)
+        {
+            return null;
         }
     }
 }

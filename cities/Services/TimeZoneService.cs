@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using cities.Dtos.PagedRequest;
 using cities.Dtos.TimeZone;
 using cities.Models.Exceptions;
 using cities.Repository.Contracts;
 using cities.Services.Contracts;
+using common.Models.Parameters;
 using common.Models.Responses;
 
 namespace cities.Services

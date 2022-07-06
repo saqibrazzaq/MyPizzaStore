@@ -1,4 +1,6 @@
-﻿namespace cities.Dtos.City
+﻿using common.Models.Parameters;
+
+namespace cities.Dtos.City
 {
     public class SearchCityRequestDto : PagedRequestParameters
     {

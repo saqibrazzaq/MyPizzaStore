@@ -6908,3 +6908,21 @@
 2022-07-06 13:19:25.1059 Trace  Scanning Property LineEnding 'Default' NLog.Targets
 2022-07-06 13:19:25.1140 Trace FileTarget(Name=logfile) has 2 layouts
 2022-07-06 13:19:25.1140 Trace FileTarget(Name=logfile): Using appenderFactory: NLog.Internal.FileAppenders.SingleProcessFileAppender+Factory
+2022-07-06 16:00:18.2471 Info AppDomain Shutting down. LogFactory closing...
+2022-07-06 16:00:18.2818 Debug Stopping file watching for path '/app' filter 'nlog.config'
+2022-07-06 16:00:18.2999 Debug Closing logging configuration...
+2022-07-06 16:00:18.3062 Trace Closing FileTarget(Name=logfile)
+2022-07-06 16:00:18.3062 Debug FileTarget(Name=logfile): Closing...
+2022-07-06 16:00:18.3220 Debug FileTarget(Name=logfile): Closed.
+2022-07-06 16:00:18.3245 Trace Closing .\logs\${shortdate}_logfile.txt
+2022-07-06 16:00:18.3245 Trace Closing Layout Renderer: ${literal}
+2022-07-06 16:00:18.3245 Trace Closing Layout Renderer: ${shortdate}
+2022-07-06 16:00:18.3357 Trace Closing Layout Renderer: ${literal}
+2022-07-06 16:00:18.3357 Trace Closing ${longdate} ${level:uppercase=true} ${message}
+2022-07-06 16:00:18.3357 Trace Closing Layout Renderer: ${longdate}
+2022-07-06 16:00:18.3453 Trace Closing Layout Renderer: ${literal}
+2022-07-06 16:00:18.3453 Trace Closing Layout Renderer: ${level}
+2022-07-06 16:00:18.3453 Trace Closing Layout Renderer: ${literal}
+2022-07-06 16:00:18.3453 Trace Closing Layout Renderer: ${message}
+2022-07-06 16:00:18.3554 Debug Finished closing logging configuration.
+2022-07-06 16:00:18.3554 Info LogFactory has been closed.

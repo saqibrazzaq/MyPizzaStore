@@ -95,11 +95,8 @@ const AdminListUsers = () => {
     </Flex>
   );
 
-  return (
-    <Box p={4}>
-      <Stack spacing={4} as={Container} maxW={"3xl"}>
-        {displayHeading()}
-        <TableContainer>
+  const displayUsers = () => (
+    <TableContainer>
           <Table variant="simple">
             <Thead>
               <Tr>
@@ -151,6 +148,13 @@ const AdminListUsers = () => {
             </Tfoot>
           </Table>
         </TableContainer>
+  )
+
+  return (
+    <Box p={4}>
+      <Stack spacing={4} as={Container} maxW={"3xl"}>
+        {displayHeading()}
+        {displayUsers()}
       </Stack>
     </Box>
   );

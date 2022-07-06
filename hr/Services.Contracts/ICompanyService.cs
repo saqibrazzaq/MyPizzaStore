@@ -1,4 +1,5 @@
-﻿using common.Models.Responses;
+﻿using common.Models.Parameters;
+using common.Models.Responses;
 using hr.Dtos.Company;
 
 namespace hr.Services.Contracts
@@ -10,5 +11,6 @@ namespace hr.Services.Contracts
         CompanyDetailResponseDto Create (CreateCompanyRequestDto dto);
         void Update (Guid companyId, UpdateCompanyRequestDto dto);
         void Delete (Guid companyId, DeleteCompanyRequestDto dto);
+        ApiOkPagedResponse<IEnumerable<CompanyResponseDto>, MetaData> Search(SearchCompaniesRequestDto dto);
     }
 }

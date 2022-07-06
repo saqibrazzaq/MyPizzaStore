@@ -1,7 +1,7 @@
-import RequestParameters from "../Request/RequestParameters";
+import PagedRequestParameters from "../Request/RequestParameters";
 
 export default class SearchUsersRequestParameters 
-extends RequestParameters {
+extends PagedRequestParameters {
   searchTerm?: string;
 
   

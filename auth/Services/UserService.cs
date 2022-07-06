@@ -8,6 +8,7 @@ using auth.Utility;
 using AutoMapper;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using common.Models.Parameters;
 using common.Models.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
