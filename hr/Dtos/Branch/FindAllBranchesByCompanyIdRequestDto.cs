@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace hr.Dtos.Branch
 {
-    public class GetAllBranchesRequestDto : RequestDto
+    public class FindAllBranchesByCompanyIdRequestDto : RequestDto
     {
         
     }

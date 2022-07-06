@@ -12,6 +12,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Flex,
   Heading,
   HStack,
@@ -41,6 +42,8 @@ import FindByCompanyIdRequestParams from "../../../Models/Hr/Company/FindByCompa
 import AuthModel from "../../../Models/User/AuthModel";
 import useAuth from "../../../hooks/useAuth";
 import DeleteCompanyRequestParams from "../../../Models/Hr/Company/DeleteCompanyRequestParams";
+import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
+import citiesApi from "../../../Api/citiesApi";
 
 const AdminDeleteCompany = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,6 +51,7 @@ const AdminDeleteCompany = () => {
 
   const [company, setCompany] = useState<CompanyDetailResponseDto>();
   const [error, setError] = useState("");
+  const [city, setCity] = useState<CityDetailResponseDto>();
 
   const toast = useToast();
   const navigate = useNavigate();
@@ -60,21 +64,23 @@ const AdminDeleteCompany = () => {
   const deleteCompany = () => {
     onClose();
     HrApi.delete("Companies/" + companyId, {
-      params: apiUrlParams
-    }).then(res => {
-      toast({
-        title: "Company deleted",
-        description: company?.name + " deleted successfully.",
-        status: "error",
-        position: "top-right",
-      });
-      navigate("/admin/company/list");
-    }).catch(err => {
-      console.log(err);
-      let errDetails: ErrorDetails = err?.response?.data;
-        setError(errDetails?.Message || "Service failed");
+      params: apiUrlParams,
     })
-  }
+      .then((res) => {
+        toast({
+          title: "Company deleted",
+          description: company?.name + " deleted successfully.",
+          status: "error",
+          position: "top-right",
+        });
+        navigate("/admin/company/list");
+      })
+      .catch((err) => {
+        console.log(err);
+        let errDetails: ErrorDetails = err?.response?.data;
+        setError(errDetails?.Message || "Service failed");
+      });
+  };
 
   const showError = () => (
     <Alert status="error">
@@ -97,9 +103,15 @@ const AdminDeleteCompany = () => {
               <Th>Address</Th>
               <Td>
                 {company?.address1 ? company.address1 : ""}
-                {company?.address1 ? <br /> : ""}
+                {company?.address1 ? <Divider /> : ""}
                 {company?.address2 ? company.address2 : ""}
-                </Td>
+              </Td>
+            </Tr>
+            <Tr>
+              <Th>City</Th>
+              <Td>
+                {city?.name}, {city?.stateName} {city?.countryName}
+              </Td>
             </Tr>
           </Tbody>
         </Table>
@@ -108,8 +120,6 @@ const AdminDeleteCompany = () => {
         <Link onClick={onOpen}>
           <DeleteButton text="YES, I WANT TO DELETE THIS COMPANY" />
         </Link>
-
-        
       </HStack>
     </div>
   );
@@ -147,17 +157,34 @@ const AdminDeleteCompany = () => {
     loadCompany();
   }, []);
 
+  useEffect(() => {
+    loadCityDetails();
+  }, [company?.cityId]);
+
   const loadCompany = () => {
     HrApi.get("Companies/" + companyId, {
-      params: apiUrlParams
-    }).then(res => {
-      // console.log(res.data);
-      setCompany(res.data);
-    }).catch(err => {
-      let errDetails: ErrorDetails = err?.response?.data;
-        setError(errDetails?.Message || "Service failed");
+      params: apiUrlParams,
     })
-  }
+      .then((res) => {
+        // console.log(res.data);
+        setCompany(res.data);
+      })
+      .catch((err) => {
+        let errDetails: ErrorDetails = err?.response?.data;
+        setError(errDetails?.Message || "Service failed");
+      });
+  };
+
+  const loadCityDetails = () => {
+    
+    if (company?.cityId) {
+      citiesApi.get("Cities/" + company?.cityId).then(res => {
+        setCity(res.data);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+  };
 
   const displayHeading = () => (
     <Flex>
@@ -176,8 +203,8 @@ const AdminDeleteCompany = () => {
   return (
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
-      {displayHeading()}
-      <Text fontSize="xl">
+        {displayHeading()}
+        <Text fontSize="xl">
           Are you sure you want to delete the following company?
         </Text>
         {error && showError()}
@@ -185,7 +212,7 @@ const AdminDeleteCompany = () => {
       </Stack>
       {showAlertDialog()}
     </Box>
-  )
-}
+  );
+};
 
-export default AdminDeleteCompany
+export default AdminDeleteCompany;
