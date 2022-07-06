@@ -15,6 +15,7 @@ import {
   Link,
   Spacer,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import ErrorDetails from "../../../Models/Error/ErrorDetails";
@@ -36,11 +37,13 @@ import StateResponseDto from "../../../Models/Cities/State/StateResponseDto";
 import CityDropdown from "../../../components/Dropdowns/CityDropdown";
 import CityResponseDto from "../../../Models/Cities/City/CityResponseDto";
 import CityStateCountryDropdown from "../../../components/Dropdowns/CityStateCountryDropdown";
+import CityDetailResponseDto from "../../../Models/Cities/City/CityDetailResponseDto";
+import citiesApi from "../../../Api/citiesApi";
 
 const AdminUpdateCompany = () => {
-  const [city, setCity] = useState<any>();
-  const [cityId, setCityId] = useState();
-  
+  const [selectedCity, setSelectedCity] = useState<CityDetailResponseDto>();
+  const [cityId, setCityId] = useState<string>();
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { auth }: AuthModel = useAuth();
@@ -65,7 +68,7 @@ const AdminUpdateCompany = () => {
       params: findCompanyReq,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setCompanyData(res.data);
         setCityId(res.data.cityId);
       })
@@ -138,6 +141,16 @@ const AdminUpdateCompany = () => {
     </Alert>
   );
 
+  const loadCityDetails = () => {
+    if (cityId) {
+      citiesApi.get("Cities/" + cityId).then(res => {
+        setSelectedCity(res.data);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+  };
+
   const showUpdateForm = () => (
     <Box p={0}>
       <Formik
@@ -176,16 +189,19 @@ const AdminUpdateCompany = () => {
               </FormControl>
               <FormControl isInvalid={!!errors.cityId && touched.cityId}>
                 <FormLabel htmlFor="cityId">City</FormLabel>
-                <Field as={Input} id="cityId" name="cityId" type="text" />
+                <Field as={Input} id="cityId" name="cityId" type="hidden" />
+                <FormLabel fontWeight={"normal"} fontSize={"lg"}>
+                  {selectedCity?.name}, {selectedCity?.stateName}, {selectedCity?.countryName}
+                </FormLabel>
                 <FormErrorMessage>{errors.cityId}</FormErrorMessage>
 
                 <CityStateCountryDropdown
                   cityId={cityId}
-                  selectedCity={city}
                   handleChange={(newValue?: CityResponseDto) => {
-                    console.log("city: " + newValue?.name);
+                    // console.log("city in company update: " + newValue?.name);
                     setFieldValue("cityId", newValue?.cityId);
-                    setCity(newValue);
+                    setCityId(newValue?.cityId);
+                    loadCityDetails();
                   }}
                 ></CityStateCountryDropdown>
               </FormControl>
@@ -198,8 +214,6 @@ const AdminUpdateCompany = () => {
       </Formik>
     </Box>
   );
-
-  
 
   const displayHeading = () => (
     <Flex>

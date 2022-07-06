@@ -27,7 +27,7 @@ const StateDropdown = ({
         })
         .then((res) => {
           setItems(res.data.pagedList);
-          console.log("state search api called. " + selectedState);
+          // console.log("state search api called. " + selectedState);
         })
         .catch((err) => {
           console.log(err);

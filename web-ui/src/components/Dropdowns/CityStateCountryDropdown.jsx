@@ -10,14 +10,16 @@ import CountrySearchRequestParams from "../../Models/Cities/Country/CountrySearc
 import StateSearchRequestParams from "../../Models/Cities/State/StateSearchRequestParams";
 import CitySearchRequestParams from "../../Models/Cities/City/CitySearchRequestParams";
 
-const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
-  console.log("city id passed: " + cityId);
-  console.log("selected city: " + selectedCity?.name);
-
+const CityStateCountryDropdown = ({ cityId, handleChange }) => {
+  
   const [country, setCountry] = useState();
   const [state, setState] = useState();
+  const [city, setCity] = useState();
   const [isStateDropdownDisabled, setIsStateDropdownDisabled] = useState(true);
   const [isCityDropdownDisabled, setIsCityDropdownDisabled] = useState(true);
+
+  // console.log("city id passed: " + cityId);
+  // console.log("selected city: " + city?.name);
 
   const handleStateChange = (newValue) => {
     setState(newValue);
@@ -27,7 +29,7 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
     } else {
       setIsCityDropdownDisabled(true);
     }
-    console.log("stateId: " + newValue?.stateId);
+    // console.log("stateId: " + newValue?.stateId);
   };
 
   const handleCountryChange = (newValue) => {
@@ -40,8 +42,15 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
     } else {
       setIsStateDropdownDisabled(true);
     }
-    console.log("countryId: " + newValue?.countryId);
+    // console.log("countryId: " + newValue?.countryId);
   };
+
+  const handleCityChange = (newValue) => {
+    setCity(newValue);
+    
+    handleChange(newValue);
+    
+  }
 
   useEffect(() => {
     initializeCityStateCountry();
@@ -53,7 +62,7 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
         .get("Cities/" + cityId)
         .then((res) => {
           const cityDetailResponse = res.data;
-          console.log(cityDetailResponse);
+          // console.log(cityDetailResponse);
           if (cityDetailResponse) {
             initializeCountry(cityDetailResponse);
           }
@@ -76,7 +85,7 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
       .then((res) => {
         const countryResponse = res.data.pagedList[0];
         setCountry(countryResponse);
-        console.log("Initial country: " + countryResponse.name);
+        // console.log("Initial country: " + countryResponse.name);
         initializeState(cityDetailResponse);
       })
       .catch((err) => {
@@ -97,7 +106,8 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
       .then((res) => {
         const stateResponse = res.data.pagedList[0];
         setState(stateResponse);
-        console.log("Initial state: " + stateResponse.name);
+        // console.log("Initial state: " + stateResponse.name);
+        setIsStateDropdownDisabled(false);
         initializeCity(cityDetailResponse);
       });
   };
@@ -109,8 +119,10 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
         params: citySearchParams
       }).then(res => {
         const cityResponse = res.data.pagedList[0];
-        
-        console.log("Initial city: " + cityResponse.name);
+        setCity(cityResponse);
+        setIsCityDropdownDisabled(false);
+        // console.log("Initial city: " + cityResponse.name);
+        handleChange(cityResponse);
       })
   }
 
@@ -128,9 +140,9 @@ const CityStateCountryDropdown = ({ cityId, selectedCity, handleChange }) => {
       ></StateDropdown>
       <CityDropdown
         stateId={state?.stateId}
-        handleChange={handleChange}
+        handleChange={handleCityChange}
         isDisabled={isCityDropdownDisabled}
-        selectedCity={selectedCity}
+        selectedCity={city}
       ></CityDropdown>
     </div>
   );
