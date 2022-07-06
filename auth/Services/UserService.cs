@@ -187,8 +187,19 @@ namespace auth.Services
 
         private void DeleteExistingProfilePictureFromCloudinary(string? profilePictureCloudinaryId)
         {
-            Cloudinary cloudinary = new Cloudinary();
-            cloudinary.Destroy(new DeletionParams(profilePictureCloudinaryId));
+            Cloudinary cloudinary = new Cloudinary(_configuration["CLOUDINARY_URL"]);
+            if (string.IsNullOrWhiteSpace(profilePictureCloudinaryId) == false)
+            {
+                try
+                {
+                    cloudinary.Destroy(new DeletionParams(profilePictureCloudinaryId));
+                }
+                catch (Exception) 
+                { 
+                    
+                }
+            }
+            
         }
 
         private ImageUploadResult uploadNewProfilePictureToCloudinary(string newProfilePicturePath)
@@ -202,7 +213,7 @@ namespace auth.Services
                     new EagerTransformation().Width(200).Height(200).Gravity("faces").Crop("thumb")
                 }
             };
-            Cloudinary cloudinary = new Cloudinary();
+            Cloudinary cloudinary = new Cloudinary(_configuration["CLOUDINARY_URL"]);
             var result = cloudinary.Upload(uploadParams);
             return result;
         }
