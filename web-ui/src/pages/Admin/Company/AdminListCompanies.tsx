@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   Flex,
   Heading,
@@ -31,13 +32,14 @@ import RegularButton from "../../../components/Buttons/RegularButton";
 import BackButton from "../../../components/Buttons/BackButton";
 import SearchCompaniesRequestParams from "../../../Models/Hr/Company/SearchCompaniesRequestParams";
 import Common from "../../../utility/Common";
+import PagedResponse from "../../../Models/PagedResponse";
 
 const AdminListCompanies = () => {
   const { auth }: AuthModel = useAuth();
-  const [companies, setCompanies] = useState<CompanyResponseDto[]>();
+  const [pagedRes, setPagedRes] = useState<PagedResponse<CompanyResponseDto>>();
 
   useEffect(() => {
-    loadCompanies(
+    searchCompanies(
       new SearchCompaniesRequestParams(
         "",
         1,
@@ -48,17 +50,47 @@ const AdminListCompanies = () => {
     );
   }, []);
 
-  const loadCompanies = (searchParams: SearchCompaniesRequestParams) => {
-    HrApi.get("Companies", {
+  const searchCompanies = (searchParams: SearchCompaniesRequestParams) => {
+    HrApi.get("Companies/search", {
       params: searchParams,
     })
       .then((res) => {
         // console.log(res.data);
-        setCompanies(res.data);
+        setPagedRes(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const previousPage = () => {
+    if (pagedRes?.metaData) {
+      let previousPageNumber = (pagedRes?.metaData?.currentPage || 2) - 1;
+      let searchParams = new SearchCompaniesRequestParams(
+        "",
+        previousPageNumber,
+        Common.DEFAULT_PAGE_SIZE,
+        "",
+        auth.accountId
+      );
+
+      searchCompanies(searchParams);
+    }
+  };
+
+  const nextPage = () => {
+    if (pagedRes?.metaData) {
+      let nextPageNumber = (pagedRes?.metaData?.currentPage || 0) + 1;
+      let searchParams = new SearchCompaniesRequestParams(
+        "",
+        nextPageNumber,
+        Common.DEFAULT_PAGE_SIZE,
+        "",
+        auth.accountId
+      );
+
+      searchCompanies(searchParams);
+    }
   };
 
   const displayCompanies = () => (
@@ -71,8 +103,8 @@ const AdminListCompanies = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {companies ? (
-            companies.map((item) => (
+          {pagedRes?.pagedList ? (
+            pagedRes?.pagedList.map((item) => (
               <Tr key={item.companyId}>
                 <Td>{item.name}</Td>
                 <Td>
@@ -96,6 +128,30 @@ const AdminListCompanies = () => {
             <></>
           )}
         </Tbody>
+        <Tfoot>
+        <Tr>
+        <Th colSpan={2} textAlign="center">
+        <Button
+                    isDisabled={!pagedRes?.metaData?.hasPrevious}
+                    variant="link"
+                    mr={5}
+                    onClick={previousPage}
+                  >
+                    Previous
+                  </Button>
+                  Page {pagedRes?.metaData?.currentPage} of{" "}
+                  {pagedRes?.metaData?.totalPages}
+                  <Button
+                    isDisabled={!pagedRes?.metaData?.hasNext}
+                    variant="link"
+                    ml={5}
+                    onClick={nextPage}
+                  >
+                    Next
+                  </Button>
+        </Th>
+        </Tr>
+        </Tfoot>
       </Table>
     </TableContainer>
   );
@@ -121,7 +177,7 @@ const AdminListCompanies = () => {
     <Box p={4}>
       <Stack spacing={4} as={Container} maxW={"3xl"}>
         {displayHeading()}
-        {companies && displayCompanies()}
+        {displayCompanies()}
       </Stack>
     </Box>
   );
