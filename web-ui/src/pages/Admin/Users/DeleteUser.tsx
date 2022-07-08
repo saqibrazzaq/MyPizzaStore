@@ -69,11 +69,10 @@ const DeleteUser = () => {
       });
   }, []);
 
-  let data = new DeleteUserDto(apiParams.username);
   const deleteUser = () => {
     onClose();
     axios
-      .post("User/delete-user", data)
+      .delete("User/delete-user/" + apiParams.username)
       .then((res) => {
         // console.log("User deleted successfully.");
         toast({
@@ -85,6 +84,7 @@ const DeleteUser = () => {
         navigate("/admin/users");
       })
       .catch((err) => {
+        console.log(err);
         let errDetails: ErrorDetails = err?.response?.data;
         setError(errDetails?.Message || "Service failed");
       });
